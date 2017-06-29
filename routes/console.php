@@ -29,11 +29,44 @@ Artisan::command('bot:follow', function () {
         try {
             $this->info("Following {$id}");
             Twitter::postFollow(['user_id' => $following[] = $id]);
+            Twitter::muteUser($id);
         } catch (RuntimeException $e) {
             continue;
         }
     }
 })->describe('Automatically follow back fans in random order');
+
+Artisan::command('bot:silence', function () {
+    $this->info('Running bot:silence...');
+
+    //
+    // Never mute these cools guys!
+    //
+    $ignore = [
+        'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
+        'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
+        'paulg'       , 'verge'           , '_TheFamily'      ,
+        'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
+        'Medium'      , 'ThePracticalDev' , 'afilina'         ,
+        'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
+        'reactjs'     , 'MongoDB'         , 'googledevs'      ,
+        'Google'      , 'shenanigansen'   ,
+    ];
+
+    do {
+        $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
+        list('users' => $users, 'next_cursor_str' => $cursor) = $following;
+
+        foreach ($users as $user) {
+            if (in_array($user['screen_name'], $ignore)) {
+                continue;
+            }
+
+            $this->info("Mute @{$user['screen_name']}");
+            Twitter::muteUser(['user_id' => $user['id']]);
+        }
+    } while ($cursor);
+});
 
 Artisan::command('bot:unfollow', function () {
     $this->info('Running bot:unfollow...');
@@ -129,9 +162,20 @@ Artisan::command('reddit:import {subreddit}', function ($subreddit) {
             }
 
             if ($meta = compact('name', 'property', 'content')) {
-                $metas[] = $meta;
+                $key = $name ?? $property ?? uniqid('generic:');
+                $metas[$key] = $meta;
             }
         }
+
+        // get a Twitter account for this content
+        if (isset($meta['twitter:creator']) || isset($meta['twitter:site'])) {
+            $by = $meta['twitter:creator'] ?? $meta['twitter:site'];
+        }
+
+        /**
+         * twitter:site
+         * twitter:creator <<<
+         */
 
         dd(compact('title', 'link', 'urls', 'metas'));
     }
