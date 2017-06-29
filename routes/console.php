@@ -28,10 +28,111 @@ Artisan::command('bot:follow', function () {
     while ((count($following) <= count($followers)) && ($id = array_pop($ids))) {
         try {
             $this->info("Following {$id}");
-            Twitter::postFollow(['user_id' => $id]);
-            $following[] = $id;
+            Twitter::postFollow(['user_id' => $following[] = $id]);
         } catch (RuntimeException $e) {
             continue;
         }
     }
 })->describe('Automatically follow back fans in random order');
+
+Artisan::command('bot:unfollow', function () {
+    $this->info('Running bot:unfollow...');
+
+    //
+    // Never unfollow these cools guys!
+    //
+    $ignore = [
+        'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
+        'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
+        'paulg'       , 'verge'           , '_TheFamily'      ,
+        'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
+        'Medium'      , 'ThePracticalDev' , 'afilina'         ,
+        'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
+        'reactjs'     , 'MongoDB'         , 'googledevs'      ,
+        'Google'      , 'shenanigansen'   ,
+    ];
+
+    $following = Twitter::getFriendsIds(['format' => 'array'])['ids'];
+    $unfollow  = [];
+
+    while ($bulk = array_slice($following, 0, 100)) {
+        foreach (Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $bulk]) as $user) {
+            if (!in_array('followed_by', $user['connections']) && !in_array($user['screen_name'], $ignore)) {
+                $unfollow[] = $user;
+            }
+        }
+
+        $following = array_slice($following, 100);
+    }
+
+    foreach ($unfollow as $user) {
+        $this->info("Unfollowing @{$user['screen_name']}");
+        Twitter::postUnfollow(['user_id' => $user['id']]);
+    }
+})->describe('Automatically unfollow people that don\'t follow me');
+
+/**
+ * learnprogramming
+ * programming
+ */
+Artisan::command('reddit:import {subreddit}', function ($subreddit) {
+    $url = "https://www.reddit.com/r/{$subreddit}/hot/.rss?sort=hot";
+
+    libxml_use_internal_errors(true); // tgnb
+
+    $doc = new DOMDocument;
+    $doc->preserveWhiteSpace = false;
+    $doc->load($url);
+
+    $xpath = new DOMXPath($doc);
+    $xpath->registerNamespace('a', 'http://www.w3.org/2005/Atom');
+    $items = $xpath->query('/a:feed/a:entry');
+
+    foreach ($items as $item) {
+        $title = $xpath->query('./a:title', $item)->item(0)->nodeValue;
+        $link  = $xpath->query('./a:link',  $item)->item(0)->getAttribute('href');
+        $desc  = htmlspecialchars_decode($xpath->query('./a:content', $item)->item(0)->nodeValue);
+        $urls  = [];
+
+        $html = new DOMDocument;
+        $html->loadHTML($desc);
+
+        foreach ($html->getElementsByTagName('a') as $anchor) {
+            if (!$anchor->hasAttribute('href')) {
+                continue;
+            }
+
+            $url  = $anchor->getAttribute('href');
+            $host = parse_url($url, PHP_URL_HOST);
+
+            if ($host && false === stripos($host, 'reddit.com')) {
+                $urls[] = $url;
+            }
+        }
+
+        $article = new DOMDocument;
+        $article->loadHTMLFile($urls[0]);
+
+        foreach ($article->getElementsByTagName('meta') as $meta) {
+            unset($name, $property, $content);
+
+            if ($meta->hasAttribute('name')) {
+                $name = $meta->getAttribute('name');
+            }
+
+            if ($meta->hasAttribute('property')) {
+                $property = $meta->getAttribute('property');
+            }
+
+            if ($meta->hasAttribute('content')) {
+                $content = $meta->getAttribute('content');
+            }
+
+            if ($meta = compact('name', 'property', 'content')) {
+                $metas[] = $meta;
+            }
+        }
+
+        dd(compact('title', 'link', 'urls', 'metas'));
+    }
+});

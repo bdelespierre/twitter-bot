@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <category term="programming" label="r/programming"/>
+  <updated>2017-06-28T16:49:30+00:00</updated>
+  <icon>https://www.redditstatic.com/icon.png/</icon>
+  <id>/r/programming/hot/.rss?sort=hot</id>
+  <link rel="self" href="https://www.reddit.com/r/programming/hot/.rss?sort=hot" type="application/atom+xml"/>
+  <link rel="alternate" href="https://www.reddit.com/r/programming/hot/?sort=hot" type="text/html"/>
+  <logo>https://b.thumbs.redditmedia.com/2rTE46grzsr-Ll3Q.png</logo>
+  <subtitle>Computer Programming</subtitle>
+  <title>programming</title>
+  <entry>
+    <author>
+      <name>/u/einaregilsson</name>
+      <uri>https://www.reddit.com/user/einaregilsson</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/einaregilsson"&gt; /u/einaregilsson &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://einaregilsson.com/an-easter-egg-for-one-user-luke-skywalker/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k09si/an_easter_egg_for_one_user_luke_skywalker/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k09si</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k09si/an_easter_egg_for_one_user_luke_skywalker/"/>
+    <updated>2017-06-28T12:33:35+00:00</updated>
+    <title>An easter egg for one user: Luke Skywalker</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/CaptainSketchy</name>
+      <uri>https://www.reddit.com/user/CaptainSketchy</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/CaptainSketchy"&gt; /u/CaptainSketchy &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://www.bradcypert.com/5-programming-languages-you-could-learn-from/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jz9ki/5_programming_languages_you_should_really_try/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jz9ki</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jz9ki/5_programming_languages_you_should_really_try/"/>
+    <updated>2017-06-28T08:28:46+00:00</updated>
+    <title>5 Programming Languages You Should Really Try</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/henk53</name>
+      <uri>https://www.reddit.com/user/henk53</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/henk53"&gt; /u/henk53 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://eclipse.org/oxygen/noteworthy"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k0s22/eclipse_47_oxygen_released/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k0s22</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k0s22/eclipse_47_oxygen_released/"/>
+    <updated>2017-06-28T14:11:52+00:00</updated>
+    <title>Eclipse 4.7 (Oxygen) released!</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/hdodov</name>
+      <uri>https://www.reddit.com/user/hdodov</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/hdodov"&gt; /u/hdodov &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://medium.com/@hristiyandodov/how-my-bad-ethernet-cable-lead-me-to-develop-a-web-service-and-better-software-4a75135eb926"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jz0xb/how_my_bad_ethernet_cable_lead_me_to_develop_a/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jz0xb</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jz0xb/how_my_bad_ethernet_cable_lead_me_to_develop_a/"/>
+    <updated>2017-06-28T07:20:33+00:00</updated>
+    <title>How my bad ethernet cable lead me to develop a web service and better software</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/snkenjoi</name>
+      <uri>https://www.reddit.com/user/snkenjoi</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/snkenjoi"&gt; /u/snkenjoi &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://github.com/kirjavascript/blessed-tetris"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k0k9i/tetris_over_telnet/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k0k9i</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k0k9i/tetris_over_telnet/"/>
+    <updated>2017-06-28T13:27:39+00:00</updated>
+    <title>Tetris over telnet</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/DanielRosenwasser</name>
+      <uri>https://www.reddit.com/user/DanielRosenwasser</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/DanielRosenwasser"&gt; /u/DanielRosenwasser &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://blogs.msdn.microsoft.com/typescript/2017/06/27/announcing-typescript-2-4/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6ju5eo/announcing_typescript_24/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6ju5eo</id>
+    <link href="https://www.reddit.com/r/programming/comments/6ju5eo/announcing_typescript_24/"/>
+    <updated>2017-06-27T17:13:32+00:00</updated>
+    <title>Announcing TypeScript 2.4</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/hypersistence</name>
+      <uri>https://www.reddit.com/user/hypersistence</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/hypersistence"&gt; /u/hypersistence &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://www.cockroachlabs.com/blog/limits-of-the-cap-theorem/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k0984/the_limits_of_the_cap_theorem/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k0984</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k0984/the_limits_of_the_cap_theorem/"/>
+    <updated>2017-06-28T12:30:46+00:00</updated>
+    <title>The Limits of the CAP Theorem</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/lbmn</name>
+      <uri>https://www.reddit.com/user/lbmn</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/lbmn"&gt; /u/lbmn &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://www.youtube.com/watch?v=4D2ryw7tyBA"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jyk34/nim_intro_talk_a_young_systems_programming/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jyk34</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jyk34/nim_intro_talk_a_young_systems_programming/"/>
+    <updated>2017-06-28T05:26:11+00:00</updated>
+    <title>Nim intro talk: "a young systems programming language that's incredibly fast, easy to learn, and fun to use"</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/henk53</name>
+      <uri>https://www.reddit.com/user/henk53</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/henk53"&gt; /u/henk53 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://adambien.blog/roller/abien/entry/java_ee_the_competitive_advantage"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k0p0f/java_ee_the_competitive_advantage_for_startups/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k0p0f</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k0p0f/java_ee_the_competitive_advantage_for_startups/"/>
+    <updated>2017-06-28T13:50:56+00:00</updated>
+    <title>Java EE -- The Competitive Advantage For Startups</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/henk53</name>
+      <uri>https://www.reddit.com/user/henk53</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/henk53"&gt; /u/henk53 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://blog.avenuecode.com/simple-jaxrs-application-with-cdi-javaee"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k1iye/simple_jaxrs_application_with_cdi_using_java_ee/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k1iye</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k1iye/simple_jaxrs_application_with_cdi_using_java_ee/"/>
+    <updated>2017-06-28T16:04:46+00:00</updated>
+    <title>Simple JAX-RS Application with CDI using Java EE</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/coder543</name>
+      <uri>https://www.reddit.com/user/coder543</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/coder543"&gt; /u/coder543 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://github.com/nikomatsakis/rayon/pull/379"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6juyvn/rayon_gains_parallel_sorting_implementations/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6juyvn</id>
+    <link href="https://www.reddit.com/r/programming/comments/6juyvn/rayon_gains_parallel_sorting_implementations/"/>
+    <updated>2017-06-27T19:09:39+00:00</updated>
+    <title>Rayon gains parallel sorting implementations</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/yuhong</name>
+      <uri>https://www.reddit.com/user/yuhong</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/yuhong"&gt; /u/yuhong &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://community.rsa.com/docs/DOC-59312"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jy9b3/rsa_announces_end_of_life_eol_dates_for_rsa_bsafe/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jy9b3</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jy9b3/rsa_announces_end_of_life_eol_dates_for_rsa_bsafe/"/>
+    <updated>2017-06-28T04:19:54+00:00</updated>
+    <title>RSA announces End of Life (EOL) dates for RSA BSAFE (2016)</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/misunderstoodpoetry</name>
+      <uri>https://www.reddit.com/user/misunderstoodpoetry</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/misunderstoodpoetry"&gt; /u/misunderstoodpoetry &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://jackxmorris.com/posts/color-sort"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jys92/visualizing_sorting_algorithms_in_color/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jys92</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jys92/visualizing_sorting_algorithms_in_color/"/>
+    <updated>2017-06-28T06:19:24+00:00</updated>
+    <title>Visualizing Sorting Algorithms in Color</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/wprzecho</name>
+      <uri>https://www.reddit.com/user/wprzecho</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/wprzecho"&gt; /u/wprzecho &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://blog.pragmatists.com/how-not-to-break-miscroservices-dependencies-with-consumer-driven-contracts-3f46fabd7f57"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jzvfv/how_not_to_break_miscroservices_dependencies_with/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jzvfv</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jzvfv/how_not_to_break_miscroservices_dependencies_with/"/>
+    <updated>2017-06-28T11:10:36+00:00</updated>
+    <title>How NOT to break miscroservices dependencies with Consumer-Driven Contracts</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/clemlais</name>
+      <uri>https://www.reddit.com/user/clemlais</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/clemlais"&gt; /u/clemlais &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://blog.claisne.io/twitch-emotes"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jzp04/counting_twitch_kappas/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jzp04</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jzp04/counting_twitch_kappas/"/>
+    <updated>2017-06-28T10:25:29+00:00</updated>
+    <title>Counting Twitch Kappas</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/ueberbobo</name>
+      <uri>https://www.reddit.com/user/ueberbobo</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/ueberbobo"&gt; /u/ueberbobo &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://philipnilsson.github.io/Badness10k/memento-spaghetti/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k16ks/memento_spaghetti/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k16ks</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k16ks/memento_spaghetti/"/>
+    <updated>2017-06-28T15:14:13+00:00</updated>
+    <title>Memento Spaghetti</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/mtlynch</name>
+      <uri>https://www.reddit.com/user/mtlynch</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/mtlynch"&gt; /u/mtlynch &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://mtlynch.io/greenpithumb/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jujfi/greenpithumb_a_raspberry_pi_gardening_bot/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jujfi</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jujfi/greenpithumb_a_raspberry_pi_gardening_bot/"/>
+    <updated>2017-06-27T18:08:48+00:00</updated>
+    <title>GreenPiThumb: A Raspberry Pi Gardening Bot</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/doughishere</name>
+      <uri>https://www.reddit.com/user/doughishere</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/doughishere"&gt; /u/doughishere &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://www.zkorman.com/blockchain.html"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jt8hc/on_blockchain_intermediaries_and_hype/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jt8hc</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jt8hc/on_blockchain_intermediaries_and_hype/"/>
+    <updated>2017-06-27T15:00:39+00:00</updated>
+    <title>On Blockchain, Intermediaries, and Hype</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/williamdclt</name>
+      <uri>https://www.reddit.com/user/williamdclt</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/williamdclt"&gt; /u/williamdclt &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://www.theodo.fr/blog/2017/06/git-game-advanced-git-aliases/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k0rmq/advanced_git_aliases_and_custom_git_commands/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k0rmq</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k0rmq/advanced_git_aliases_and_custom_git_commands/"/>
+    <updated>2017-06-28T14:09:56+00:00</updated>
+    <title>Advanced git aliases and custom git commands</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/msft_sde</name>
+      <uri>https://www.reddit.com/user/msft_sde</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/msft_sde"&gt; /u/msft_sde &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://medium.com/@bob_parks1/how-not-to-encrypt-a-file-courtesy-of-microsoft-bfadf2b0273d"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6jq62q/how_not_to_encrypt_a_file_courtesy_of_microsoft/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6jq62q</id>
+    <link href="https://www.reddit.com/r/programming/comments/6jq62q/how_not_to_encrypt_a_file_courtesy_of_microsoft/"/>
+    <updated>2017-06-27T03:38:24+00:00</updated>
+    <title>How Not to Encrypt a File — Courtesy of Microsoft</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/benhoyt</name>
+      <uri>https://www.reddit.com/user/benhoyt</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/benhoyt"&gt; /u/benhoyt &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="http://benhoyt.com/writings/pyast64/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6js83f/compiling_python_syntax_to_x8664_assembly_for_fun/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6js83f</id>
+    <link href="https://www.reddit.com/r/programming/comments/6js83f/compiling_python_syntax_to_x8664_assembly_for_fun/"/>
+    <updated>2017-06-27T12:07:40+00:00</updated>
+    <title>Compiling Python syntax to x86-64 assembly for fun and (zero) profit</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/alm0starealgirl</name>
+      <uri>https://www.reddit.com/user/alm0starealgirl</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/alm0starealgirl"&gt; /u/alm0starealgirl &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://tekdomain.com/twds/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k1si8/i_need_to_learn_how_to_code_starting_a_community/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k1si8</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k1si8/i_need_to_learn_how_to_code_starting_a_community/"/>
+    <updated>2017-06-28T16:41:54+00:00</updated>
+    <title>I need to learn how to code! Starting a community college program for Java in January. What can I do now? I have seen several "teach yourself" posts, where do I start?! (I have a little money, but not a lot, as far as purchasing software goes). Please help me, Reddit!</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/Antrikshy</name>
+      <uri>https://www.reddit.com/user/Antrikshy</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/Antrikshy"&gt; /u/Antrikshy &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://github.com/warner/magic-wormhole"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k1sdi/magic_wormhole_get_things_from_one_computer_to/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k1sdi</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k1sdi/magic_wormhole_get_things_from_one_computer_to/"/>
+    <updated>2017-06-28T16:41:24+00:00</updated>
+    <title>Magic Wormhole - "Get things from one computer to another, safely."</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/alec_morgana</name>
+      <uri>https://www.reddit.com/user/alec_morgana</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/alec_morgana"&gt; /u/alec_morgana &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://www.zenhub.com/blog/daily-standups-a-roadblock-remover-or-productivity-interrupter-2/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k1r0p/daily_standups_a_roadblockremover_or_productivity/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k1r0p</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k1r0p/daily_standups_a_roadblockremover_or_productivity/"/>
+    <updated>2017-06-28T16:36:03+00:00</updated>
+    <title>Daily standups: A roadblock-remover or productivity interrupter?</title>
+  </entry>
+  <entry>
+    <author>
+      <name>/u/willdurand1</name>
+      <uri>https://www.reddit.com/user/willdurand1</uri>
+    </author>
+    <category term="programming" label="r/programming"/>
+    <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://www.reddit.com/user/willdurand1"&gt; /u/willdurand1 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://tailordev.fr/blog/2017/06/28/django-tailordev-biblio-python3/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://www.reddit.com/r/programming/comments/6k0c74/howto_enhance_the_python_django_compatibility_of/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+    <id>t3_6k0c74</id>
+    <link href="https://www.reddit.com/r/programming/comments/6k0c74/howto_enhance_the_python_django_compatibility_of/"/>
+    <updated>2017-06-28T12:46:32+00:00</updated>
+    <title>How-To: enhance the Python + Django compatibility of a Django application</title>
+  </entry>
+</feed>
