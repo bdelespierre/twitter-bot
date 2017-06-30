@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-
-
 /*
 |--------------------------------------------------------------------------
 | Very Important People
@@ -27,22 +24,22 @@ $vip = [
 
 /*
 |--------------------------------------------------------------------------
-| Console Routes
+| Bot Follow
 |--------------------------------------------------------------------------
 |
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
+| Automatically follow-back everyone that follows me and mute them so they
+| don't pollute my timeline
 |
 */
 
 Artisan::command('bot:follow', function () {
-    $this->info("Running bot:follow...");
+    App\Journal::notice("[bot:follow] started");
 
     $followers = Twitter::getFollowersIds(['format' => 'array'])['ids'];
     $following = Twitter::getFriendsIds(['format' => 'array'])['ids'];
 
     if (!$ids = array_values(array_diff($followers, $following))) {
+        App\Journal::info("[bot:follow] no one to follow");
         return;
     }
 
@@ -50,17 +47,27 @@ Artisan::command('bot:follow', function () {
 
     while ((count($following) <= count($followers)) && ($id = array_pop($ids))) {
         try {
-            $this->info("Following {$id}");
+            App\Journal::info("[bot:follow] following {$id}");
             Twitter::postFollow(['user_id' => $following[] = $id]);
             Twitter::muteUser(['user_id' => $id]);
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException $exception) {
+            App\Journal::error("[bot:follow] " . $exception->getMessage(), compact('exception'));
             continue;
         }
     }
 })->describe('Automatically follow back fans');
 
+/*
+|--------------------------------------------------------------------------
+| Bot Unfollow
+|--------------------------------------------------------------------------
+|
+| Unfollow everyone that no longer follow me (except VIP)
+|
+*/
+
 Artisan::command('bot:unfollow', function () use ($vip) {
-    $this->info('Running bot:unfollow...');
+    App\Journal::notice("[bot:unfollow] started");
 
     $following = Twitter::getFriendsIds(['format' => 'array'])['ids'];
     $unfollow  = [];
@@ -75,16 +82,31 @@ Artisan::command('bot:unfollow', function () use ($vip) {
         $following = array_slice($following, 100);
     }
 
+    if (empty($unfollow)) {
+        App\Journal::info("[bot:unfollow] no one to unfollow");
+        return;
+    }
+
     foreach ($unfollow as $user) {
-        $this->info("Unfollowing @{$user['screen_name']}");
+        App\Journal::info("[bot:unfollow] unfollowing @{$user['screen_name']}");
         Twitter::postUnfollow(['user_id' => $user['id']]);
     }
 })->describe('Automatically unfollow people that don\'t follow me');
 
+/*
+|--------------------------------------------------------------------------
+| Bot Silence
+|--------------------------------------------------------------------------
+|
+| Mute everyone (except VIP)
+|
+*/
+
 Artisan::command('bot:silence', function () use ($vip) {
-    $this->info('Running bot:silence...');
+    App\Journal::notice("[bot:silence] started");
 
     $muted = Twitter::mutedUserIds(['format' => 'array'])['ids'];
+    App\Journal::info(sprintf("[bot:slilence] %d already muted", count($muted)));
 
     do {
         $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
@@ -95,18 +117,28 @@ Artisan::command('bot:silence', function () use ($vip) {
                 continue;
             }
 
-            $this->info("Muting @{$user['screen_name']}");
+            App\Journal("[bot:silence] muting @{$user['screen_name']}");
             Twitter::muteUser(['user_id' => $user['id']]);
         }
     } while ($cursor);
 });
+
+/*
+|--------------------------------------------------------------------------
+| Reddit Import
+|--------------------------------------------------------------------------
+|
+*/
 
 /**
  * learnprogramming
  * programming
  */
 Artisan::command('reddit:import {subreddit}', function ($subreddit) {
+    App\Journal::notice("[reddit:import] started", compact('subreddit'));
+
     $url = "https://www.reddit.com/r/{$subreddit}/hot/.rss?sort=hot";
+    App\Journal::debug("[reddit:import] reading from {$url}");
 
     libxml_use_internal_errors(true); // tgnb
 

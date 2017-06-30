@@ -22,17 +22,8 @@ Route::get('/schedule', function () {
         fastcgi_finish_request();
     }
 
+    App\Journal::notice("[schedule:run] started");
     Artisan::call('schedule:run');
-});
-
-Route::get('/lol', function() {
-    $subreddit = "programming";
-    $url = "https://www.reddit.com/r/{$subreddit}/hot/.rss?sort=hot";
-    $feed = Feeds::make($url);
-
-    foreach ($feed->get_items() as $item) {
-        dd($item);
-    }
 });
 
 /*
