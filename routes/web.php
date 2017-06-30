@@ -34,6 +34,8 @@ Route::get('/log', function (Request $request) {
     return view('journaux', compact('journaux'));
 });
 
+Auth::routes();
+
 /*
 |--------------------------------------------------------------------------
 | Development Routes
@@ -47,8 +49,6 @@ Route::get('/log', function (Request $request) {
 if (config('app.env') == 'production') {
     return;
 }
-
-Auth::routes();
 
 Route::post('/tweet', function(Request $request) {
     if ($request->hasFile('media')) {
