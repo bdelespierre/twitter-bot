@@ -2,6 +2,29 @@
 
 use Illuminate\Foundation\Inspiring;
 
+
+/*
+|--------------------------------------------------------------------------
+| Very Important People
+|--------------------------------------------------------------------------
+|
+| Never mute, unfollow or block these people no matter if they follow me or
+| not: I want them on my timeline and the bot should not handle them.
+|
+*/
+
+$vip = [
+    'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
+    'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
+    'paulg'       , 'verge'           , '_TheFamily'      ,
+    'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
+    'Medium'      , 'ThePracticalDev' , 'afilina'         ,
+    'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
+    'reactjs'     , 'MongoDB'         , 'googledevs'      ,
+    'Google'      , 'shenanigansen'   , 'Rozasalahshour'  ,
+    'jlondiche'   , 'DelespierreB'    , 'matts2cant'      ,
+];
+
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -29,68 +52,22 @@ Artisan::command('bot:follow', function () {
         try {
             $this->info("Following {$id}");
             Twitter::postFollow(['user_id' => $following[] = $id]);
-            Twitter::muteUser($id);
+            Twitter::muteUser(['user_id' => $id]);
         } catch (RuntimeException $e) {
             continue;
         }
     }
-})->describe('Automatically follow back fans in random order');
+})->describe('Automatically follow back fans');
 
-Artisan::command('bot:silence', function () {
-    $this->info('Running bot:silence...');
-
-    //
-    // Never mute these cools guys!
-    //
-    $ignore = [
-        'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
-        'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
-        'paulg'       , 'verge'           , '_TheFamily'      ,
-        'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
-        'Medium'      , 'ThePracticalDev' , 'afilina'         ,
-        'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
-        'reactjs'     , 'MongoDB'         , 'googledevs'      ,
-        'Google'      , 'shenanigansen'   ,
-    ];
-
-    do {
-        $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
-        list('users' => $users, 'next_cursor_str' => $cursor) = $following;
-
-        foreach ($users as $user) {
-            if (in_array($user['screen_name'], $ignore)) {
-                continue;
-            }
-
-            $this->info("Mute @{$user['screen_name']}");
-            Twitter::muteUser(['user_id' => $user['id']]);
-        }
-    } while ($cursor);
-});
-
-Artisan::command('bot:unfollow', function () {
+Artisan::command('bot:unfollow', function () use ($vip) {
     $this->info('Running bot:unfollow...');
-
-    //
-    // Never unfollow these cools guys!
-    //
-    $ignore = [
-        'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
-        'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
-        'paulg'       , 'verge'           , '_TheFamily'      ,
-        'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
-        'Medium'      , 'ThePracticalDev' , 'afilina'         ,
-        'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
-        'reactjs'     , 'MongoDB'         , 'googledevs'      ,
-        'Google'      , 'shenanigansen'   ,
-    ];
 
     $following = Twitter::getFriendsIds(['format' => 'array'])['ids'];
     $unfollow  = [];
 
     while ($bulk = array_slice($following, 0, 100)) {
         foreach (Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $bulk]) as $user) {
-            if (!in_array('followed_by', $user['connections']) && !in_array($user['screen_name'], $ignore)) {
+            if (!in_array('followed_by', $user['connections']) && !in_array($user['screen_name'], $vip)) {
                 $unfollow[] = $user;
             }
         }
@@ -103,6 +80,26 @@ Artisan::command('bot:unfollow', function () {
         Twitter::postUnfollow(['user_id' => $user['id']]);
     }
 })->describe('Automatically unfollow people that don\'t follow me');
+
+Artisan::command('bot:silence', function () use ($vip) {
+    $this->info('Running bot:silence...');
+
+    $muted = Twitter::mutedUserIds(['format' => 'array'])['ids'];
+
+    do {
+        $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
+        list('users' => $users, 'next_cursor_str' => $cursor) = $following;
+
+        foreach ($users as $user) {
+            if (in_array($user['screen_name'], $vip) || in_array($user['id'], $muted)) {
+                continue;
+            }
+
+            $this->info("Muting @{$user['screen_name']}");
+            Twitter::muteUser(['user_id' => $user['id']]);
+        }
+    } while ($cursor);
+});
 
 /**
  * learnprogramming
@@ -167,16 +164,10 @@ Artisan::command('reddit:import {subreddit}', function ($subreddit) {
             }
         }
 
-        // get a Twitter account for this content
         if (isset($meta['twitter:creator']) || isset($meta['twitter:site'])) {
             $by = $meta['twitter:creator'] ?? $meta['twitter:site'];
         }
 
-        /**
-         * twitter:site
-         * twitter:creator <<<
-         */
-
-        dd(compact('title', 'link', 'urls', 'metas'));
+        dd(compact('title', 'link', 'urls', 'metas', 'by'));
     }
 });
