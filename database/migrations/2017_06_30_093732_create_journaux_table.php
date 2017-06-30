@@ -15,7 +15,7 @@ class CreateJournauxTable extends Migration
     {
         Schema::create('journaux', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->enum('level', App\Journal::LEVELS)->default('info');
             $table->text('message');
             $table->json('context')->nullable();

@@ -41,7 +41,7 @@
         <tbody>
             @foreach ($journaux as $journal)
                 <tr class="{{ $journal->css }}">
-                    <td style="white-space: nowrap">{{ $journal->date->diffForHumans() }}</td>
+                    <td style="white-space: nowrap" title="{{ $journal->date }}">{{ $journal->date->diffForHumans() }}</td>
                     <td style="white-space: nowrap">{{ $journal->level }}</td>
                     <td style="white-space: nowrap">{{ $journal->namespace }}</td>
                     <td>{{ $journal->message }}</td>
