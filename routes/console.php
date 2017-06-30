@@ -102,8 +102,8 @@ Artisan::command('bot:unfollow', function () use ($vip) {
 |
 */
 
-Artisan::command('bot:silence', function () use ($vip) {
-    App\Journal::notice("[bot:silence] started");
+Artisan::command('bot:mute', function () use ($vip) {
+    App\Journal::notice("[bot:mute] started");
 
     $muted = Twitter::mutedUserIds(['format' => 'array'])['ids'];
     App\Journal::info(sprintf("[bot:slilence] %d already muted", count($muted)));
@@ -117,7 +117,7 @@ Artisan::command('bot:silence', function () use ($vip) {
                 continue;
             }
 
-            App\Journal("[bot:silence] muting @{$user['screen_name']}");
+            App\Journal("[bot:mute] muting @{$user['screen_name']}");
             Twitter::muteUser(['user_id' => $user['id']]);
         }
     } while ($cursor);

@@ -66,4 +66,48 @@ class Journal extends Model
         Log::emergency($message, $context);
         return static::create(['level' => 'emergency'] + compact('message', 'context'));
     }
+
+    public function getCssAttribute()
+    {
+        switch ($this->level) {
+            case 'debug':
+            case 'info':
+                return "text-muted";
+
+            case 'notice':
+                return "";
+
+            case 'warning':
+                return "text-warning";
+
+            case 'error':
+                return "text-danger";
+
+            case 'critical':
+                return "bg-warning";
+
+            case 'alert':
+                return "bg-danger";
+
+            case 'emergency':
+                return "bg-danger text-bold";
+
+            default:
+                return "";
+        }
+    }
+
+    public function getNamespaceAttribute()
+    {
+        if (preg_match('/^\[([^\]]+)\]/', $this->message, $matches)) {
+            return $matches[1];
+        }
+
+        return "n/a";
+    }
+
+    public function __toString()
+    {
+
+    }
 }

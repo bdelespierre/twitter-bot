@@ -26,6 +26,14 @@ Route::get('/schedule', function () {
     Artisan::call('schedule:run');
 });
 
+Route::get('/log', function (Request $request) {
+    $journaux = App\Journal::where('message', 'like', '%' . $request->input('filter') . '%')
+        ->orderBy('date', 'desc')
+        ->paginate($request->input('per_page', 15));
+
+    return view('journaux', compact('journaux'));
+});
+
 /*
 |--------------------------------------------------------------------------
 | Development Routes
@@ -39,6 +47,8 @@ Route::get('/schedule', function () {
 if (config('app.env') == 'production') {
     return;
 }
+
+Auth::routes();
 
 Route::post('/tweet', function(Request $request) {
     if ($request->hasFile('media')) {
