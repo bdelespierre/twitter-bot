@@ -105,22 +105,49 @@ Artisan::command('bot:unfollow', function () use ($vip) {
 Artisan::command('bot:mute', function () use ($vip) {
     App\Journal::notice("[bot:mute] started");
 
-    $muted = Twitter::mutedUserIds(['format' => 'array'])['ids'];
-    App\Journal::info(sprintf("[bot:slilence] %d already muted", count($muted)));
+    foreach (App\TwitterUser::unmuted()->get() as $user) {
+        if (in_array($user->screen_name, $vip)) {
+            continue;
+        }
 
+        App\Journal::info("[bot:mute] muting @{$user->screen_name}");
+        Twitter::muteUser(['user_id' => $user->id]);
+    }
+});
+
+/*
+|--------------------------------------------------------------------------
+| Cache Warmup
+|--------------------------------------------------------------------------
+|
+*/
+
+Artisan::command('cache:warmup', function () {
     do {
         $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
         list('users' => $users, 'next_cursor_str' => $cursor) = $following;
 
-        foreach ($users as $user) {
-            if (in_array($user['screen_name'], $vip) || in_array($user['id'], $muted)) {
-                continue;
-            }
+        foreach ($users as $data) {
+            $user = App\TwitterUser::updateOrCreate(
+                array_only($data, ['id', 'screen_name']),
+                compact('data')
+            );
 
-            App\Journal::info("[bot:mute] muting @{$user['screen_name']}");
-            Twitter::muteUser(['user_id' => $user['id']]);
+            $user->mask |= App\TwitterUser::FOLLOWING;
+            $user->save();
         }
     } while ($cursor);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Logs Purge
+|--------------------------------------------------------------------------
+|
+*/
+
+Artisan::command('logs:purge', function () {
+    App\Journal::where('date', '>=', Carbon\Carbon::now()->subDays(3))->delete();
 });
 
 /*

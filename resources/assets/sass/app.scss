@@ -1,9 +1,36 @@
 
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url("https://fonts.googleapis.com/css?family=Droid+Sans+Mono");
 
 // Variables
 @import "variables";
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+// Highlight
+@import "node_modules/highlight.js/styles/default";
+
+.text-bold {
+    font-weight: bold;
+}
+
+.bg-warning {
+    color: white;
+}
+
+.bg-danger {
+    color: white;
+}
+
+.table-log tbody {
+    font-family: 'Droid Sans Mono', monospace;
+    font-size: 85%;
+}
+
+pre {
+    border: 0;
+    padding: 0;
+    background: none;
+}

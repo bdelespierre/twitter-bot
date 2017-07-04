@@ -51,3 +51,15 @@ if (token) {
 //     broadcaster: 'pusher',
 //     key: 'your-pusher-key'
 // });
+
+/**
+ * Highlight.js is a syntax highlighter written in JavaScript. It works in the
+ * browser as well as on the server. It works with pretty much any markup,
+ * doesn’t depend on any framework and has automatic language detection.
+ */
+
+let hljs = require('../../../node_modules/highlight.js/lib/index');
+
+try {
+    hljs.initHighlightingOnLoad();
+} catch (e) {}

@@ -12,17 +12,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/cosmo/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono" rel="stylesheet">
-    <style type="text/css">
-        .text-bold { font-weight: bold; }
-        .bg-warning { color: white; }
-        .bg-danger { color: white; }
-        .table-log {
-            font-family: 'Droid Sans Mono', monospace;
-            font-size: 85%;
-        }
-    </style>
 </head>
 <body>
     <div id="app">
@@ -47,7 +36,8 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        <li><a href="{{ route('users.index') }}">Users</a></li>
+                        <li><a href="{{ route('logs.index') }}">Logs</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

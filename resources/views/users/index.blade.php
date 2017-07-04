@@ -5,7 +5,7 @@
 
     <div class="row">
         <div class="col-md-8">
-            {{ $journaux->links() }}
+            {{ $users->links() }}
         </div>
         <div class="col-md-4">
             <form class="form-inline text-right" action="" method="get" style="margin: 20px 0">
@@ -30,21 +30,20 @@
         </div>
     </div>
 
-
-    <table class="table table-log">
+    <table class="table table-users">
         <thead>
-            <th>Date</th>
-            <th>Level</th>
-            <th>Namespace</th>
-            <th>Message</th>
+            <th>#</th>
+            <th>Name</th>
+            <th>Created</th>
+            <th>Updated</th>
         </thead>
         <tbody>
-            @foreach ($journaux as $journal)
-                <tr class="{{ $journal->css }}">
-                    <td style="white-space: nowrap" title="{{ $journal->date }}">{{ $journal->date->diffForHumans() }}</td>
-                    <td style="white-space: nowrap">{{ $journal->level }}</td>
-                    <td style="white-space: nowrap">{{ $journal->namespace }}</td>
-                    <td>{{ $journal->message }}</td>
+            @foreach ($users as $user)
+                <tr>
+                    <td><a href="{{ route('users.view', $user->id) }}">{{ $user->id }}</a></td>
+                    <td>{{ $user->screen_name }}</td>
+                    <td>{{ $user->created_at->diffForHumans() }}</td>
+                    <td>{{ $user->updated_at->diffForHumans() }}</td>
                 </tr>
             @endforeach
         </tbody>

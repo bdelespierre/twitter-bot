@@ -26,13 +26,38 @@ Route::get('/schedule', function () {
     Artisan::call('schedule:run');
 });
 
-Route::get('/log', function (Request $request) {
+Route::get('/log', ['as' => 'logs.index', function (Request $request) {
     $journaux = App\Journal::where('message', 'like', '%' . $request->input('filter') . '%')
         ->orderBy('date', 'desc')
         ->paginate($request->input('per_page', 15));
 
     return view('journaux', compact('journaux'));
+}]);
+
+Route::get('/users', ['as' => 'users.index', function (Request $request) {
+    $users = App\TwitterUser::withScreenName($request->input('filter'))
+        ->orderBy('updated_at', 'desc')
+        ->paginate($request->input('per_page', 15));
+
+    return view('users.index', compact('users'));
+}]);
+
+Route::get('/users/following', function (Request $request) {
+    $users = App\TwitterUser::following()
+        ->where('screen_name', 'like', '%' . $request->input('filter') . '%')
+        ->orderBy('updated_at', 'desc')
+        ->paginate($request->input('per_page', 15));
+
+    return view('users.index', compact('users'));
 });
+
+Route::get('/users/{id}', ['as' => 'users.view', function (Request $request, $id) {
+    $user = App\TwitterUser::findOrFail($id);
+    $next = App\TwitterUser::orderBy('id')->where('id', '>', $id)->first();
+    $prev = App\TwitterUser::orderBy('id')->where('id', '<', $id)->first();
+
+    return view('users.view', compact('user', 'next', 'prev'));
+}]);
 
 Auth::routes();
 
