@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('bot:follow')->hourly();
-        $schedule->command('bot:unfollow')->hourly();
+        // $schedule->command('bot:follow')->hourly();
+        // $schedule->command('bot:unfollow')->hourly();
     }
 
     /**

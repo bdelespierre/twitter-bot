@@ -117,7 +117,7 @@ Artisan::command('bot:mute', function () use ($vip) {
                 continue;
             }
 
-            App\Journal("[bot:mute] muting @{$user['screen_name']}");
+            App\Journal::info("[bot:mute] muting @{$user['screen_name']}");
             Twitter::muteUser(['user_id' => $user['id']]);
         }
     } while ($cursor);
