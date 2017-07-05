@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use UnexpectedValueException;
 
 class Journal extends Model
 {
@@ -17,54 +18,61 @@ class Journal extends Model
 
     protected $casts = ['context' => 'array'];
 
+    public static $log = true;
+
     public $timestamps = false;
+
+    protected static function concieve(string $level,  string $message, array $context = []): self
+    {
+        if (!in_array($level, self::LEVELS)) {
+            throw new UnexpectedValueException("Invalid level: {$level}");
+        }
+
+        if (self::$log) {
+            Log::{$level}($message, $context);
+        }
+
+        return static::create(compact('level', 'message', 'context'));
+    }
 
     public static function debug(string $message, array $context = []): self
     {
-        Log::debug($message, $context);
-        return static::create(['level' => 'debug'] + compact('message', 'context'));
+        return static::concieve('debug', $message, $context);
     }
 
     public static function info(string $message, array $context = []): self
     {
-        Log::info($message, $context);
-        return static::create(['level' => 'info'] + compact('message', 'context'));
+        return static::concieve('info', $message, $context);
     }
 
     public static function notice(string $message, array $context = []): self
     {
-        Log::notice($message, $context);
-        return static::create(['level' => 'notice'] + compact('message', 'context'));
+        return static::concieve('notice', $message, $context);
     }
 
     public static function warning(string $message, array $context = []): self
     {
-        Log::warning($message, $context);
-        return static::create(['level' => 'warning'] + compact('message', 'context'));
+        return static::concieve('warning', $message, $context);
     }
 
     public static function error(string $message, array $context = []): self
     {
-        Log::error($message, $context);
-        return static::create(['level' => 'error'] + compact('message', 'context'));
+        return static::concieve('error', $message, $context);
     }
 
     public static function critical(string $message, array $context = []): self
     {
-        Log::critical($message, $context);
-        return static::create(['level' => 'critical'] + compact('message', 'context'));
+        return static::concieve('critical', $message, $context);
     }
 
     public static function alert(string $message, array $context = []): self
     {
-        Log::alert($message, $context);
-        return static::create(['level' => 'alert'] + compact('message', 'context'));
+        return static::concieve('alert', $message, $context);
     }
 
     public static function emergency(string $message, array $context = []): self
     {
-        Log::emergency($message, $context);
-        return static::create(['level' => 'emergency'] + compact('message', 'context'));
+        return static::concieve('emergency', $message, $context);
     }
 
     public function getCssAttribute()

@@ -122,12 +122,13 @@ Artisan::command('bot:mute', function () use ($vip) {
 |
 */
 
-Artisan::command('cache:warmup', function () {
+Artisan::command('cache:warmup {--throttle}', function () {
     do {
         $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
         list('users' => $users, 'next_cursor_str' => $cursor) = $following;
 
         foreach ($users as $data) {
+            App\Journal::info("[cache:warmup] @{$data['id']}");
             $user = App\TwitterUser::updateOrCreate(
                 array_only($data, ['id', 'screen_name']),
                 compact('data')
@@ -136,8 +137,13 @@ Artisan::command('cache:warmup', function () {
             $user->mask |= App\TwitterUser::FOLLOWING;
             $user->save();
         }
+
+        if ($this->options('throttle')) {
+            App\Journal::info("[cache:warmup] sleep before cursor {$cursor}");
+            sleep(65); // seconds
+        }
     } while ($cursor);
-});
+})->describe("Warms up the cache");
 
 /*
 |--------------------------------------------------------------------------
