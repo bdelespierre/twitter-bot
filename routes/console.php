@@ -33,13 +33,13 @@ $vip = [
 */
 
 Artisan::command('bot:follow', function () {
-    App\Journal::notice("[bot:follow] started");
+    App\Journal::notice("[{$this->name}] started");
 
     $followers = Twitter::getFollowersIds(['format' => 'array'])['ids'];
     $following = Twitter::getFriendsIds(['format' => 'array'])['ids'];
 
     if (!$ids = array_values(array_diff($followers, $following))) {
-        App\Journal::info("[bot:follow] no one to follow");
+        App\Journal::info("[{$this->name}] no one to follow");
         return;
     }
 
@@ -47,11 +47,11 @@ Artisan::command('bot:follow', function () {
 
     while ((count($following) <= count($followers)) && ($id = array_pop($ids))) {
         try {
-            App\Journal::info("[bot:follow] following {$id}");
+            App\Journal::info("[{$this->name}] following {$id}");
             Twitter::postFollow(['user_id' => $following[] = $id]);
             Twitter::muteUser(['user_id' => $id]);
         } catch (RuntimeException $exception) {
-            App\Journal::error("[bot:follow] " . $exception->getMessage(), compact('exception'));
+            App\Journal::error("[{$this->name}] " . $exception->getMessage(), compact('exception'));
             continue;
         }
     }
@@ -67,7 +67,7 @@ Artisan::command('bot:follow', function () {
 */
 
 Artisan::command('bot:unfollow', function () use ($vip) {
-    App\Journal::notice("[bot:unfollow] started");
+    App\Journal::notice("[{$this->name}] started");
 
     $following = Twitter::getFriendsIds(['format' => 'array'])['ids'];
     $unfollow  = [];
@@ -83,12 +83,12 @@ Artisan::command('bot:unfollow', function () use ($vip) {
     }
 
     if (empty($unfollow)) {
-        App\Journal::info("[bot:unfollow] no one to unfollow");
+        App\Journal::info("[{$this->name}] no one to unfollow");
         return;
     }
 
     foreach ($unfollow as $user) {
-        App\Journal::info("[bot:unfollow] unfollowing @{$user['screen_name']}");
+        App\Journal::info("[{$this->name}] unfollowing @{$user['screen_name']}");
         Twitter::postUnfollow(['user_id' => $user['id']]);
     }
 })->describe('Automatically unfollow people that don\'t follow me');
@@ -103,14 +103,14 @@ Artisan::command('bot:unfollow', function () use ($vip) {
 */
 
 Artisan::command('bot:mute', function () use ($vip) {
-    App\Journal::notice("[bot:mute] started");
+    App\Journal::notice("[{$this->name}] started");
 
     foreach (App\TwitterUser::unmuted()->get() as $user) {
         if (in_array($user->screen_name, $vip)) {
             continue;
         }
 
-        App\Journal::info("[bot:mute] muting @{$user->screen_name}");
+        App\Journal::info("[{$this->name}] muting @{$user->screen_name}");
         Twitter::muteUser(['user_id' => $user->id]);
     }
 });
@@ -123,12 +123,14 @@ Artisan::command('bot:mute', function () use ($vip) {
 */
 
 Artisan::command('cache:warmup {--throttle}', function () {
+    App\Journal::notice("[{$this->name}] started");
+
     do {
         $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
         list('users' => $users, 'next_cursor_str' => $cursor) = $following;
 
         foreach ($users as $data) {
-            App\Journal::info("[cache:warmup] @{$data['id']}");
+            App\Journal::info("[{$this->name}] @{$data['screen_name']} #{$data['id']}");
             $user = App\TwitterUser::updateOrCreate(
                 array_only($data, ['id', 'screen_name']),
                 compact('data')
@@ -139,7 +141,7 @@ Artisan::command('cache:warmup {--throttle}', function () {
         }
 
         if ($this->options('throttle')) {
-            App\Journal::info("[cache:warmup] sleep before cursor {$cursor}");
+            App\Journal::debug("[{$this->name}] sleep before cursor {$cursor}");
             sleep(65); // seconds
         }
     } while ($cursor);
@@ -153,6 +155,7 @@ Artisan::command('cache:warmup {--throttle}', function () {
 */
 
 Artisan::command('logs:purge', function () {
+    App\Journal::notice("[{$this->name}] started");
     App\Journal::where('date', '>=', Carbon\Carbon::now()->subDays(3))->delete();
 });
 
@@ -167,11 +170,11 @@ Artisan::command('logs:purge', function () {
  * learnprogramming
  * programming
  */
-Artisan::command('reddit:import {subreddit}', function ($subreddit) {
-    App\Journal::notice("[reddit:import] started", compact('subreddit'));
+Artisan::command('import:reddit {subreddit}', function ($subreddit) {
+    App\Journal::notice("[{$this->name}] started", compact('subreddit'));
 
     $url = "https://www.reddit.com/r/{$subreddit}/hot/.rss?sort=hot";
-    App\Journal::debug("[reddit:import] reading from {$url}");
+    App\Journal::debug("[{$this->name}] reading from {$url}");
 
     libxml_use_internal_errors(true); // tgnb
 
