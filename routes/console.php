@@ -55,6 +55,11 @@ Artisan::command('twitter:import {relationship} {--throttle=60} {--cursor=}', fu
         App\Journal::notice("{$cmd} resuming from cursor {$cursor}");
     }
 
+    if (Cache::has($cacheKey = "twitter.import.{$relationship}.cursor")) {
+        $cursor = Cache::pull($cacheKey);
+        App\Journal::notice("{$cmd} resuming from cursor {$cursor}");
+    }
+
     do {
         $following = Twitter::{'get'.ucfirst($relationship)}(['format' => 'array'] + compact('cursor'));
         list('users' => $users, 'next_cursor_str' => $cursor) = $following;
@@ -68,6 +73,11 @@ Artisan::command('twitter:import {relationship} {--throttle=60} {--cursor=}', fu
             );
 
             $user->updateAttributes()->save();
+        }
+
+        if ($cursor) {
+            $expireAt = Carbon\Carbon::now()->addMinutes(180); // 3h
+            Cache::put($cacheKey, $cursor, $expireAt);
         }
 
         if ($this->option('throttle') && $cursor) {
