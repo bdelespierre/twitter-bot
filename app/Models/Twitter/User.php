@@ -5,7 +5,6 @@ namespace App\Models\Twitter;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Thujohn\Twitter\Facades\Twitter;
 
 class User extends Model
@@ -45,12 +44,12 @@ class User extends Model
 
     public function scopeFriends($query)
     {
-        return $query->where('mask', '&', self::FRIEND);
+        return $query->whereRaw('mask &' . self::FRIEND . ' != 0');
     }
 
     public function scopeExceptFriends($query)
     {
-        return $query->where(DB::raw('mask & ' . self::FRIEND), '=', 0);
+        return $query->whereRaw('mask &' . self::FRIEND . '  = 0');
     }
 
     public function scopeFans($query)
@@ -119,7 +118,7 @@ class User extends Model
 
     public function scopeExceptFollower($query)
     {
-        return $query->where(DB::raw('mask & ' . self::FOLLOWER), '=', 0);
+        return $query->whereRaw('mask &' . self::FOLLOWER . '  = 0');
     }
 
     public function isFollower()
@@ -162,12 +161,12 @@ class User extends Model
 
     public function scopeMuted($query)
     {
-        return $query->where('mask', '&', self::MUTED);
+        return $query->whereRaw('mask &' . self::MUTED . ' != 0');
     }
 
     public function scopeExceptMuted($query)
     {
-        return $query->where(DB::raw('mask & ' . self::MUTED), '=', 0);
+        return $query->whereRaw('mask &' . self::MUTED . '  = 0');
     }
 
     public function isMuted()
@@ -214,12 +213,12 @@ class User extends Model
 
     public function scopeBlocked($query)
     {
-        return $query->where('mask', '&', self::BLOCKED);
+        return $query->whereRaw('mask &' . self::BLOCKED . ' != 0');
     }
 
     public function scopeExceptBlocked($query)
     {
-        return $query->where(DB::raw('mask & ' . self::BLOCKED), '=', 0);
+        return $query->whereRaw('mask &' . self::BLOCKED . '  = 0');
     }
 
     public function isBlocked()
@@ -250,12 +249,12 @@ class User extends Model
 
     public function scopeVip($query)
     {
-        return $query->where('mask', '&', self::VIP);
+        return $query->whereRaw('mask &' . self::VIP . ' != 0');
     }
 
     public function scopeExceptVip($query)
     {
-        return $query->where(DB::raw('mask & ' . self::VIP), '=', 0);
+        return $query->whereRaw('mask &' . self::VIP . '  = 0');
     }
 
     public function isVip()
