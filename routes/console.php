@@ -63,8 +63,8 @@ Artisan::command('twitter:import {relationship} {--throttle=60} {--cursor=}', fu
             App\Journal::info("{$cmd} @{$data['screen_name']} #{$data['id']}");
 
             $user = App\Models\Twitter\User::updateOrCreate(
-                array_only($data, ['id', 'screen_name']),
-                compact('data')
+                ['id' => $data['id']],
+                ['screen_name' => $data['screen_name']] + compact('data')
             );
 
             $user->updateAttributes()->save();
