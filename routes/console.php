@@ -122,8 +122,13 @@ Artisan::command('bot:mute', function () use ($vip) {
 |
 */
 
-Artisan::command('cache:warmup {--throttle}', function () {
+Artisan::command('cache:warmup {--throttle} {--cursor=}', function () {
     App\Journal::notice("[{$this->name}] started");
+
+    if ($this->option('cursor')) {
+        $cursor = $this->option('cursor');
+        App\Journal::info("[{$this->name}] resuming from cursor {$cursor}");
+    }
 
     do {
         $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
