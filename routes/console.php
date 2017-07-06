@@ -90,26 +90,14 @@ Artisan::command('twitter:import {relationship} {--throttle=60} {--cursor=}', fu
 Artisan::command('bot:follow', function () {
     App\Journal::notice("[{$this->name}] started");
 
-    $followers = Twitter::getFollowersIds(['format' => 'array'])['ids'];
-    $following = Twitter::getFriendsIds(['format' => 'array'])['ids'];
-
-    if (!$ids = array_values(array_diff($followers, $following))) {
-        App\Journal::info("[{$this->name}] no one to follow");
-        return;
-    }
-
-    while ((count($following) <= count($followers)) && ($id = array_pop($ids))) {
+    foreach (App\Models\Twitter\User::fans()->get() as $user) {
         try {
             App\Journal::info("[{$this->name}] following {$id}");
-            Twitter::postFollow(['user_id' => $following[] = $id]);
-            Twitter::muteUser(['user_id' => $id]);
+            $user->follow();
         } catch (RuntimeException $exception) {
             App\Journal::error("[{$this->name}] " . $exception->getMessage(), compact('exception'));
-            continue;
         }
     }
-
-    App\Journal::notice("[{$this->name}] finished ({$timer}s)");
 })->describe('Automatically follow back fans');
 
 /*

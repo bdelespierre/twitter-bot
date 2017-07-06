@@ -114,7 +114,7 @@ class User extends Model
 
     public function scopeFollowers($query)
     {
-        return $query->where('mask', '&', self::FOLLOWER);
+        return $query->whereRaw('mask &' . self::FOLLOWER . ' != 0');
     }
 
     public function scopeExceptFollower($query)
