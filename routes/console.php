@@ -24,6 +24,61 @@ $vip = [
 
 /*
 |--------------------------------------------------------------------------
+| Cache Warmup
+|--------------------------------------------------------------------------
+|
+*/
+
+Artisan::command('cache:warmup', function () {
+    $this->call('twitter:import', ['relationship' => 'friends']);
+    $this->call('twitter:import', ['relationship' => 'followers']);
+})->describe("Warms up the cache");
+
+/*
+|--------------------------------------------------------------------------
+| Twitter Import
+|--------------------------------------------------------------------------
+|
+*/
+
+Artisan::command('twitter:import {relationship} {--throttle=60} {--cursor=}', function () {
+    if (!in_array($relationship = $this->argument('relationship'), ['friends', 'followers'])) {
+        $msg = "Relationship is expected to be 'friends' or 'followers', {$relationship} given";
+        throw new UnexpectedValueException($msg);
+    }
+
+    $cmd = "[{$this->name}] [{$relationship}]";
+    App\Journal::notice("{$cmd} started");
+
+    if ($this->option('cursor')) {
+        $cursor = $this->option('cursor');
+        App\Journal::notice("{$cmd} resuming from cursor {$cursor}");
+    }
+
+    do {
+        $following = Twitter::{'get'.ucfirst($relationship)}(['format' => 'array'] + compact('cursor'));
+        list('users' => $users, 'next_cursor_str' => $cursor) = $following;
+
+        foreach ($users as $data) {
+            App\Journal::info("{$cmd} @{$data['screen_name']} #{$data['id']}");
+
+            $user = App\Models\Twitter\User::updateOrCreate(
+                array_only($data, ['id', 'screen_name']),
+                compact('data')
+            );
+
+            $user->updateAttributes()->save();
+        }
+
+        if ($this->option('throttle') && $cursor) {
+            App\Journal::debug("{$cmd} sleep before cursor {$cursor}");
+            sleep($this->option('throttle')); // seconds
+        }
+    } while ($cursor);
+})->describe("Imports the friends or the follower of current Twitter account");
+
+/*
+|--------------------------------------------------------------------------
 | Bot Follow
 |--------------------------------------------------------------------------
 |
@@ -43,8 +98,6 @@ Artisan::command('bot:follow', function () {
         return;
     }
 
-    shuffle($ids);
-
     while ((count($following) <= count($followers)) && ($id = array_pop($ids))) {
         try {
             App\Journal::info("[{$this->name}] following {$id}");
@@ -55,6 +108,8 @@ Artisan::command('bot:follow', function () {
             continue;
         }
     }
+
+    App\Journal::notice("[{$this->name}] finished ({$timer}s)");
 })->describe('Automatically follow back fans');
 
 /*
@@ -105,7 +160,7 @@ Artisan::command('bot:unfollow', function () use ($vip) {
 Artisan::command('bot:mute', function () use ($vip) {
     App\Journal::notice("[{$this->name}] started");
 
-    foreach (App\TwitterUser::unmuted()->get() as $user) {
+    foreach (App\Models\Twitter\User::exceptVip() as $user) {
         if (in_array($user->screen_name, $vip)) {
             continue;
         }
@@ -114,43 +169,6 @@ Artisan::command('bot:mute', function () use ($vip) {
         Twitter::muteUser(['user_id' => $user->id]);
     }
 });
-
-/*
-|--------------------------------------------------------------------------
-| Cache Warmup
-|--------------------------------------------------------------------------
-|
-*/
-
-Artisan::command('cache:warmup {--throttle} {--cursor=}', function () {
-    App\Journal::notice("[{$this->name}] started");
-
-    if ($this->option('cursor')) {
-        $cursor = $this->option('cursor');
-        App\Journal::info("[{$this->name}] resuming from cursor {$cursor}");
-    }
-
-    do {
-        $following = Twitter::getFriends(['format' => 'array'] + compact('cursor'));
-        list('users' => $users, 'next_cursor_str' => $cursor) = $following;
-
-        foreach ($users as $data) {
-            App\Journal::info("[{$this->name}] @{$data['screen_name']} #{$data['id']}");
-            $user = App\TwitterUser::updateOrCreate(
-                array_only($data, ['id', 'screen_name']),
-                compact('data')
-            );
-
-            $user->mask |= App\TwitterUser::FOLLOWING;
-            $user->save();
-        }
-
-        if ($this->options('throttle')) {
-            App\Journal::debug("[{$this->name}] sleep before cursor {$cursor}");
-            sleep(65); // seconds
-        }
-    } while ($cursor);
-})->describe("Warms up the cache");
 
 /*
 |--------------------------------------------------------------------------

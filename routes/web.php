@@ -35,7 +35,7 @@ Route::get('/log', ['as' => 'logs.index', function (Request $request) {
 }]);
 
 Route::get('/users', ['as' => 'users.index', function (Request $request) {
-    $users = App\TwitterUser::withScreenName($request->input('filter'))
+    $users = App\Models\Twitter\User::withScreenName($request->input('filter'))
         ->orderBy('updated_at', 'desc')
         ->paginate($request->input('per_page', 15));
 
@@ -43,7 +43,7 @@ Route::get('/users', ['as' => 'users.index', function (Request $request) {
 }]);
 
 Route::get('/users/following', function (Request $request) {
-    $users = App\TwitterUser::following()
+    $users = App\Models\Twitter\User::following()
         ->where('screen_name', 'like', '%' . $request->input('filter') . '%')
         ->orderBy('updated_at', 'desc')
         ->paginate($request->input('per_page', 15));
@@ -52,9 +52,9 @@ Route::get('/users/following', function (Request $request) {
 });
 
 Route::get('/users/{id}', ['as' => 'users.view', function (Request $request, $id) {
-    $user = App\TwitterUser::findOrFail($id);
-    $next = App\TwitterUser::orderBy('id')->where('id', '>', $id)->first();
-    $prev = App\TwitterUser::orderBy('id')->where('id', '<', $id)->first();
+    $user = App\Models\Twitter\User::findOrFail($id);
+    $next = App\Models\Twitter\User::orderBy('id')->where('id', '>', $id)->first();
+    $prev = App\Models\Twitter\User::orderBy('id')->where('id', '<', $id)->first();
 
     return view('users.view', compact('user', 'next', 'prev'));
 }]);
