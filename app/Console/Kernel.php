@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('cache:warmup')->twiceDaily(1, 13);
         // $schedule->command('bot:follow')->hourly();
         // $schedule->command('bot:unfollow')->hourly();
     }
