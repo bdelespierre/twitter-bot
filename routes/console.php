@@ -72,7 +72,7 @@ Artisan::command('twitter:import {relationship} {--throttle=60} {--cursor=}', fu
                 ['screen_name' => $data['screen_name']] + compact('data')
             );
 
-            $user->{substr($relationship, -1)} = true; // 'friend' or 'follower' 
+            $user->{substr($relationship, -1)} = true; // 'friend' or 'follower'
             $user->updateAttributes()->save();
         }
 
@@ -123,7 +123,7 @@ Artisan::command('bot:follow', function () {
 Artisan::command('bot:unfollow', function () use ($vip) {
     App\Journal::notice("[{$this->name}] started");
 
-    $following = Twitter::getFriendsIds(['format' => 'array'])['ids'];
+    $following = array_pluck(App\Models\Twitter\User::friends()->exceptVip()->get(), 'id');
     $unfollow  = [];
 
     while ($bulk = array_slice($following, 0, 100)) {
@@ -143,7 +143,13 @@ Artisan::command('bot:unfollow', function () use ($vip) {
 
     foreach ($unfollow as $user) {
         App\Journal::info("[{$this->name}] unfollowing @{$user['screen_name']}");
-        Twitter::postUnfollow(['user_id' => $user['id']]);
+
+        try {
+            App\Models\Twitter\User::findOrFail($user['id'])->unfollow();
+        } catch (Exception $e) {
+            App\Journal::error("[{$this->name}] error with @{$user['screen_name']}", ['exception' => (string) $e]);
+            continue;
+        }
     }
 })->describe('Automatically unfollow people that don\'t follow me');
 
@@ -159,13 +165,9 @@ Artisan::command('bot:unfollow', function () use ($vip) {
 Artisan::command('bot:mute', function () use ($vip) {
     App\Journal::notice("[{$this->name}] started");
 
-    foreach (App\Models\Twitter\User::exceptVip() as $user) {
-        if (in_array($user->screen_name, $vip)) {
-            continue;
-        }
-
+    foreach (App\Models\Twitter\User::exceptVip()->exceptMuted()->get() as $user) {
         App\Journal::info("[{$this->name}] muting @{$user->screen_name}");
-        Twitter::muteUser(['user_id' => $user->id]);
+        $user->mute();
     }
 });
 
@@ -176,7 +178,7 @@ Artisan::command('bot:mute', function () use ($vip) {
 |
 */
 
-Artisan::command('logs:purge', function () {
+Artisan::command('purge:logs', function () {
     App\Journal::notice("[{$this->name}] started");
     App\Journal::where('date', '>=', Carbon\Carbon::now()->subDays(3))->delete();
 });
