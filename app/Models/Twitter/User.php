@@ -28,9 +28,9 @@ class User extends Model
 
     public function updateAttributes()
     {
-        $this->setFriendAttribute(  array_get($this->data, 'following', false) );
-        $this->setMutedAttribute(   array_get($this->data, 'muting',    false) );
-        $this->setBlockedAttribute( array_get($this->data, 'blocking',  false) );
+        $this->setFriendAttribute(array_get($this->data, 'following', false));
+        $this->setMutedAttribute(array_get($this->data, 'muting', false));
+        $this->setBlockedAttribute(array_get($this->data, 'blocking', false));
 
         return $this;
     }
