@@ -2,28 +2,6 @@
 
 /*
 |--------------------------------------------------------------------------
-| Very Important People
-|--------------------------------------------------------------------------
-|
-| Never mute, unfollow or block these people no matter if they follow me or
-| not: I want them on my timeline and the bot should not handle them.
-|
-*/
-
-$vip = [
-    'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
-    'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
-    'paulg'       , 'verge'           , '_TheFamily'      ,
-    'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
-    'Medium'      , 'ThePracticalDev' , 'afilina'         ,
-    'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
-    'reactjs'     , 'MongoDB'         , 'googledevs'      ,
-    'Google'      , 'shenanigansen'   , 'Rozasalahshour'  ,
-    'jlondiche'   , 'DelespierreB'    , 'matts2cant'      ,
-];
-
-/*
-|--------------------------------------------------------------------------
 | Cache Warmup
 |--------------------------------------------------------------------------
 |
