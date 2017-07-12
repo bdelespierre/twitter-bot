@@ -87,7 +87,7 @@ Artisan::command('import:twitter {relationship} {--throttle=60} {--cursor=}', fu
                 ['screen_name' => $data['screen_name']] + compact('data')
             );
 
-            $user->{substr($relationship, -1)} = true; // 'friend' or 'follower'
+            $user->{substr($relationship, 0, -1)} = true; // 'friend' or 'follower'
             $user->updateAttributes()->save();
         }
 
