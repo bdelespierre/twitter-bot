@@ -1,5 +1,18 @@
 <?php
 
+// REMOVEME
+$vip = [
+    'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
+    'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
+    'paulg'       , 'verge'           , '_TheFamily'      ,
+    'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
+    'Medium'      , 'ThePracticalDev' , 'afilina'         ,
+    'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
+    'reactjs'     , 'MongoDB'         , 'googledevs'      ,
+    'Google'      , 'shenanigansen'   , 'Rozasalahshour'  ,
+    'jlondiche'   , 'DelespierreB'    , 'matts2cant'      ,
+];
+
 /*
 |--------------------------------------------------------------------------
 | Cache Warmup
