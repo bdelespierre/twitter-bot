@@ -145,34 +145,16 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
             }
         }
 
-        $article = new DOMDocument;
-        $article->loadHTMLFile($urls[0]);
+        dd(App\Domain\Html\Meta::from($urls[0])->og);
 
-        foreach ($article->getElementsByTagName('meta') as $meta) {
-            unset($name, $property, $content);
-
-            if ($meta->hasAttribute('name')) {
-                $name = $meta->getAttribute('name');
-            }
-
-            if ($meta->hasAttribute('property')) {
-                $property = $meta->getAttribute('property');
-            }
-
-            if ($meta->hasAttribute('content')) {
-                $content = $meta->getAttribute('content');
-            }
-
-            if ($meta = compact('name', 'property', 'content')) {
-                $key = $name ?? $property ?? uniqid('generic:');
-                $metas[$key] = $meta;
-            }
+        if (isset($metas['twitter:creator']) || isset($metas['twitter:site'])) {
+            $by = $metas['twitter:creator']['content'] ?? $metas['twitter:site']['content'] ?? null;
         }
 
-        if (isset($meta['twitter:creator']) || isset($meta['twitter:site'])) {
-            $by = $meta['twitter:creator'] ?? $meta['twitter:site'];
-        }
+        ksort($metas);
+        dd($metas);
 
+        $metas = implode(',', array_keys($metas));
         dd(compact('title', 'link', 'urls', 'metas', 'by'));
     }
 });
