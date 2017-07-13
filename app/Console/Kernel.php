@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('cache:warmup')->twiceDaily(1, 13);
         $schedule->command('bot:follow')->hourly();
         $schedule->command('bot:unfollow')->hourly();
-        $schedule->command('bot:mute')->daily();
+        $schedule->command('bot:mute')->hourly();
         $schedule->command('purge:logs')->daily();
     }
 

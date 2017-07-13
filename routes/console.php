@@ -1,18 +1,5 @@
 <?php
 
-// REMOVEME
-$vip = [
-    'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
-    'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
-    'paulg'       , 'verge'           , '_TheFamily'      ,
-    'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
-    'Medium'      , 'ThePracticalDev' , 'afilina'         ,
-    'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
-    'reactjs'     , 'MongoDB'         , 'googledevs'      ,
-    'Google'      , 'shenanigansen'   , 'Rozasalahshour'  ,
-    'jlondiche'   , 'DelespierreB'    , 'matts2cant'      ,
-];
-
 /*
 |--------------------------------------------------------------------------
 | Heroku
@@ -151,7 +138,7 @@ Artisan::command('bot:follow', function () {
     foreach (App\Models\Twitter\User::fans()->get() as $user) {
         try {
             App\Journal::info("[{$this->name}] following {$user->id}");
-            $user->follow();
+            $user->follow()->mute();
         } catch (RuntimeException $exception) {
             App\Journal::error("[{$this->name}] $e");
             return;
