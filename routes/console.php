@@ -140,7 +140,6 @@ Artisan::command('bot:follow', function () {
             App\Journal::info("[{$this->name}] following {$user->id}");
             $user->follow()->mute();
         } catch (RuntimeException $exception) {
-            App\Journal::error("[{$this->name}] $e");
             return;
         }
     }
@@ -180,7 +179,6 @@ Artisan::command('bot:unfollow', function () {
         try {
             App\Models\Twitter\User::findOrFail($user['id'])->unfollow();
         } catch (Exception $e) {
-            App\Journal::error("[{$this->name}] error with @{$user['screen_name']}: $e");
             return;
         }
     }
@@ -199,7 +197,6 @@ Artisan::command('bot:mute', function () {
                 continue;
             }
 
-            App\Journal::error("[{$this->name}] $e");
             return;
         }
     }
