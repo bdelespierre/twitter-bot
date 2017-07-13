@@ -46,24 +46,24 @@ class Article
         return $content;
     }
 
-    const MEANINGLESS = [
-        "a", "and", "as", "of", "that", "the", "to", "in", "for", "could",
-        "they", "can", "at", "or", "be", "this", "such", "from", "their",
-        "was", "were", "am", "i", "you", "she", "he", "we", "by", "not", "his",
-        "hers", "yours", "ours", "on", "what", "why", "them", "says", "may",
-        "when", "are", "also", "an", "it", "one", "two", "too"
-    ];
-
     public function getWords()
     {
         $words = [];
         foreach (explode(' ', strtolower($this->getRawContent())) as $word) {
-            if (in_array($word, self::MEANINGLESS)) {
+            if (strlen($word) < 2) {
+                continue;
+            }
+
+            if (preg_match('/^[0-9]$/', $word)) {
                 continue;
             }
 
             if (substr($word, -2) == "'s") {
                 $word = substr($word, 0, -2);
+            }
+
+            if (!preg_match('/^\w+$/', $word)) {
+                continue;
             }
 
             if (!isset($words[$word])) {
@@ -83,11 +83,6 @@ class Article
     }
 
     public function getParagraphs()
-    {
-        //
-    }
-
-    public function getFirstParagraph()
     {
         //
     }

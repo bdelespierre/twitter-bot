@@ -33,7 +33,7 @@ Artisan::command('cache:warmup', function () {
 
 Artisan::command('purge:logs {--d|days=3 : Number of days}', function () {
     App\Journal::notice("[{$this->name}] started");
-    App\Journal::where('date', '>=', Carbon\Carbon::now()->subDays(3))->delete();
+    App\Journal::where('date', '<=', Carbon\Carbon::now()->subDays(3))->delete();
 })->describe("Destroy old journal entries");
 
 /*
