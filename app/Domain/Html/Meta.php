@@ -70,27 +70,11 @@ class Meta
 
     public function getOpenGraph(): stdClass
     {
-        if (isset($this->data['og:title'])) {
-            $title = $this->data['og:title']['content'] ?? null;
-        }
-
-        if (isset($this->data['og:type'])) {
-            $type = $this->data['og:type']['content'] ?? null;
-        }
-
-        if (isset($this->data['og:image'])) {
-            $image = $this->data['og:image']['content'] ?? null;
-        }
-
-        if (isset($this->data['og:url'])) {
-            $url = $this->data['og:url']['content'] ?? null;
-        }
-
-        return (object) (compact('title', 'type', 'image', 'url') + [
-            'title' => null,
-            'type'  => null,
-            'image' => null,
-            'url'   => null,
-        ]);
+        return (object) [
+            'title' => array_get($this->data, 'og:title.content'),
+            'type'  => array_get($this->data, 'og:type.content'),
+            'image' => array_get($this->data, 'og:image.content'),
+            'url'   => array_get($this->data, 'og:url.content'),
+        ];
     }
 }
