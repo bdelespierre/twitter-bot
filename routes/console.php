@@ -171,7 +171,7 @@ Artisan::command('bot:follow', function () {
 
     foreach (App\Models\Twitter\User::fans()->get() as $user) {
         try {
-            App\Journal::info("[{$this->name}] following {$id}");
+            App\Journal::info("[{$this->name}] following {$user->id}");
             $user->follow();
         } catch (RuntimeException $exception) {
             App\Journal::error("[{$this->name}] " . $exception->getMessage(), compact('exception'));
