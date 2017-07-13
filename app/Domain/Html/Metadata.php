@@ -2,19 +2,20 @@
 
 namespace App\Domain\Html;
 
+use ArrayObject;
 use Carbon\Carbon;
 use DOMDocument;
 use Illuminate\Support\Facades\Cache;
 use stdClass;
 use UnexpectedValueException;
 
-class Meta
+class Metadata extends ArrayObject
 {
-    protected $data;
+    protected $doc;
 
-    public function __construct(string $content)
+    public function __construct(DOMDocument $doc)
     {
-        $this->setContent($content);
+        $this->setDocument($doc);
     }
 
     public function __get($key)
@@ -29,21 +30,14 @@ class Meta
         }
     }
 
-    public static function from(string $url): self
+    public static function fromUrl(string $url): self
     {
-        if (Cache::has($key = "document.url." . str_slug($url))) {
-            return new self(Cache::get($key));
-        }
-
-        $contents  = file_get_contents($url);
-        Cache::put($key, $contents, Carbon::now()->addHours(8));
-        return new self($contents);
+        return new self(Document::fromUrl($url));
     }
 
-    public function setContent(string $content): self
+    public function setDocument(DOMDocument $doc): self
     {
-        $doc = new DOMDocument;
-        $doc->loadHTML($content);
+        $this->doc = $doc;
 
         foreach ($doc->getElementsByTagName('meta') as $meta) {
             unset($name, $property, $content);
@@ -61,7 +55,7 @@ class Meta
             }
 
             if ($meta = compact('name', 'property', 'content')) {
-                $this->data[$name ?? $property ?? uniqid('generic:')] = $meta;
+                $this[$name ?? $property ?? uniqid('generic:')] = $meta;
             }
         }
 
@@ -71,10 +65,16 @@ class Meta
     public function getOpenGraph(): stdClass
     {
         return (object) [
-            'title' => array_get($this->data, 'og:title.content'),
-            'type'  => array_get($this->data, 'og:type.content'),
-            'image' => array_get($this->data, 'og:image.content'),
-            'url'   => array_get($this->data, 'og:url.content'),
+            'title' => array_get($this, 'og:title.content'),
+            'type'  => array_get($this, 'og:type.content'),
+            'image' => array_get($this, 'og:image.content'),
+            'url'   => array_get($this, 'og:url.content'),
         ];
+    }
+
+    public function getTwitterAuthor(): string
+    {
+        return array_get($this, 'twitter:creator.content')
+            ?: array_get($this, 'twitter:site.content');
     }
 }

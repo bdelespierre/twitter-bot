@@ -118,49 +118,21 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
     $url = "https://www.reddit.com/r/{$subreddit}/hot/.rss?sort=hot";
     App\Journal::debug("[{$this->name}] reading from {$url}");
 
-    libxml_use_internal_errors(true); // tgnb
+    libxml_use_internal_errors(true); // shhhh...
 
-    $doc = new DOMDocument;
-    $doc->preserveWhiteSpace = false;
-    $doc->load($url);
+    foreach (App\Domain\Atom\Document::fromUrl($url)->items as $item) {
+        $url = array_first($item->urls, function($url) {
+            return parse_url($url, PHP_URL_HOST) != 'www.reddit.com';
+        });
 
-    $xpath = new DOMXPath($doc);
-    $xpath->registerNamespace('a', 'http://www.w3.org/2005/Atom');
-    $items = $xpath->query('/a:feed/a:entry');
-
-    foreach ($items as $item) {
-        $title = $xpath->query('./a:title', $item)->item(0)->nodeValue;
-        $link  = $xpath->query('./a:link',  $item)->item(0)->getAttribute('href');
-        $desc  = htmlspecialchars_decode($xpath->query('./a:content', $item)->item(0)->nodeValue);
-        $urls  = [];
-
-        $html = new DOMDocument;
-        $html->loadHTML($desc);
-
-        foreach ($html->getElementsByTagName('a') as $anchor) {
-            if (!$anchor->hasAttribute('href')) {
-                continue;
-            }
-
-            $url  = $anchor->getAttribute('href');
-            $host = parse_url($url, PHP_URL_HOST);
-
-            if ($host && false === stripos($host, 'reddit.com')) {
-                $urls[] = $url;
-            }
+        if (!$articles = App\Domain\Html\Document::fromUrl($url)->articles) {
+            App\Journal::debug("[{$this->name}] ignoring {$url} : no article found");
+            continue;
         }
 
-        dd(App\Domain\Html\Meta::from($urls[0])->og);
+        App\Journal::debug("[{$this->name}] " . count($articles) . " found for {$url}");
 
-        if (isset($metas['twitter:creator']) || isset($metas['twitter:site'])) {
-            $by = $metas['twitter:creator']['content'] ?? $metas['twitter:site']['content'] ?? null;
-        }
-
-        ksort($metas);
-        dd($metas);
-
-        $metas = implode(',', array_keys($metas));
-        dd(compact('title', 'link', 'urls', 'metas', 'by'));
+        // ...
     }
 });
 
