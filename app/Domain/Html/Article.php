@@ -14,6 +14,15 @@ class Article
         $this->doc = $doc;
     }
 
+    public function __get($key)
+    {
+        if (method_exists($this, $method = 'get' . ucfirst($key))) {
+            return $this->$key = $this->$method();
+        }
+
+        throw new UnexpectedValueException("No such key: {$key}");
+    }
+
     public function __toString()
     {
         return $this->getRawContent();
@@ -31,14 +40,41 @@ class Article
         $content = strip_tags($content);
         $content = preg_replace("/\s{2,}/", " ", $content);
         $content = str_replace(["\n", "&nbsp;"], " ", $content);
+        $content = str_replace(['.', ',', ':', ';'], '', $content);
         $content = trim($content);
 
         return $content;
     }
 
+    const MEANINGLESS = [
+        "a", "and", "as", "of", "that", "the", "to", "in", "for", "could",
+        "they", "can", "at", "or", "be", "this", "such", "from", "their",
+        "was", "were", "am", "i", "you", "she", "he", "we", "by", "not", "his",
+        "hers", "yours", "ours", "on", "what", "why", "them", "says", "may",
+        "when", "are", "also", "an", "it", "one", "two", "too"
+    ];
+
     public function getWords()
     {
-        //
+        $words = [];
+        foreach (explode(' ', strtolower($this->getRawContent())) as $word) {
+            if (in_array($word, self::MEANINGLESS)) {
+                continue;
+            }
+
+            if (substr($word, -2) == "'s") {
+                $word = substr($word, 0, -2);
+            }
+
+            if (!isset($words[$word])) {
+                $words[$word] = 0;
+            }
+
+            $words[$word]++;
+        }
+
+        arsort($words);
+        return $words;
     }
 
     public function getTitle()
