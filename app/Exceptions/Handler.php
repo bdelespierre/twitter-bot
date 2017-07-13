@@ -33,10 +33,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        Journal::error(
-            sprintf("[error:%s] %s", snake_case(class_basename($exception)), $exception->getMessage()),
-            compact('exception')
-        );
+        // Journal::error(
+        //     sprintf("[error:%s] %s", snake_case(class_basename($exception)), $exception->getMessage()),
+        //     compact('exception')
+        // );
 
         parent::report($exception);
     }

@@ -76,8 +76,13 @@ Artisan::command('import:twitter {relationship} {--throttle=60} {--cursor=}', fu
     }
 
     do {
-        $following = Twitter::{'get'.ucfirst($relationship)}(['format' => 'array'] + compact('cursor'));
-        list('users' => $users, 'next_cursor_str' => $cursor) = $following;
+        try {
+            $following = Twitter::{'get'.ucfirst($relationship)}(['format' => 'array'] + compact('cursor'));
+            list('users' => $users, 'next_cursor_str' => $cursor) = $following;
+        } catch (RuntimeException $e) {
+            App\Journal::error("{$cmd} $e");
+            return;
+        }
 
         foreach ($users as $data) {
             App\Journal::info("{$cmd} @{$data['screen_name']} #{$data['id']}");
@@ -174,7 +179,8 @@ Artisan::command('bot:follow', function () {
             App\Journal::info("[{$this->name}] following {$user->id}");
             $user->follow();
         } catch (RuntimeException $exception) {
-            App\Journal::error("[{$this->name}] " . $exception->getMessage(), compact('exception'));
+            App\Journal::error("[{$this->name}] $e");
+            return;
         }
     }
 })->describe('Follow back fans');
@@ -186,7 +192,14 @@ Artisan::command('bot:unfollow', function () {
     $unfollow  = [];
 
     while ($bulk = array_slice($following, 0, 100)) {
-        foreach (Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $bulk]) as $user) {
+        try {
+            $users = Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $bulk]);
+        } catch (RuntimeException $e) {
+            App\Journal::error("[{$this->name}] $e");
+            return;
+        }
+
+        foreach ($users as $user) {
             if (!in_array('followed_by', $user['connections'])) {
                 $unfollow[] = $user;
             }
@@ -206,8 +219,8 @@ Artisan::command('bot:unfollow', function () {
         try {
             App\Models\Twitter\User::findOrFail($user['id'])->unfollow();
         } catch (Exception $e) {
-            App\Journal::error("[{$this->name}] error with @{$user['screen_name']}", ['exception' => (string) $e]);
-            continue;
+            App\Journal::error("[{$this->name}] error with @{$user['screen_name']}: $e");
+            return;
         }
     }
 })->describe('Unfollow people that don\'t follow me');
@@ -216,8 +229,13 @@ Artisan::command('bot:mute', function () {
     App\Journal::notice("[{$this->name}] started");
 
     foreach (App\Models\Twitter\User::exceptVip()->exceptMuted()->get() as $user) {
-        App\Journal::info("[{$this->name}] muting @{$user->screen_name}");
-        $user->mute();
+        try {
+            App\Journal::info("[{$this->name}] muting @{$user->screen_name}");
+            $user->mute();
+        } catch (RuntimeException $e) {
+            App\Journal::error("[{$this->name}] $e");
+            return;
+        }
     }
 })->describe("Mute everyone (except VIP)");
 
