@@ -233,9 +233,13 @@ Artisan::command('bot:mute', function () {
             App\Journal::info("[{$this->name}] muting @{$user->screen_name}");
             $user->mute();
         } catch (RuntimeException $e) {
+            if (strpos($e->getMessage(), 'does not exist') !== false) {
+                App\Journal::error("[{$this->name}] Propably doesn't exists anymore");
+                continue;
+            }
+
             App\Journal::error("[{$this->name}] $e");
             return;
         }
     }
 })->describe("Mute everyone (except VIP)");
-
