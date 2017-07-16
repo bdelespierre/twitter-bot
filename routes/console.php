@@ -117,8 +117,6 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
             continue;
         }
 
-        dd($articles[0]->words);
-
         App\Journal::debug("[{$this->name}] " . count($articles) . " found for {$url}");
 
         // ...

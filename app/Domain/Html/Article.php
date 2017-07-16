@@ -35,15 +35,7 @@ class Article
 
     public function getRawContent(): string
     {
-        $content = $this->getContent();
-        $content = self::remove($content, ['script', 'iframe', 'embeed', 'style']);
-        $content = strip_tags($content);
-        $content = preg_replace("/\s{2,}/", " ", $content);
-        $content = str_replace(["\n", "&nbsp;"], " ", $content);
-        $content = str_replace(['.', ',', ':', ';'], '', $content);
-        $content = trim($content);
-
-        return $content;
+        return self::sanitize($this->getContent());
     }
 
     public function getWords()
@@ -58,6 +50,7 @@ class Article
                 continue;
             }
 
+            // this should be the Stemmer's Job
             if (substr($word, -2) == "'s") {
                 $word = substr($word, 0, -2);
             }
@@ -77,19 +70,30 @@ class Article
         return $words;
     }
 
-    public function getTitle()
-    {
-        //
-    }
-
     public function getParagraphs()
     {
-        //
+        foreach ($this->doc->query('p', $this->node) as $paragraph) {
+            $paragraphs[] = self::sanitize($paragraph->nodeValue);
+        }
+
+        return $paragraphs ?? $this->getRawContent();
     }
 
     public function getKeywords()
     {
         // ['keyword' => (float)strength]
+    }
+
+    protected static function sanitize(string $content): string
+    {
+        $content = self::remove($content, ['script', 'iframe', 'embeed', 'style']);
+        $content = strip_tags($content);
+        $content = preg_replace("/\s{2,}/", " ", $content);
+        $content = str_replace(["\n", "&nbsp;"], " ", $content);
+        $content = str_replace(['.', ',', ':', ';'], '', $content);
+        $content = trim($content);
+
+        return $content;
     }
 
     protected static function remove(string $html, array $tags): string
