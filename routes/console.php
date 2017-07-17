@@ -105,8 +105,6 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
     $url = "https://www.reddit.com/r/{$subreddit}/hot/.rss?sort=hot";
     App\Journal::debug("[{$this->name}] reading from {$url}");
 
-    libxml_use_internal_errors(true); // shhhh...
-
     foreach (App\Domain\Atom\Document::fromUrl($url)->items as $item) {
         $url = array_first($item->urls, function($url) {
             return parse_url($url, PHP_URL_HOST) != 'www.reddit.com';

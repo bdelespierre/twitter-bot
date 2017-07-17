@@ -20,14 +20,20 @@ class Metadata extends ArrayObject
 
     public function __get($key)
     {
-        switch ($key) {
-            case 'og':
-            case 'openGraph':
-                return $this->getOpenGraph();
-
-            default:
-                throw new UnexpectedValueException("No such key: {$key}");
+        if ($key == 'og') {
+            $key = 'openGraphCard';
         }
+
+        if (method_exists($this, $method = 'get' . ucfirst($key))) {
+            return $this->$key = $this->$method();
+        }
+
+        throw new UnexpectedValueException("No such key: {$key}");
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getTwitterCard();
     }
 
     public static function fromUrl(string $url): self
@@ -59,22 +65,163 @@ class Metadata extends ArrayObject
             }
         }
 
+        foreach ($doc->getElementsByTagName('link') as $link) {
+            unset($rel, $href);
+
+            if ($link->hasAttribute('rel')) {
+                $rel = $link->getAttribute('rel');
+            }
+
+            if ($link->hasAttribute('href')) {
+                $href = $link->getAttribute('href');
+            }
+
+            if (isset($rel, $href)) {
+                $this["link:{$rel}"] = compact('href');
+            }
+        }
+
         return $this;
     }
 
-    public function getOpenGraph(): stdClass
+    public function getAuthor(): string
     {
-        return (object) [
-            'title' => array_get($this, 'og:title.content'),
-            'type'  => array_get($this, 'og:type.content'),
-            'image' => array_get($this, 'og:image.content'),
-            'url'   => array_get($this, 'og:url.content'),
-        ];
+        return array_get($this, 'article:author.content')
+            ?: array_get($this, 'auhtor.content')
+            ?: array_get($this, 'twitter:creator.content')
+            ?: array_get($this, 'twitter:site.content')
+            ?: "";
     }
 
-    public function getTwitterAuthor(): string
+    public function getTitle(): string
     {
-        return array_get($this, 'twitter:creator.content')
-            ?: array_get($this, 'twitter:site.content');
+        return array_get($this, 'title.content')
+            ?: array_get($this, 'og:title.content')
+            ?: array_get($this, 'twitter:title.content')
+            ?: "";
+    }
+
+    public function getDescription(): string
+    {
+        return array_get($this, 'description.content')
+            ?: array_get($this, 'og:description.content')
+            ?: array_get($this, 'twitter:description.content')
+            ?: "";
+    }
+
+    public function getImage(): string
+    {
+        return array_get($this, 'og:image.content')
+            ?: array_get($this, 'twitter:image')
+            ?: array_get($this, 'twitter:image:src')
+            ?: array_get($this, '')
+            ?: "";
+    }
+
+    public function getUrl(): string
+    {
+        return array_get($this, 'link:canonical.href')
+            ?: og:url
+            ?: al:web:url
+            ?: "";
+    }
+
+    public function getCard()
+    {
+        return new class($this)
+        {
+            public function __construct(Metadata $meta)
+            {
+                $this->author      = $meta->getAuthor();
+                $this->title       = $meta->getTitle();
+                $this->description = $meta->getDescription();
+                $this->image       = $meta->getImage();
+            }
+
+            public function __toString()
+            {
+                return (string) view('components.card', (array) $this);
+            }
+        };
+    }
+
+    public function getOpenGraphCard()
+    {
+        return new class($this)
+        {
+            /**
+             * @see http://ogp.me/
+             * @param Metadata $meta
+             */
+            public function __construct(Metadata $meta)
+            {
+                $this->title = array_get($this, 'og:title.content');
+                $this->type  = array_get($this, 'og:type.content');
+                $this->image = array_get($this, 'og:image.content');
+                $this->url   = array_get($this, 'og:url.content');
+            }
+
+            public function __toString()
+            {
+                return (string) view('components.card', (array) $this);
+            }
+        };
+    }
+
+    public function getTwitterCard()
+    {
+        return new class($this)
+        {
+            /**
+             * @see https://dev.twitter.com/cards/markup
+             * @param Metadata $meta
+             */
+            public function __construct(Metadata $meta)
+            {
+                $this->author            = $meta->twitterAuthor;
+                $this->creator           = array_get($meta, 'twitter:creator.content');
+                $this->creatorId         = array_get($meta, 'twitter:creator:id.content');
+                $this->site              = array_get($meta, 'twitter:site.content');
+                $this->title             = array_get($meta, 'twitter:title.content');
+                $this->description       = array_get($meta, 'twitter:description.content');
+                $this->image             = array_get($meta, 'twitter:image.content');
+                $this->imageAlt          = array_get($meta, 'twitter:image:alt.content');
+            }
+
+            public function __toString()
+            {
+                return (string) view('components.card', (array) $this);
+            }
+        };
+    }
+
+    public function getAppLinkCard()
+    {
+        return new class($this)
+        {
+            public function __construct(Metadata $meta)
+            {
+                $this->ios = (object) [
+                    'url'        => array_get($meta, 'al:ios:url.content'),
+                    'appStoreId' => array_get($meta, 'al:ios:app_store_id.content'),
+                    'appName'    => array_get($meta, 'al:ios:app_name.content'),
+                ];
+
+                $this->android = (object) [
+                    'url'        => array_get($meta, 'al:android:url.content');
+                    'appName'    => array_get($meta, 'al:android:app_name.content');
+                    'package'    => array_get($meta, 'al:android:package.content');
+                ];
+
+                $this->web = (object) [
+                    'url'        => array_get($meta, 'al:web:url');
+                ];
+            }
+
+            public function __toString()
+            {
+                return (string) json_encode($this);
+            }
+        };
     }
 }

@@ -72,6 +72,11 @@ class Document extends DOMDocument
         return $articles ?? [];
     }
 
+    public function getArticle(): Article
+    {
+        return $this->getArticles()[0] ?? null;
+    }
+
     public function getXPath(): DOMXpath
     {
         return new DOMXpath($this);

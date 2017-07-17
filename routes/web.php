@@ -59,6 +59,10 @@ Route::get('/users/{id}', ['as' => 'users.view', function (Request $request, $id
     return view('users.view', compact('user', 'next', 'prev'));
 }]);
 
+Route::get('/buffer', ['as' => 'buffer.index', 'uses' => 'BufferController@index']);
+Route::post('/buffer', ['as' => 'buffer.add', 'uses' => 'BufferController@add']);
+Route::get('/buffer/{item}', ['as' => 'buffer.view', 'uses' => 'BufferController@view']);
+
 Auth::routes();
 
 /*
