@@ -21,6 +21,11 @@ class User extends Model
 
     protected $casts = ['data' => 'array'];
 
+    public function __toString()
+    {
+        return (string) view('components.twitter_profile', ['id' => $this->id] + $this->data);
+    }
+
     public function scopeWithScreenName($query, $name = "")
     {
         return $query->where('screen_name', 'like', "%{$name}%");

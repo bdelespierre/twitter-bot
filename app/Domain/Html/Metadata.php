@@ -86,10 +86,11 @@ class Metadata extends ArrayObject
 
     public function getAuthor(): string
     {
-        return array_get($this, 'article:author.content')
-            ?: array_get($this, 'auhtor.content')
+        return array_get($this, 'auhtor.content')
             ?: array_get($this, 'twitter:creator.content')
             ?: array_get($this, 'twitter:site.content')
+            ?: array_get($this, 'link:author.href')
+            ?: array_get($this, 'article:author.content')
             ?: "";
     }
 
@@ -121,8 +122,8 @@ class Metadata extends ArrayObject
     public function getUrl(): string
     {
         return array_get($this, 'link:canonical.href')
-            ?: og:url
-            ?: al:web:url
+            ?: array_get($this, 'og:url.content')
+            ?: array_get($this, 'al:web:url.content')
             ?: "";
     }
 
@@ -136,6 +137,7 @@ class Metadata extends ArrayObject
                 $this->title       = $meta->getTitle();
                 $this->description = $meta->getDescription();
                 $this->image       = $meta->getImage();
+                $this->url         = $meta->getUrl();
             }
 
             public function __toString()
@@ -208,13 +210,13 @@ class Metadata extends ArrayObject
                 ];
 
                 $this->android = (object) [
-                    'url'        => array_get($meta, 'al:android:url.content');
-                    'appName'    => array_get($meta, 'al:android:app_name.content');
-                    'package'    => array_get($meta, 'al:android:package.content');
+                    'url'        => array_get($meta, 'al:android:url.content'),
+                    'appName'    => array_get($meta, 'al:android:app_name.content'),
+                    'package'    => array_get($meta, 'al:android:package.content'),
                 ];
 
                 $this->web = (object) [
-                    'url'        => array_get($meta, 'al:web:url');
+                    'url'        => array_get($meta, 'al:web:url'),
                 ];
             }
 

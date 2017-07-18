@@ -30,23 +30,14 @@
         </div>
     </div>
 
-    <table class="table table-users">
-        <thead>
-            <th>#</th>
-            <th>Name</th>
-            <th>Created</th>
-            <th>Updated</th>
-        </thead>
-        <tbody>
-            @foreach ($users as $user)
-                <tr>
-                    <td><a href="{{ route('users.view', $user->id) }}">{{ $user->id }}</a></td>
-                    <td>{{ $user->screen_name }}</td>
-                    <td>{{ $user->created_at->diffForHumans() }}</td>
-                    <td>{{ $user->updated_at->diffForHumans() }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="row">
+        @foreach ($users as $user)
+            <div class="col-md-4">
+                <a href="{{ route('users.view', $user) }}">
+                    {!! $user !!}
+                </a>
+            </div>
+        @endforeach
+    </div>
 </div>
 @endsection

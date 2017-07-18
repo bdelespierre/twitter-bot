@@ -8445,10 +8445,15 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   font-weight: bold;
 }
 
+/**
+ * https://bootsnipp.com/snippets/featured/bootstrap-4-card
+ */
+
 .card {
   font-size: 1em;
   overflow: hidden;
   padding: 0;
+  margin-bottom: 1em;
   border: none;
   border-radius: .28571429rem;
   -webkit-box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
@@ -8494,6 +8499,161 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   color: rgba(0, 0, 0, 0.4);
   border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
   background: #fff;
+}
+
+.card .card-inverse .btn {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card .profile {
+  position: absolute;
+  top: -12px;
+  display: inline-block;
+  overflow: hidden;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 25px;
+  height: 25px;
+  margin: 0;
+  border: 1px solid #fff;
+  border-radius: 50%;
+}
+
+.card .profile-avatar {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.card .profile-inline {
+  position: relative;
+  top: 0;
+  display: inline-block;
+}
+
+.card .profile-inline ~ .card-title {
+  display: inline-block;
+  margin-left: 4px;
+  vertical-align: top;
+}
+
+.card .meta {
+  font-size: 1em;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.card .meta a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.card .meta a:hover {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.twitter-profile {
+  background: #fff none repeat scroll 0 0;
+  border: 1px solid #e1e8ed;
+  border-radius: 6px;
+  height: 200px;
+  margin-bottom: 1em;
+}
+
+.twitter-profile .background {
+  background: #4099FF;
+  background-position: 0 50%;
+  background-size: 100% auto;
+  border-bottom: 1px solid #e1e8ed;
+  border-radius: 4px 4px 0 0;
+  height: 95px;
+  width: 100%;
+  display: block !important;
+}
+
+.twitter-profile a.avatar {
+  background-color: #fff;
+  border-radius: 6px;
+  display: inline-block !important;
+  float: left;
+  margin: -30px 5px 0 8px;
+  max-width: 100%;
+  padding: 1px;
+  vertical-align: bottom;
+}
+
+.twitter-profile a.avatar img {
+  border: 2px solid #fff;
+  border-radius: 7px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: #fff;
+  height: 72px;
+  width: 72px;
+}
+
+.twitter-profile .user {
+  margin: 5px 0 0;
+}
+
+.twitter-profile .user .name {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.twitter-profile .user .name a {
+  color: inherit !important;
+}
+
+.twitter-profile .stats {
+  margin-left: 11px;
+  padding: 10px 0;
+}
+
+.twitter-profile .stats .arrange {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: table;
+  margin: 0;
+  min-width: 100%;
+  padding: 0;
+  table-layout: auto;
+}
+
+.twitter-profile .stats ul.arrange {
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+}
+
+.twitter-profile .stats ul.arrange li {
+  display: table-cell;
+  padding: 0;
+  vertical-align: top;
+}
+
+.twitter-profile .stats ul.arrange li a:hover {
+  text-decoration: none;
+}
+
+.twitter-profile .stat-value {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+  -webkit-transition: color 0.15s ease-in-out 0s;
+  transition: color 0.15s ease-in-out 0s;
+}
+
+.twitter-profile .stat-label {
+  color: #8899a6;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-transform: uppercase;
+  -webkit-transition: color 0.15s ease-in-out 0s;
+  transition: color 0.15s ease-in-out 0s;
+  display: block !important;
 }
 
 .text-bold {

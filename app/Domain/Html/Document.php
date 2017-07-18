@@ -4,9 +4,11 @@ namespace App\Domain\Html;
 
 use Carbon\Carbon;
 use DOMDocument;
-use DOMXpath;
-use DOMNodeList;
 use DOMNode;
+use DOMNodeList;
+use DOMXpath;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
 use UnexpectedValueException;
 
@@ -31,9 +33,10 @@ class Document extends DOMDocument
         if ($cache && Cache::has($key = "domain.html.document." . str_slug($url))) {
             $html = Cache::get($key);
         } else {
-            $html = file_get_contents($url);
+            $response = (new Client())->get($url);
+            $html = (string) $response->getBody();
 
-            if ($cache) {
+            if ($cache && $html) {
                 $expireAt = Carbon::now()->addHours(8);
                 Cache::put($key, $html, $expireAt);
             }

@@ -14,9 +14,15 @@
     </form>
 
     <div class="row">
-        @foreach ($items as $item)
+        @foreach (range(0,3) as $i)
             <div class="col-md-3">
-                {!! $item->card !!}
+                @foreach ($items as $item)
+                    @if ($loop->index % 4 == $i)
+                        <div id="{{ $item->id }}" data-url="{{ $item->url }}">
+                            {!! $item->card !!}
+                        </div>
+                    @endif
+                @endforeach
             </div>
         @endforeach
     </div>
