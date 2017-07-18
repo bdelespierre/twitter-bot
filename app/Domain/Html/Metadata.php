@@ -180,7 +180,6 @@ class Metadata extends ArrayObject
              */
             public function __construct(Metadata $meta)
             {
-                $this->author            = $meta->twitterAuthor;
                 $this->creator           = array_get($meta, 'twitter:creator.content');
                 $this->creatorId         = array_get($meta, 'twitter:creator:id.content');
                 $this->site              = array_get($meta, 'twitter:site.content');

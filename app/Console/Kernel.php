@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('bot:follow')->hourly();
         $schedule->command('bot:unfollow')->hourly();
         $schedule->command('bot:mute')->hourly();
+        $schedule->command('bot:tweet')->cron('0 10,13,18,20 * * *');
         $schedule->command('purge:logs')->daily();
     }
 
