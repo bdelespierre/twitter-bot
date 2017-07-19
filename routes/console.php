@@ -36,6 +36,35 @@ Artisan::command('purge:logs {--d|days=3 : Number of days}', function () {
     App\Journal::where('date', '<=', Carbon\Carbon::now()->subDays(3))->delete();
 })->describe("Destroy old journal entries");
 
+Artisan::command('purge:friends {--throttle=7}', function () {
+    App\Journal::notice("[{$this->name}] started");
+    DetectLanguage\DetectLanguage::setApiKey(env('DETECT_LANGUAGE_API_KEY'));
+
+    foreach (App\Models\Twitter\User::friends()->exceptVip()->get() as $i => $user) {
+        $profile = array_get($user->data, 'name') . " " . array_get($user->data, 'description');
+        $results = DetectLanguage\DetectLanguage::simpleDetect($profile);
+
+        if (!in_array($results, ['en', 'fr', 'de', 'it', 'es'])) {
+            try {
+                App\Journal::info("[{$this->name}] unfollow & block @{$user->screen_name} ($results)");
+                $user->unfollow()->block();
+            } catch (RuntimeException $e) {
+                if (strpos($e->getMessage(), 'does not exist') !== false) {
+                    App\Journal::error("[{$this->name}] Propably doesn't exists anymore");
+                    continue;
+                }
+
+                return;
+            }
+
+            if ($this->option('throttle')) {
+                App\Journal::debug("[{$this->name}] sleep before next user");
+                sleep($this->option('throttle')); // seconds
+            }
+        }
+    }
+})->describe("Unfollow people that doesn't speak my language(s)");
+
 /*
 |--------------------------------------------------------------------------
 | Import
@@ -43,7 +72,7 @@ Artisan::command('purge:logs {--d|days=3 : Number of days}', function () {
 |
 */
 
-Artisan::command('import:twitter {relationship} {--throttle=60} {--cursor=}', function () {
+Artisan::command('import:twitter {relationship} {--throttle=7} {--cursor=}', function () {
     if (!in_array($relationship = $this->argument('relationship'), ['friends', 'followers'])) {
         $msg = "Relationship is expected to be 'friends' or 'followers', {$relationship} given";
         throw new UnexpectedValueException($msg);
@@ -203,7 +232,7 @@ Artisan::command('bot:tweet', function () {
 
     $item = App\Models\BufferItem::orderBy('created_at', 'desc')->first();
     $res  = (new GuzzleHttp\Client)->post('https://www.googleapis.com/urlshortener/v1/url', [
-        'query' => ['key' => 'AIzaSyAqnT8WwK6HL5rX61R5lc_WL4kZca4VYtc'],
+        'query' => ['key' => env('GOOGLE_URLSHORTENER_API_KEY')],
         'json'  => ['longUrl' => $item->url]
     ]);
 

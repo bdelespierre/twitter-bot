@@ -4,9 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a62d458361cfcc88c84048277f6acccd",
-    "content-hash": "f0c22b86444aaa98c1fe54110aa1ae2f",
+    "hash": "23ce85c2fc3839ea1eb0a955f59678f5",
+    "content-hash": "611bdad3d76bef1ff7542bb878023804",
     "packages": [
+        {
+            "name": "detectlanguage/detectlanguage",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/detectlanguage/detectlanguage-php.git",
+                "reference": "0bc8259cf25edc5a36d091a66c12d2d47240bb8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/detectlanguage/detectlanguage-php/zipball/0bc8259cf25edc5a36d091a66c12d2d47240bb8a",
+                "reference": "0bc8259cf25edc5a36d091a66c12d2d47240bb8a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "DetectLanguage": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Laurynas Butkus"
+                }
+            ],
+            "description": "Language Detection API PHP Client",
+            "homepage": "https://github.com/detectlanguage/detectlanguage-php",
+            "keywords": [
+                "api",
+                "client",
+                "detect",
+                "detection",
+                "language"
+            ],
+            "time": "2017-04-15 17:52:05"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",

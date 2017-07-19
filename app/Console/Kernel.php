@@ -25,11 +25,14 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('cache:warmup')->twiceDaily(1, 13);
+
         $schedule->command('bot:follow')->hourly();
         $schedule->command('bot:unfollow')->hourly();
         $schedule->command('bot:mute')->hourly();
         $schedule->command('bot:tweet')->cron('0 10,13,18,20 * * *');
+
         $schedule->command('purge:logs')->daily();
+        $schedule->command('purge:friends')->daily();
     }
 
     /**

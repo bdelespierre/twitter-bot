@@ -216,6 +216,14 @@ class User extends Model
     |
     */
 
+    public function block()
+    {
+        Twitter::postBlock(['user_id' => $this->id]);
+        $this->setBlockedAttribute(true)->save();
+
+        return $this;
+    }
+
     public function scopeBlocked($query)
     {
         return $query->whereRaw('mask &' . self::BLOCKED . ' != 0');
