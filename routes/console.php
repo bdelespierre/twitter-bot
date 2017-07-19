@@ -218,7 +218,10 @@ Artisan::command('bot:tweet', function () {
 
     $hashtags = [
         'tech', 'javascript', 'php', 'startup', 'ux', 'devops', 'laravel',
-        'symfony', 'chatbot', 'devel', 'bitcoin', 'blockchain'
+        'symfony', 'chatbot', 'devel', 'bitcoin', 'blockchain', 'angular',
+        'react', 'frontend', 'backend', 'code', 'coding', 'gamification',
+        'programming', 'ai', 'node', 'nodejs', 'firebase', 'google', 'chrome',
+        'android', 'webapp', 'ui'
     ];
 
     // if there is room, add hashtags
