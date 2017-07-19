@@ -31,13 +31,7 @@ Artisan::command('cache:warmup', function () {
     $this->call('import:twitter', ['relationship' => 'followers']);
 })->describe("Warms up the cache");
 
-Artisan::command('purge:logs {--d|days=3 : Number of days}', function () {
-    App\Journal::notice("[{$this->name}] started");
-    App\Journal::where('date', '<=', Carbon\Carbon::now()->subDays(3))->delete();
-})->describe("Destroy old journal entries");
-
 Artisan::command('purge:friends {--throttle=7}', function () {
-    App\Journal::notice("[{$this->name}] started");
     DetectLanguage\DetectLanguage::setApiKey(env('DETECT_LANGUAGE_API_KEY'));
 
     foreach (App\Models\Twitter\User::friends()->exceptVip()->get() as $i => $user) {
@@ -46,11 +40,10 @@ Artisan::command('purge:friends {--throttle=7}', function () {
 
         if (!in_array($results, ['en', 'fr', 'de', 'it', 'es'])) {
             try {
-                App\Journal::info("[{$this->name}] unfollow & block @{$user->screen_name} ($results)");
+                $this->info("unfollow & block @{$user->screen_name} ($results)");
                 $user->unfollow()->block();
             } catch (RuntimeException $e) {
                 if (strpos($e->getMessage(), 'does not exist') !== false) {
-                    App\Journal::error("[{$this->name}] Propably doesn't exists anymore");
                     continue;
                 }
 
@@ -58,7 +51,6 @@ Artisan::command('purge:friends {--throttle=7}', function () {
             }
 
             if ($this->option('throttle')) {
-                App\Journal::debug("[{$this->name}] sleep before next user");
                 sleep($this->option('throttle')); // seconds
             }
         }
@@ -78,17 +70,14 @@ Artisan::command('import:twitter {relationship} {--throttle=7} {--cursor=}', fun
         throw new UnexpectedValueException($msg);
     }
 
-    $cmd = "[{$this->name}] [{$relationship}]";
-    App\Journal::notice("{$cmd} started");
-
     if ($this->option('cursor')) {
         $cursor = $this->option('cursor');
-        App\Journal::notice("{$cmd} resuming from cursor {$cursor}");
+        $this->info("resuming from cursor {$cursor}");
     }
 
     if (Cache::has($cacheKey = "twitter.import.{$relationship}.cursor")) {
         $cursor = Cache::pull($cacheKey);
-        App\Journal::notice("{$cmd} resuming from cursor {$cursor}");
+        $this->info("resuming from cursor {$cursor}");
     }
 
     do {
@@ -96,12 +85,12 @@ Artisan::command('import:twitter {relationship} {--throttle=7} {--cursor=}', fun
             $following = Twitter::{'get'.ucfirst($relationship)}(['format' => 'array'] + compact('cursor'));
             list('users' => $users, 'next_cursor_str' => $cursor) = $following;
         } catch (RuntimeException $e) {
-            App\Journal::error("{$cmd} $e");
+            $this->error("$e");
             return;
         }
 
         foreach ($users as $data) {
-            App\Journal::info("{$cmd} @{$data['screen_name']} #{$data['id']}");
+            $this->info("@{$data['screen_name']} #{$data['id']}");
 
             $user = App\Models\Twitter\User::updateOrCreate(
                 ['id' => $data['id']],
@@ -118,7 +107,7 @@ Artisan::command('import:twitter {relationship} {--throttle=7} {--cursor=}', fun
         }
 
         if ($this->option('throttle') && $cursor) {
-            App\Journal::debug("{$cmd} sleep before cursor {$cursor}");
+            $this->comment("sleep before cursor {$cursor}");
             sleep($this->option('throttle')); // seconds
         }
     } while ($cursor);
@@ -129,10 +118,8 @@ Artisan::command('import:twitter {relationship} {--throttle=7} {--cursor=}', fun
  * programming
  */
 Artisan::command('import:reddit {subreddit}', function ($subreddit) {
-    App\Journal::notice("[{$this->name}] started", compact('subreddit'));
-
     $url = "https://www.reddit.com/r/{$subreddit}/hot/.rss?sort=hot";
-    App\Journal::debug("[{$this->name}] reading from {$url}");
+    $this->comment("reading from {$url}");
 
     foreach (App\Domain\Atom\Document::fromUrl($url)->items as $item) {
         $url = array_first($item->urls, function($url) {
@@ -140,11 +127,11 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
         });
 
         if (!$articles = App\Domain\Html\Document::fromUrl($url)->articles) {
-            App\Journal::debug("[{$this->name}] ignoring {$url} : no article found");
+            $this->comment("ignoring {$url} : no article found");
             continue;
         }
 
-        App\Journal::debug("[{$this->name}] " . count($articles) . " found for {$url}");
+        $this->comment("" . count($articles) . " found for {$url}");
 
         // ...
     }
@@ -158,11 +145,10 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
 */
 
 Artisan::command('bot:follow', function () {
-    App\Journal::notice("[{$this->name}] started");
 
     foreach (App\Models\Twitter\User::fans()->get() as $user) {
         try {
-            App\Journal::info("[{$this->name}] following {$user->id}");
+            $this->info("following {$user->id}");
             $user->follow()->mute();
         } catch (RuntimeException $exception) {
             return;
@@ -171,7 +157,6 @@ Artisan::command('bot:follow', function () {
 })->describe('Follow back fans');
 
 Artisan::command('bot:unfollow', function () {
-    App\Journal::notice("[{$this->name}] started");
 
     $following = App\Models\Twitter\User::friends()->exceptVip()->pluck('id')->toArray();
     $unfollow  = [];
@@ -180,7 +165,6 @@ Artisan::command('bot:unfollow', function () {
         try {
             $users = Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $bulk]);
         } catch (RuntimeException $e) {
-            App\Journal::error("[{$this->name}] $e");
             return;
         }
 
@@ -194,12 +178,11 @@ Artisan::command('bot:unfollow', function () {
     }
 
     if (empty($unfollow)) {
-        App\Journal::info("[{$this->name}] no one to unfollow");
         return;
     }
 
     foreach ($unfollow as $user) {
-        App\Journal::info("[{$this->name}] unfollowing @{$user['screen_name']}");
+        $this->info("unfollowing @{$user['screen_name']}");
 
         try {
             App\Models\Twitter\User::findOrFail($user['id'])->unfollow();
@@ -210,15 +193,13 @@ Artisan::command('bot:unfollow', function () {
 })->describe('Unfollow people that don\'t follow me');
 
 Artisan::command('bot:mute', function () {
-    App\Journal::notice("[{$this->name}] started");
 
     foreach (App\Models\Twitter\User::exceptVip()->exceptMuted()->get() as $user) {
         try {
-            App\Journal::info("[{$this->name}] muting @{$user->screen_name}");
+            $this->info("muting @{$user->screen_name}");
             $user->mute();
         } catch (RuntimeException $e) {
             if (strpos($e->getMessage(), 'does not exist') !== false) {
-                App\Journal::error("[{$this->name}] Propably doesn't exists anymore");
                 continue;
             }
 
@@ -228,7 +209,6 @@ Artisan::command('bot:mute', function () {
 })->describe("Mute everyone (except VIP)");
 
 Artisan::command('bot:tweet', function () {
-    App\Journal::notice("[{$this->name}] started");
 
     $item = App\Models\BufferItem::orderBy('created_at', 'desc')->first();
     $res  = (new GuzzleHttp\Client)->post('https://www.googleapis.com/urlshortener/v1/url', [
@@ -250,7 +230,7 @@ Artisan::command('bot:tweet', function () {
         'symfony', 'chatbot', 'devel', 'bitcoin', 'blockchain', 'angular',
         'react', 'frontend', 'backend', 'code', 'coding', 'gamification',
         'programming', 'ai', 'node', 'nodejs', 'firebase', 'google', 'chrome',
-        'android', 'webapp', 'ui'
+        'android', 'webapp', 'ui', 'linux'
     ];
 
     // if there is room, add hashtags
