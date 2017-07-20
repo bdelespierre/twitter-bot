@@ -64,7 +64,7 @@ Artisan::command('purge:friends {--throttle=7}', function () {
 |
 */
 
-Artisan::command('import:twitter {relationship} {--throttle=7} {--cursor=}', function () {
+Artisan::command('import:twitter {relationship} {--throttle=60} {--cursor=}', function () {
     if (!in_array($relationship = $this->argument('relationship'), ['friends', 'followers'])) {
         $msg = "Relationship is expected to be 'friends' or 'followers', {$relationship} given";
         throw new UnexpectedValueException($msg);
@@ -75,51 +75,35 @@ Artisan::command('import:twitter {relationship} {--throttle=7} {--cursor=}', fun
         $this->info("resuming from cursor {$cursor}");
     }
 
-    if (Cache::has($cacheKey = "twitter.import.{$relationship}.cursor")) {
-        $cursor = Cache::pull($cacheKey);
-        $this->info("resuming from cursor {$cursor}");
-    }
-
-    do {
-        try {
-            $following = Twitter::{'get'.ucfirst($relationship)}(['format' => 'array'] + compact('cursor'));
-            list('users' => $users, 'next_cursor_str' => $cursor) = $following;
-        } catch (RuntimeException $e) {
-            $this->error("$e");
-            return;
-        }
-
-        foreach ($users as $data) {
-            $this->info("@{$data['screen_name']} #{$data['id']}");
-
-            try {
-                $user = App\Models\Twitter\User::updateOrCreate(
-                    ['id' => $data['id']],
-                    ['screen_name' => $data['screen_name']] + compact('data')
-                );
-            } catch (Illuminate\Database\QueryException $e) {
-                // update ID in case of screen_name collision
-                if ($user = App\Models\Twitter\User::where('screen_name', '=', $data['screen_name'])->first()) {
-                    $user->update(array_only($data, ['id', 'screen_name']) + compact('data'));
-                } else {
-                    throw $e;
-                }
-            }
-
-            $user->{substr($relationship, 0, -1)} = true; // 'friend' or 'follower'
-            $user->updateAttributes()->save();
-        }
-
-        if ($cursor) {
-            $expireAt = Carbon\Carbon::now()->addMinutes(180); // 3h
-            Cache::put($cacheKey, $cursor, $expireAt);
-        }
-
-        if ($this->option('throttle') && $cursor) {
+    $collection = new App\Domain\Twitter\CursoredCollection('get' . ucfirst($relationship), 'users', [
+        'cache'    => ['key' => "twitter.import.{$relationship}.cursor", 'ttl' => 180],
+        'throttle' => $this->option('throttle'),
+        'args'     => ['count' => 200],
+        'tap'      => function ($collection, $cursor) {
             $this->comment("sleep before cursor {$cursor}");
-            sleep($this->option('throttle')); // seconds
+        },
+    ] + compact('cursor'));
+
+    foreach ($collection as $data) {
+        $this->info("@{$data['screen_name']} #{$data['id']}");
+
+        try {
+            $user = App\Models\Twitter\User::updateOrCreate(
+                ['id' => $data['id']],
+                ['screen_name' => $data['screen_name']] + compact('data')
+            );
+        } catch (Illuminate\Database\QueryException $e) {
+            // update ID in case of screen_name collision
+            if ($user = App\Models\Twitter\User::where('screen_name', '=', $data['screen_name'])->first()) {
+                $user->update(array_only($data, ['id', 'screen_name']) + compact('data'));
+            } else {
+                throw $e;
+            }
         }
-    } while ($cursor);
+
+        $user->{substr($relationship, 0, -1)} = true; // 'friend' or 'follower'
+        $user->updateAttributes()->save();
+    }
 })->describe("Imports friends or followers from Twitter account");
 
 /**
