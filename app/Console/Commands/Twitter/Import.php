@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Twitter;
 
+use App\Console\Commands\Bliss;
 use App\Domain\Twitter\CursoredCollection;
 use App\Models\Twitter\User as TwitterUser;
 use Exception;
@@ -10,6 +11,8 @@ use UnexpectedValueException;
 
 class Import extends Command
 {
+    use Bliss;
+
     /**
      * The name and signature of the console command.
      *
@@ -55,7 +58,7 @@ class Import extends Command
         ];
 
         foreach (new CursoredCollection('get'.ucfirst($relationship), 'users', $options) as $data) {
-            try {
+            $this->bliss(function () use ($data) {
                 $this->info(sprintf('#%s @%s', str_pad($data['id'], 25, '.'), $data['screen_name']));
                 $user = TwitterUser::updateOrCreate(
                     ['id'          => $data['id']],
@@ -64,20 +67,9 @@ class Import extends Command
 
                 $user->{substr($relationship, 0, -1)} = true; // 'friend' or 'follower'
                 $user->updateAttributes()->save();
-            } catch (Exception $e) {
-                $errors[] = [$data['screen_name'], $e];
-                continue;
-            }
+            });
         }
 
-        if (!empty($errors)) {
-            $this->error(count($errors) . " errors");
-
-            if ($this->output->isVerbose()) {
-                foreach ($errors as [$name, $e]) {
-                    $this->error("@{$name}: " . $e->getMessage());
-                }
-            }
-        }
+        $this->report();
     }
 }

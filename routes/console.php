@@ -31,6 +31,14 @@ Artisan::command('cache:warmup', function () {
     $this->call('import:twitter', ['relationship' => 'followers']);
 })->describe("Warms up the cache");
 
+Artisan::command('twitter:sync', function () {
+    $this->call('cache:warmup');
+    $this->call('twitter:follow');
+    $this->call('twitter:unfollow');
+    $this->call('twitter:mute');
+    //$this->call('twitter:purge');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Import
@@ -68,21 +76,6 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
 |--------------------------------------------------------------------------
 |
 */
-
-Artisan::command('bot:mute', function () {
-    foreach (App\Models\Twitter\User::exceptVip()->exceptMuted()->get() as $user) {
-        try {
-            $this->info("muting @{$user->screen_name}");
-            $user->mute();
-        } catch (RuntimeException $e) {
-            if (strpos($e->getMessage(), 'does not exist') !== false) {
-                continue;
-            }
-
-            return;
-        }
-    }
-})->describe("Mute everyone (except VIP)");
 
 Artisan::command('bot:tweet', function () {
 
