@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Twitter;
 
+use App\Console\Commands\Bliss;
 use App\Models\Twitter\User as TwitterUser;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -9,6 +10,8 @@ use Thujohn\Twitter\Facades\Twitter;
 
 class Unfollow extends Command
 {
+    use Bliss;
+
     /**
      * The name and signature of the console command.
      *
@@ -33,7 +36,11 @@ class Unfollow extends Command
         $friends = TwitterUser::friends()->exceptVip()->pluck('id')->toArray();
 
         foreach (array_chunk($friends, 100) as $chunk) {
-            $friendships = Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $chunk]);
+            try {
+                $friendships = Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $chunk]);
+            } catch (Exception $e) {
+                return $this->error($e->getMessage());
+            }
 
             foreach ($friendships as $user) {
                 if (// does this user follows me?
@@ -46,9 +53,11 @@ class Unfollow extends Command
                         sleep($seconds);
                     }
 
-                    $this->info("unfollowing @{$user['screen_name']}");
-                    TwitterUser::findOrFail($user['id'])->unfollow();
-                    $timeOfLastUnfollow = time();
+                    $this->bliss(function() use ($user, &$timeOfLastUnfollow) {
+                        $this->info("unfollowing @{$user['screen_name']}");
+                        TwitterUser::findOrFail($user['id'])->unfollow();
+                        $timeOfLastUnfollow = time();
+                    });
                 }
             }
 
@@ -57,5 +66,7 @@ class Unfollow extends Command
                 sleep((int) $this->option('throttle'));
             }
         }
+
+        $this->report();
     }
 }

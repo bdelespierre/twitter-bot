@@ -14,10 +14,10 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\ScheduleDaemon::class,
-        Commands\Twitter\Import::class,
-        Commands\Twitter\Unfollow::class,
         Commands\Twitter\Follow::class,
+        Commands\Twitter\Import::class,
         Commands\Twitter\Mute::class,
+        Commands\Twitter\Unfollow::class,
     ];
 
     /**

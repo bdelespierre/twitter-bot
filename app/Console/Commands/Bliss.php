@@ -26,10 +26,10 @@ trait Bliss
     public function report()
     {
         if ($this->hasErrors()) {
-            $this->error("!!! " . count($errors) . " Errors !!!");
+            $this->error("!!! " . count($this->errors) . " Errors !!!");
 
             if ($this->output->isVerbose()) {
-                foreach ($errors as $e) {
+                foreach ($this->errors as $e) {
                     $this->error($e->getMessage());
                 }
             }

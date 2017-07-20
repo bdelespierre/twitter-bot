@@ -43,10 +43,19 @@ class User extends Model
 
     public function getLangAttribute()
     {
-        return Language::simpleDetect(vsprintf('%s %s', [
+        if (Cache::has($key = "app.models.twitter.user:{$this->id}.lang")) {
+            return Cache::get($key);
+        }
+
+        $lang = Language::simpleDetect(vsprintf('%s %s', [
             array_get($this->data, 'name'),
             array_get($this->data, 'description')
         ]));
+
+        $expiresAt = Carbon::now()->addDays(3);
+        Cache::put($key, $lang, $expiresAt);
+
+        return $lang;
     }
 
     /*
@@ -108,7 +117,7 @@ class User extends Model
 
     public static function getFriendsIds()
     {
-        if (!Cache::has($key = 'twitter.friends_ids')) {
+        if (!Cache::has($key = 'app.models.twitter.user:friends_ids')) {
             $friendsIds = array_get(Twitter::getFriendsIds(['format' => 'array']), 'ids', []);
             $expiresAt  = Carbon::now()->addMinutes(15);
 
@@ -156,7 +165,7 @@ class User extends Model
 
     public static function getFollowersIds()
     {
-        if (!Cache::has($key = 'twitter.followers_ids')) {
+        if (!Cache::has($key = 'app.models.twitter.user:followers_ids')) {
             $followersIds = array_get(Twitter::getFollowersIds(['format' => 'array']), 'ids', []);
             $expiresAt    = Carbon::now()->addMinutes(15);
 

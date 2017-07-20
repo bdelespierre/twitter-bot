@@ -2,12 +2,15 @@
 
 namespace App\Console\Commands\Twitter;
 
+use App\Console\Commands\Bliss;
 use App\Models\Twitter\User as TwitterUser;
 use Illuminate\Console\Command;
 use RuntimeException;
 
 class Follow extends Command
 {
+    use Bliss;
+
     /**
      * The name and signature of the console command.
      *
@@ -34,12 +37,16 @@ class Follow extends Command
                 return;
             }
 
-            $this->info("following {$user->id}");
-            $user->follow();
+            $this->bliss(function() use ($user) {
+                $this->info("following {$user->id}");
+                $user->follow();
 
-            if ($this->hasOption('mute')) {
-                $user->mute();
-            }
+                if ($this->hasOption('mute')) {
+                    $user->mute();
+                }
+            });
         }
+
+        $this->report();
     }
 }

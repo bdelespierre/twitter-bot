@@ -58,7 +58,7 @@ class Import extends Command
         ];
 
         foreach (new CursoredCollection('get'.ucfirst($relationship), 'users', $options) as $data) {
-            $this->bliss(function () use ($data) {
+            $this->bliss(function () use ($data, $relationship) {
                 $this->info(sprintf('#%s @%s', str_pad($data['id'], 25, '.'), $data['screen_name']));
                 $user = TwitterUser::updateOrCreate(
                     ['id'          => $data['id']],
