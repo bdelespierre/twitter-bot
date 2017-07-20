@@ -10,10 +10,25 @@ use UnexpectedValueException;
 
 class Import extends Command
 {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
     protected $signature = 'import:twitter {relationship} {--cursor=} {--no-cache} {--throttle=60}';
 
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
     protected $description = 'Imports friends or followers from Twitter account';
 
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
     public function handle()
     {
         if (!in_array($relationship = $this->argument('relationship'), ['friends', 'followers'])) {

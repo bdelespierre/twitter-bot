@@ -31,32 +31,6 @@ Artisan::command('cache:warmup', function () {
     $this->call('import:twitter', ['relationship' => 'followers']);
 })->describe("Warms up the cache");
 
-Artisan::command('purge:friends {--throttle=7}', function () {
-    DetectLanguage\DetectLanguage::setApiKey(env('DETECT_LANGUAGE_API_KEY'));
-
-    foreach (App\Models\Twitter\User::friends()->exceptVip()->get() as $i => $user) {
-        $profile = array_get($user->data, 'name') . " " . array_get($user->data, 'description');
-        $results = DetectLanguage\DetectLanguage::simpleDetect($profile);
-
-        if (!in_array($results, ['en', 'fr', 'de', 'it', 'es'])) {
-            try {
-                $this->info("unfollow & block @{$user->screen_name} ($results)");
-                $user->unfollow()->block();
-            } catch (RuntimeException $e) {
-                if (strpos($e->getMessage(), 'does not exist') !== false) {
-                    continue;
-                }
-
-                return;
-            }
-
-            if ($this->option('throttle')) {
-                sleep($this->option('throttle')); // seconds
-            }
-        }
-    }
-})->describe("Unfollow people that doesn't speak my language(s)");
-
 /*
 |--------------------------------------------------------------------------
 | Import
@@ -95,55 +69,7 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
 |
 */
 
-Artisan::command('bot:follow', function () {
-    foreach (App\Models\Twitter\User::fans()->get() as $user) {
-        try {
-            $this->info("following {$user->id}");
-            $user->follow()->mute();
-        } catch (RuntimeException $exception) {
-            return;
-        }
-    }
-})->describe('Follow back fans');
-
-Artisan::command('bot:unfollow', function () {
-
-    $following = App\Models\Twitter\User::friends()->exceptVip()->pluck('id')->toArray();
-    $unfollow  = [];
-
-    while ($bulk = array_slice($following, 0, 100)) {
-        try {
-            $users = Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $bulk]);
-        } catch (RuntimeException $e) {
-            return;
-        }
-
-        foreach ($users as $user) {
-            if (!in_array('followed_by', $user['connections'])) {
-                $unfollow[] = $user;
-            }
-        }
-
-        $following = array_slice($following, 100);
-    }
-
-    if (empty($unfollow)) {
-        return;
-    }
-
-    foreach ($unfollow as $user) {
-        $this->info("unfollowing @{$user['screen_name']}");
-
-        try {
-            App\Models\Twitter\User::findOrFail($user['id'])->unfollow();
-        } catch (Exception $e) {
-            return;
-        }
-    }
-})->describe('Unfollow people that don\'t follow me');
-
 Artisan::command('bot:mute', function () {
-
     foreach (App\Models\Twitter\User::exceptVip()->exceptMuted()->get() as $user) {
         try {
             $this->info("muting @{$user->screen_name}");

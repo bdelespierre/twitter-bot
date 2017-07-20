@@ -2,6 +2,7 @@
 
 namespace App\Models\Twitter;
 
+use App\Support\Facades\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -38,6 +39,14 @@ class User extends Model
         $this->setBlockedAttribute(array_get($this->data, 'blocking', false));
 
         return $this;
+    }
+
+    public function getLangAttribute()
+    {
+        return Language::simpleDetect(vsprintf('%s %s', [
+            array_get($this->data, 'name'),
+            array_get($this->data, 'description')
+        ]));
     }
 
     /*

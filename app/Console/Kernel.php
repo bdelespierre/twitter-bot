@@ -15,6 +15,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ScheduleDaemon::class,
         Commands\Twitter\Import::class,
+        Commands\Twitter\Unfollow::class,
+        Commands\Twitter\Follow::class,
     ];
 
     /**
@@ -27,8 +29,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('cache:warmup')->twiceDaily(1, 13);
 
-        $schedule->command('bot:follow')->hourly();
-        $schedule->command('bot:unfollow')->hourly();
+        $schedule->command('twitter:follow')->hourly();
+        $schedule->command('twitter:unfollow')->hourly();
         $schedule->command('bot:mute')->hourly()->withoutOverlapping();
         $schedule->command('bot:tweet')->cron('0 10,13,18,20 * * *');
 
