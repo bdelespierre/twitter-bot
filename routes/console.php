@@ -92,10 +92,19 @@ Artisan::command('import:twitter {relationship} {--throttle=7} {--cursor=}', fun
         foreach ($users as $data) {
             $this->info("@{$data['screen_name']} #{$data['id']}");
 
-            $user = App\Models\Twitter\User::updateOrCreate(
-                ['id' => $data['id']],
-                ['screen_name' => $data['screen_name']] + compact('data')
-            );
+            try {
+                $user = App\Models\Twitter\User::updateOrCreate(
+                    ['id' => $data['id']],
+                    ['screen_name' => $data['screen_name']] + compact('data')
+                );
+            } catch (Illuminate\Database\QueryException $e) {
+                // update ID in case of screen_name collision
+                if ($user = App\Models\Twitter\User::where('screen_name', '=', $data['screen_name'])->first()) {
+                    $user->update(array_only($data, ['id', 'screen_name']) + compact('data'));
+                } else {
+                    throw $e;
+                }
+            }
 
             $user->{substr($relationship, 0, -1)} = true; // 'friend' or 'follower'
             $user->updateAttributes()->save();
