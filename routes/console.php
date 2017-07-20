@@ -27,13 +27,13 @@ Artisan::command('heroku:tinker', function () {
 */
 
 Artisan::command('cache:warmup', function () {
-    $this->call('import:twitter', ['relationship' => 'friends']);
-    $this->call('import:twitter', ['relationship' => 'followers']);
+    $this->call('twitter:import', ['relationship' => 'friends']);
+    $this->call('twitter:import', ['relationship' => 'followers']);
 })->describe("Warms up the cache");
 
 Artisan::command('twitter:sync', function () {
-    $this->call('import:twitter', ['relationship' => 'friends']);
-    $this->call('import:twitter', ['relationship' => 'followers']);
+    $this->call('twitter:import', ['relationship' => 'friends']);
+    $this->call('twitter:import', ['relationship' => 'followers']);
     $this->call('twitter:follow');
     $this->call('twitter:unfollow');
     $this->call('twitter:mute');

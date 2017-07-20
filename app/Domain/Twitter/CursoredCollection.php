@@ -2,6 +2,7 @@
 
 namespace App\Domain\Twitter;
 
+use App\Domain\Generic\IntervalSynchronizer;
 use Carbon\Carbon;
 use Generator;
 use Illuminate\Support\Facades\Cache;
@@ -53,8 +54,16 @@ class CursoredCollection implements IteratorAggregate
             $cursor = Cache::get($this->option('cache.key'));
         }
 
+        $fetchCollection = function ($params) {
+            return Twitter::{$this->endpoint}($params + $this->option('args', []));
+        };
+
+        if ($this->option('throttle')) {
+            $fetchCollection = new IntervalSynchronizer($this->option('throttle'), $fetchCollection);
+        }
+
         do {
-            $collection = Twitter::{$this->endpoint}(compact('format', 'cursor') + $this->option('args', []));
+            $collection = $fetchCollection(compact('format', 'cursor')) ;
             $cursor = $collection['next_cursor_str'] ?? "";
 
             foreach (array_get($collection, $this->key, []) as $item) {
@@ -68,10 +77,6 @@ class CursoredCollection implements IteratorAggregate
 
             if ($this->option('tap')) {
                 $this->option('tap')($collection, $cursor);
-            }
-
-            if ($cursor && $this->option('throttle')) {
-                sleep((int) $this->option('throttle')); // seconds
             }
         } while ($cursor);
     }

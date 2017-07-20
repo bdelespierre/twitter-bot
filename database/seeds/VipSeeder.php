@@ -23,15 +23,16 @@ class VipSeeder extends Seeder
         */
 
         $vip = [
-            'clientsfh'   , 'SarahCAndersen'  , 'yukaichou'       ,
-            'ProductHunt' , 'iamlosion'       , 'newsycombinator' ,
-            'paulg'       , 'verge'           , '_TheFamily'      ,
-            'sensiolabs'  , 'elonmusk'        , 'BrianTracy'      ,
-            'Medium'      , 'ThePracticalDev' , 'afilina'         ,
-            'hackernoon'  , 'IonicFramework'  , 'polymer'         ,
-            'reactjs'     , 'MongoDB'         , 'googledevs'      ,
-            'Google'      , 'shenanigansen'   , 'Rozasalahshour'  ,
-            'jlondiche'   , 'DelespierreB'    , 'matts2cant'      ,
+            'clientsfh'       , 'SarahCAndersen'  , 'yukaichou'       ,
+            'ProductHunt'     , 'iamlosion'       , 'newsycombinator' ,
+            'paulg'           , 'verge'           , '_TheFamily'      ,
+            'sensiolabs'      , 'elonmusk'        , 'BrianTracy'      ,
+            'Medium'          , 'ThePracticalDev' , 'afilina'         ,
+            'hackernoon'      , 'IonicFramework'  , 'polymer'         ,
+            'reactjs'         , 'MongoDB'         , 'googledevs'      ,
+            'Google'          , 'shenanigansen'   , 'Rozasalahshour'  ,
+            'jlondiche'       , 'DelespierreB'    , 'matts2cant'      ,
+            'newsycombinator' , 'TechCrunch'      ,
         ];
 
         foreach (App\Models\Twitter\User::whereIn('screen_name', $vip)->get() as $user) {

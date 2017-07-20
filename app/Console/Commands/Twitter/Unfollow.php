@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Twitter;
 
 use App\Console\Commands\Bliss;
+use App\Domain\Generic\IntervalSynchronizer;
 use App\Models\Twitter\User as TwitterUser;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -35,12 +36,21 @@ class Unfollow extends Command
     {
         $friends = TwitterUser::friends()->exceptVip()->pluck('id')->toArray();
 
+        $getFriendshipsLookup = function ($chunk) {
+            return Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $chunk]);
+        };
+
+        if ($this->option('throttle')) {
+            $getFriendshipsLookup = new IntervalSynchronizer($this->option('throttle'), $getFriendshipsLookup);
+        }
+
+        $unfollow = new IntervalSynchronizer(6, function ($user) {
+            $this->info("unfollowing @{$user['screen_name']}");
+            TwitterUser::findOrFail($user['id'])->unfollow();
+        });
+
         foreach (array_chunk($friends, 100) as $chunk) {
-            try {
-                $friendships = Twitter::getFriendshipsLookup(['format' => 'array', 'user_id' => $chunk]);
-            } catch (Exception $e) {
-                return $this->error($e->getMessage());
-            }
+            $friendships = $this->bliss($getFriendshipsLookup, $chunk);
 
             foreach ($friendships as $user) {
                 if (// does this user follows me?
@@ -49,21 +59,8 @@ class Unfollow extends Command
                     // de we speak the same language(s)?
                     !in_array(($user = TwitterUser::findOrFail($user['id']))->lang, ['en', 'fr'])
                 ) {
-                    if (isset($timeOfLastUnfollow) && ($seconds = time() - $timeOfLastUnfollow) < 6) {
-                        sleep($seconds);
-                    }
-
-                    $this->bliss(function() use ($user, &$timeOfLastUnfollow) {
-                        $this->info("unfollowing @{$user['screen_name']}");
-                        TwitterUser::findOrFail($user['id'])->unfollow();
-                        $timeOfLastUnfollow = time();
-                    });
+                    $this->bliss($unfollow, $user);
                 }
-            }
-
-            if ($this->option('throttle')) {
-                $this->comment("sleep before next chunk");
-                sleep((int) $this->option('throttle'));
             }
         }
 

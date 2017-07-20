@@ -13,12 +13,25 @@ class Import extends Command
 {
     use Bliss;
 
+    private const VIP = [
+        'clientsfh'       , 'SarahCAndersen'  , 'yukaichou'       ,
+        'ProductHunt'     , 'iamlosion'       , 'newsycombinator' ,
+        'paulg'           , 'verge'           , '_TheFamily'      ,
+        'sensiolabs'      , 'elonmusk'        , 'BrianTracy'      ,
+        'Medium'          , 'ThePracticalDev' , 'afilina'         ,
+        'hackernoon'      , 'IonicFramework'  , 'polymer'         ,
+        'reactjs'         , 'MongoDB'         , 'googledevs'      ,
+        'Google'          , 'shenanigansen'   , 'Rozasalahshour'  ,
+        'jlondiche'       , 'DelespierreB'    , 'matts2cant'      ,
+        'newsycombinator' , 'TechCrunch'      ,
+    ];
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:twitter {relationship} {--cursor=} {--no-cache} {--throttle=60}';
+    protected $signature = 'twitter:import {relationship} {--cursor=} {--no-cache} {--throttle=60}';
 
     /**
      * The console command description.
@@ -64,6 +77,10 @@ class Import extends Command
                     ['id'          => $data['id']],
                     ['screen_name' => $data['screen_name']] + compact('data')
                 );
+
+                if (in_array($user->screen_name, self::VIP)) {
+                    $user->vip = true;
+                }
 
                 $user->{substr($relationship, 0, -1)} = true; // 'friend' or 'follower'
                 $user->updateAttributes()->save();

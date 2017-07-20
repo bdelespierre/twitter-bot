@@ -9,10 +9,10 @@ trait Bliss
 {
     protected $errors;
 
-    public function bliss(Closure $fn, array $args = [])
+    public function bliss(callable $fn, ...$args)
     {
         try {
-            return $fn->call($this, ...$args);
+            return $fn(...$args);
         } catch (Exception $e) {
             $this->errors[] = $e;
         }
