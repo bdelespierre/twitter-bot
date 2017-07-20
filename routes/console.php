@@ -64,38 +64,6 @@ Artisan::command('purge:friends {--throttle=7}', function () {
 |
 */
 
-Artisan::command('import:twitter {relationship} {--throttle=60} {--cursor=}', function () {
-    if (!in_array($relationship = $this->argument('relationship'), ['friends', 'followers'])) {
-        $msg = "Relationship is expected to be 'friends' or 'followers', {$relationship} given";
-        throw new UnexpectedValueException($msg);
-    }
-
-    if ($this->option('cursor')) {
-        $cursor = $this->option('cursor');
-        $this->info("resuming from cursor {$cursor}");
-    }
-
-    $collection = new App\Domain\Twitter\CursoredCollection('get' . ucfirst($relationship), 'users', [
-        'cache'    => ['key' => "twitter.import.{$relationship}.cursor", 'ttl' => 180],
-        'throttle' => $this->option('throttle'),
-        'args'     => ['count' => 200],
-        'tap'      => function ($collection, $cursor) {
-            $this->comment("sleep before cursor {$cursor}");
-        },
-    ] + compact('cursor'));
-
-    foreach ($collection as $data) {
-        $this->info("@{$data['screen_name']} #{$data['id']}");
-        $user = App\Models\Twitter\User::updateOrCreate(
-            ['id' => $data['id']],
-            ['screen_name' => $data['screen_name']] + compact('data')
-        );
-
-        $user->{substr($relationship, 0, -1)} = true; // 'friend' or 'follower'
-        $user->updateAttributes()->save();
-    }
-})->describe("Imports friends or followers from Twitter account");
-
 /**
  * learnprogramming
  * programming
@@ -128,7 +96,6 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
 */
 
 Artisan::command('bot:follow', function () {
-
     foreach (App\Models\Twitter\User::fans()->get() as $user) {
         try {
             $this->info("following {$user->id}");

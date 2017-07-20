@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\ScheduleDaemon::class,
+        Commands\Twitter\Import::class,
     ];
 
     /**
