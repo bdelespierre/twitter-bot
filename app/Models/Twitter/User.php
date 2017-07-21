@@ -54,16 +54,7 @@ class User extends Model
 
     public function getLangAttribute()
     {
-        if (Cache::has($key = "app.models.twitter.user:{$this->id}.lang")) {
-            return Cache::get($key);
-        }
-
-        $lang = Language::simpleDetect("{$this->name} {$this->description}");
-
-        $expiresAt = Carbon::now()->addDays(3);
-        Cache::put($key, $lang, $expiresAt);
-
-        return $lang;
+        return array_get($this->data, 'lang');
     }
 
     /*
