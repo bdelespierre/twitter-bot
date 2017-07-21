@@ -2,6 +2,7 @@
 
 namespace App\Models\Twitter;
 
+use App\Domain\Generic\Str;
 use App\Support\Facades\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -41,16 +42,23 @@ class User extends Model
         return $this;
     }
 
+    public function getNameAttribute()
+    {
+        return Str::decodeUnicode(array_get($this->data, 'name'));
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return Str::decodeUnicode(array_get($this->data, 'description'));
+    }
+
     public function getLangAttribute()
     {
         if (Cache::has($key = "app.models.twitter.user:{$this->id}.lang")) {
             return Cache::get($key);
         }
 
-        $lang = Language::simpleDetect(vsprintf('%s %s', [
-            array_get($this->data, 'name'),
-            array_get($this->data, 'description')
-        ]));
+        $lang = Language::simpleDetect("{$this->name} {$this->description}");
 
         $expiresAt = Carbon::now()->addDays(3);
         Cache::put($key, $lang, $expiresAt);
