@@ -1,55 +1,41 @@
 <!-- /resources/components/card.blade.php -->
 
 <div class="card">
-    @if (!empty($image) && !empty($url))
-        <a href="{{ $url }}">
-            <img class="card-img-top" src="{{ $image }}" style="max-width: 100%">
-        </a>
-    @elseif (!empty($image))
-        <img class="card-img-top" src="{{ $image }}">
+    @if (isset($header))
+        <div class="card-header">{{ $header }}</div>
+    @endif
+
+    @if (isset($image))
+        <img class="card-img-top" src="{{ $image['src'] }}" alt="{{ $image['alt'] }}" style="max-width: 100%">
     @endif
 
     <div class="card-block">
-        @if (!empty($profile))
-            <figure class="profile">
-                <img src="{{ $profile }}" class="profile-avatar" alt="">
-            </figure>
+        @if (isset($title))
+            <h4 class="card-title">{{ $title }}</h4>
         @endif
 
-        @if (!empty($title))
-            <h4 class="card-title mt-3">
-                @if (!empty($url))
-                    <a href="{{ $url }}">{{ $title }}</a>
-                @else
-                    {{ $title }}
-                @endif
-            </h4>
+        @if (isset($subtitle))
+            <h6 class="card-subtitle mb-2 text-muted">{{ $subtitle }}</h6>
         @endif
 
-        @if (!empty($author))
-            <div class="meta">
-                <a>{{ $author }}</a>
-            </div>
-        @endif
+        <p class="card-text">{{ $slot }}</p>
 
-        <div class="card-text">
-            @if (!empty($description))
-                {{ $description }}
-            @elseif (isset($slot))
-                {{ $slot }}
-            @endif
-        </div>
+        @foreach ($links ?? [] as $link)
+            <a href="{{ $link['href'] }}" class="card-link">{{ $link['text'] }}</a>
+        @endforeach
     </div>
 
-    @if (!empty($footer) || !empty($url))
-        <div class="card-footer">
-            @if (!empty($footer))
-                <small>{{ $footer }}</small>
-            @endif
+    @if (!empty($list))
+        <ul class="list-group list-group-flush">
+            @foreach ($list as $item)
+                <li class="list-group-item">{{ $item }}</li>
+            @endforeach
+        </ul>
+    @endif
 
-            @if (!empty($url))
-                <a href="{{ $url }}" class="btn btn-default btn-sm" target="_blank">show</a>
-            @endif
+    @if (isset($footer))
+        <div class="card-footer">
+            <small class="text-muted">{{ $footer }}</small>
         </div>
     @endif
 </div>

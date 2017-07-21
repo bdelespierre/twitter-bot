@@ -142,7 +142,12 @@ class Metadata extends ArrayObject
 
             public function __toString()
             {
-                return (string) view('components.card', (array) $this);
+                return (string) view('components.card', [
+                    'title' => $this->title,
+                    'slot'  => $this->description,
+                    'image' => ['src' => $this->image, 'alt' => $this->title],
+                    'links' => [['href' => $this->url, 'text' => parse_url($this->url, PHP_URL_HOST)]]
+                ]);
             }
         };
     }
@@ -165,7 +170,12 @@ class Metadata extends ArrayObject
 
             public function __toString()
             {
-                return (string) view('components.card', (array) $this);
+                return (string) view('components.card', [
+                    'title'     => $this->title,
+                    'subtitle'  => $this->type,
+                    'image'     => ['src' => $this->image, 'alt' => $this->title],
+                    'links'     => [['href' => $this->url, 'text' => parse_url($this->url, PHP_URL_HOST)]]
+                ]);
             }
         };
     }
@@ -191,7 +201,13 @@ class Metadata extends ArrayObject
 
             public function __toString()
             {
-                return (string) view('components.card', (array) $this);
+                return (string) view('components.card', [
+                    'title'    => $this->title,
+                    'subtitle' => $this->creator,
+                    'slot'     => $this->description,
+                    'image'    => ['src' => $this->image, 'alt' => $this->imageAlt ?? $this->title],
+                    'links'    => [['href' => $this->url, 'text' => parse_url($this->url, PHP_URL_HOST)]],
+                ]);
             }
         };
     }

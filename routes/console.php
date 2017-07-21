@@ -79,7 +79,6 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
 */
 
 Artisan::command('bot:tweet', function () {
-
     $item = App\Models\BufferItem::orderBy('created_at', 'desc')->first();
     $res  = (new GuzzleHttp\Client)->post('https://www.googleapis.com/urlshortener/v1/url', [
         'query' => ['key' => env('GOOGLE_URLSHORTENER_API_KEY')],
