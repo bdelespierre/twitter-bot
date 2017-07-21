@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Twitter;
 
 use App\Console\Commands\Bliss;
+use App\Domain\Generic\IntervalSynchronizer;
 use App\Models\Twitter\User as TwitterUser;
 use Illuminate\Console\Command;
 use RuntimeException;
