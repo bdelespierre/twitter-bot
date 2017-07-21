@@ -1,16 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <form class="form" action="{{ route('buffer.add') }}" method="post">
+    <form action="{{ route('buffer.add') }}" method="post">
         {{ csrf_field() }}
 
         <div class="form-group">
-            <label for="input1">URLs</label>
-            <textarea class="form-control" name="urls" id="input1" placeholder="URLs"></textarea>
+            <label for="input-urls">URLs</label>
+            <textarea class="form-control" name="urls" id="input-urls" placeholder="URLs"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
     <div class="row">
@@ -26,5 +25,4 @@
             </div>
         @endforeach
     </div>
-</div>
 @endsection

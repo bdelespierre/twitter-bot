@@ -7,36 +7,13 @@
 @import "variables";
 
 // Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap";
+
+// Font Awesome
+@import "node_modules/font-awesome/scss/font-awesome";
 
 // Highlight
 @import "node_modules/highlight.js/styles/default";
 
-// Cards - https://bootsnipp.com/snippets/featured/bootstrap-4-card
-@import "card";
-
-// Twitter Profile Cards - https://bootsnipp.com/snippets/featured/twitter-profile-card
+// Twitter Profile Cards
 @import "twitter_profile";
-
-.text-bold {
-    font-weight: bold;
-}
-
-.bg-warning {
-    color: white;
-}
-
-.bg-danger {
-    color: white;
-}
-
-.table-log tbody {
-    font-family: 'Droid Sans Mono', monospace;
-    font-size: 85%;
-}
-
-pre {
-    border: 0;
-    padding: 0;
-    background: none;
-}

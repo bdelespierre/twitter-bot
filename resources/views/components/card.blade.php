@@ -3,7 +3,7 @@
 <div class="card">
     @if (!empty($image) && !empty($url))
         <a href="{{ $url }}">
-            <img class="card-img-top" src="{{ $image }}">
+            <img class="card-img-top" src="{{ $image }}" style="max-width: 100%">
         </a>
     @elseif (!empty($image))
         <img class="card-img-top" src="{{ $image }}">

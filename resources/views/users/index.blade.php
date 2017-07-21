@@ -1,27 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-
     <div class="row">
         <div class="col-md-8">
-            {{ $users->links() }}
+            {{ $users->links('vendor.pagination.bootstrap-4') }}
         </div>
         <div class="col-md-4">
-            <form class="form-inline text-right" action="" method="get" style="margin: 20px 0">
+            <form class="form-inline pull-right" action="" method="get">
                 {{ csrf_field() }}
 
                 <div class="form-group">
                     <div class="input-group">
-                        <input
-                            type="text"
-                            name="filter"
-                            class="form-control"
-                            placeholder="Search for..."
-                            value="{{ request('filter') }}">
+                        <input type="text" name="filter" class="form-control" placeholder="Search for..." value="{{ request('filter') }}">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">
-                                <i class="glyphicon glyphicon-search"></i>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-search"></i>
                             </button>
                         </span>
                     </div>
@@ -39,5 +32,4 @@
             </div>
         @endforeach
     </div>
-</div>
 @endsection
