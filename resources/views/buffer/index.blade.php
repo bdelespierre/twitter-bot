@@ -1,16 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{ route('buffer.add') }}" method="post">
-        {{ csrf_field() }}
+    @component('components.modal', ['id' => 'add-buffer-item', 'action' => route('buffer.add')])
+        @slot('title')
+            New item
+        @endslot
 
         <div class="form-group">
-            <label for="input-urls">URLs</label>
-            <textarea class="form-control" name="urls" id="input-urls" placeholder="URLs"></textarea>
+            <label for="input-urls">URL(s)</label>
+            <textarea class="form-control" name="urls" id="input-urls" placeholder="..."></textarea>
         </div>
+    @endcomponent
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <button data-toggle="modal" data-target="#add-buffer-item" class="btn btn-xlarge btn-primary">
+        <i class="fa fa-plus"></i>
+    </button>
 
     <div class="row">
         @foreach (range(0,3) as $i)
