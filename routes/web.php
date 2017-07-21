@@ -22,7 +22,6 @@ Route::get('/schedule', function () {
         fastcgi_finish_request();
     }
 
-    App\Journal::notice("[schedule:run] started");
     Artisan::call('schedule:run');
 });
 

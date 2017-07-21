@@ -28,8 +28,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('twitter:sync')->hourly()->withoutOverlapping();
-        $schedule->command('bot:tweet')->cron('0 10,13,18,20 * * *');
+        $schedule->command('twitter:sync')
+            ->hourly()
+            ->withoutOverlapping()
+            ->emailOutputTo('benjamin.delespierre@gmail.com');
+
+        $schedule->command('bot:tweet')
+            ->cron('0 10,13,18,20 * * *');
     }
 
     /**
