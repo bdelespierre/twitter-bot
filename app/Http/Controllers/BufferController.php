@@ -31,4 +31,18 @@ class BufferController extends Controller
     {
         return view('buffer.view', compact('item'));
     }
+
+    public function pixel(Request $request)
+    {
+        if ($url = $request->server('HTTP_REFERER')) {
+            BufferItem::create(compact('url'));
+        }
+
+        return response()->file(public_path('pixel.png'));
+    }
+
+    public function bookmarklet()
+    {
+        return view('buffer.bookmarklet', compact('js'));
+    }
 }

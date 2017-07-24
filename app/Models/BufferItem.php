@@ -10,11 +10,19 @@ class BufferItem extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['url'];
+    protected $fillable = ['url', 'html'];
 
     public function getDocumentAttribute()
     {
-        return Document::fromUrl($this->url);
+        if ($this->html) {
+            return Document::fromHTML($this->html);
+        }
+
+        $this->update([
+            'html' => (string) ($doc = Document::fromUrl($this->url))
+        ]);
+
+        return $doc;
     }
 
     public function getArticleAttribute()

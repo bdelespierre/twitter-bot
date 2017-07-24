@@ -42,10 +42,7 @@ class Document extends DOMDocument
             }
         }
 
-        $doc = new self;
-        $doc->loadHTML($html);
-
-        return $doc;
+        return self::fromHTML($html);
     }
 
     public static function fromHTML(string $html)

@@ -45,6 +45,16 @@ Route::post('/buffer', [
     'uses' => 'BufferController@add'
 ]);
 
+Route::get('/buffer/pixel', [
+    'as'   => 'buffer.pixel',
+    'uses' => 'BufferController@pixel'
+]);
+
+Route::get('/buffer/bookmarklet', [
+    'as'   => 'buffer.bookmarklet',
+    'uses' => 'BufferController@bookmarklet'
+]);
+
 Route::get('/buffer/{item}', [
     'as'   => 'buffer.view',
     'uses' => 'BufferController@view'

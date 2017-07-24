@@ -13,6 +13,11 @@ use App\Domain\Html\Document as HtmlDocument;
 
 class Document extends DOMDocument
 {
+    public function __toString()
+    {
+        return (string) $this->getContent();
+    }
+
     public function __get($key)
     {
         if (method_exists($this, $method = 'get' . ucfirst($key))) {
