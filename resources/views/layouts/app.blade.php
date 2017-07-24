@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Twitter Bot') }}</title>
 
     @section('head.styles')
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/app.css', Request::secure()) }}" rel="stylesheet">
     @show
 </head>
 <body>
@@ -20,7 +20,7 @@
     </div>
 
     @section('body.scripts')
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/app.js', Request::secure()) }}"></script>
     @show
 </body>
 </html>
