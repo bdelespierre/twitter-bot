@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BufferItem;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class BufferController extends Controller
@@ -19,7 +20,11 @@ class BufferController extends Controller
         $items = [];
 
         foreach (array_filter(array_map('trim', explode("\n", $urls))) as $url) {
-            $items[] = BufferItem::create(compact('url'));
+            try {
+                $items[] = BufferItem::create(compact('url'));
+            } catch (QueryException $e) {
+                //
+            }
         }
 
         return redirect()
@@ -35,7 +40,11 @@ class BufferController extends Controller
     public function pixel(Request $request)
     {
         if ($url = $request->server('HTTP_REFERER')) {
-            BufferItem::create(compact('url'));
+            try {
+                BufferItem::create(compact('url'));
+            } catch (QueryException $e) {
+                //
+            }
         }
 
         return response()->file(public_path('pixel.png'));
