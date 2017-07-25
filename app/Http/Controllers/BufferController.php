@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BufferItem;
+use App\Models\Buffer\Item;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
@@ -10,7 +10,7 @@ class BufferController extends Controller
 {
     public function index()
     {
-        $items = BufferItem::all();
+        $items = Item::all();
         return view('buffer.index', compact('items'));
     }
 
@@ -21,7 +21,7 @@ class BufferController extends Controller
 
         foreach (array_filter(array_map('trim', explode("\n", $urls))) as $url) {
             try {
-                $items[] = BufferItem::create(compact('url'));
+                $items[] = Item::create(compact('url'));
             } catch (QueryException $e) {
                 //
             }
@@ -32,7 +32,7 @@ class BufferController extends Controller
             ->with('created_items', $items);
     }
 
-    public function view(BufferItem $item)
+    public function view(Item $item)
     {
         return view('buffer.view', compact('item'));
     }
@@ -41,7 +41,7 @@ class BufferController extends Controller
     {
         if ($url = $request->server('HTTP_REFERER')) {
             try {
-                BufferItem::create(compact('url'));
+                Item::create(compact('url'));
             } catch (QueryException $e) {
                 //
             }

@@ -8,12 +8,13 @@ use DOMNode;
 use DOMNodeList;
 use DOMXpath;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
 use UnexpectedValueException;
 
 class Document extends DOMDocument
 {
+    protected const CACHE_KEY = "domain.html.document.";
+
     public function __toString()
     {
         return (string) $this->getContent();
@@ -28,26 +29,19 @@ class Document extends DOMDocument
         throw new UnexpectedValueException("No such key: {$key}");
     }
 
-    public static function fromUrl(string $url, bool $cache = true)
+    public static function fromUrl(string $url)
     {
-        if ($cache && Cache::has($key = "domain.html.document." . str_slug($url))) {
-            $html = Cache::get($key);
-        } else {
-            $response = (new Client())->get($url);
-            $html = (string) $response->getBody();
+        $html = Cache::remember(static::CACHE_KEY.str_slug($url), Carbon::now()->addHours(8), function () use ($url) {
+            $response = (new Client)->get($url);
+            return (string) $response->getBody();
+        });
 
-            if ($cache && $html) {
-                $expireAt = Carbon::now()->addHours(8);
-                Cache::put($key, $html, $expireAt);
-            }
-        }
-
-        return self::fromHTML($html);
+        return static::fromHtml($html);
     }
 
-    public static function fromHTML(string $html)
+    public static function fromHtml(string $html)
     {
-        $doc = new self;
+        $doc = new static;
         $doc->loadHTML($html);
 
         return $doc;

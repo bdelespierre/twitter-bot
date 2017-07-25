@@ -63,7 +63,7 @@ class CursoredCollection implements IteratorAggregate
         }
 
         do {
-            $collection = $fetchCollection(compact('format', 'cursor')) ;
+            $collection = $fetchCollection(compact('format', 'cursor'));
             $cursor = $collection['next_cursor_str'] ?? "";
 
             foreach (array_get($collection, $this->key, []) as $item) {

@@ -52,22 +52,31 @@ Artisan::command('twitter:sync', function () {
  * programming
  */
 Artisan::command('import:reddit {subreddit}', function ($subreddit) {
-    $url = "https://www.reddit.com/r/{$subreddit}/hot/.rss?sort=hot";
-    $this->comment("reading from {$url}");
+    foreach (App\Domain\Feed\Reddit\Document::fromSubreddit($subreddit) as $item) {
+        dump($item);
+    }
+});
 
-    foreach (App\Domain\Atom\Document::fromUrl($url)->items as $item) {
-        $url = array_first($item->urls, function($url) {
-            return parse_url($url, PHP_URL_HOST) != 'www.reddit.com';
-        });
+/**
+ * https://hackernoon.com/feed
+ * https://news.ycombinator.com/rss
+ */
+Artisan::command('import:feed {--type=rss} {url}', function ($url) {
+    switch (strtolower($this->option('type'))) {
+        case 'rss':
+            $feed = App\Domain\Feed\Rss\Document::fromUrl($url);
+            break;
 
-        if (!$articles = App\Domain\Html\Document::fromUrl($url)->articles) {
-            $this->comment("ignoring {$url} : no article found");
-            continue;
-        }
+        case 'atom':
+            $feed = App\Domain\Feed\Atom\Document::fromUrl($url);
+            break;
 
-        $this->comment("" . count($articles) . " found for {$url}");
+        default:
+            throw new InvalidArgumentException("Invalid type: " . $this->option('type'));
+    }
 
-        // ...
+    foreach ($feed as $item) {
+        dump($item);
     }
 });
 
@@ -79,7 +88,7 @@ Artisan::command('import:reddit {subreddit}', function ($subreddit) {
 */
 
 Artisan::command('bot:tweet', function () {
-    $item = App\Models\BufferItem::orderBy(DB::raw('random()'))->first();
+    $item = App\Models\Buffer\Item::orderBy(DB::raw('random()'))->first();
     $res  = (new GuzzleHttp\Client)->post('https://www.googleapis.com/urlshortener/v1/url', [
         'query' => ['key' => env('GOOGLE_URLSHORTENER_API_KEY')],
         'json'  => ['longUrl' => $item->url]

@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Buffer;
 
 use App\Domain\Html\Document;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BufferItem extends Model
+class Item extends Model
 {
     use SoftDeletes;
+
+    protected $table = "buffer_items";
 
     protected $fillable = ['url', 'html'];
 
