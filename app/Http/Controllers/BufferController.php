@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 
 class BufferController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::all();
+        $items = Item::orderBy('updated_at', 'desc')
+            ->when($request->has('search'), function($query) use ($request) {
+                return $query->withUrl($request->get('search'));
+            })
+            ->when($request->has('trashed'), function($query) use ($request) {
+                return $request->has('only') ? $query->onlyTrashed() : $query->withTrashed();
+            })
+            ->get();
+
         return view('buffer.index', compact('items'));
     }
 
@@ -35,6 +43,27 @@ class BufferController extends Controller
     public function view(Item $item)
     {
         return view('buffer.view', compact('item'));
+    }
+
+    public function refresh(Item $item)
+    {
+        $item->refresh();
+
+        return redirect()->route('buffer.index');
+    }
+
+    public function tweet()
+    {
+        $item->tweet();
+
+        return redirect()->route('buffer.index');
+    }
+
+    public function delete(Item $item)
+    {
+        $item->delete();
+
+        return redirect()->route('buffer.index');
     }
 
     public function pixel(Request $request)

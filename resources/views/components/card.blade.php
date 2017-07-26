@@ -1,12 +1,12 @@
 <!-- /resources/components/card.blade.php -->
 
-<div class="card">
+<div class="card {{ $class ?? '' }}">
     @if (isset($header))
         <div class="card-header">{{ $header }}</div>
     @endif
 
     @if (isset($image))
-        <img class="card-img-top" src="{{ $image['src'] }}" alt="{{ $image['alt'] }}" style="max-width: 100%">
+        <img class="card-img-top mw-100" src="{{ $image['src'] }}" alt="{{ $image['alt'] }}">
     @endif
 
     <div class="card-block">

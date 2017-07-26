@@ -60,4 +60,19 @@ Route::get('/buffer/{item}', [
     'uses' => 'BufferController@view'
 ]);
 
+Route::get('/buffer/{item}/refresh', [
+    'as'   => 'buffer.refresh',
+    'uses' => 'BufferController@refresh'
+]);
+
+Route::get('/buffer/{item}/tweet', [
+    'as'   => 'buffer.tweet',
+    'uses' => 'BufferController@tweet'
+]);
+
+Route::get('/buffer/{item}/delete', [
+    'as'   => 'buffer.delete',
+    'uses' => 'BufferController@delete'
+]);
+
 Auth::routes();

@@ -13454,3 +13454,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   display: block !important;
 }
 
+.trashed {
+  opacity: .5;
+}
+
