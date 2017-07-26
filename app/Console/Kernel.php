@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         Commands\Twitter\Import::class,
         Commands\Twitter\Mute::class,
         Commands\Twitter\Unfollow::class,
+        Commands\Twitter\Tweet::class,
     ];
 
     /**
@@ -33,7 +34,7 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping()
             ->emailOutputTo('benjamin.delespierre@gmail.com');
 
-        $schedule->command('bot:tweet')
+        $schedule->command('twitter:tweet')
             ->cron('0 10,13,18,20 * * *');
     }
 

@@ -14,6 +14,11 @@ class Item extends Model
 
     protected $fillable = ['url', 'html'];
 
+    public static function pickOneAtRandom()
+    {
+        return self::orderBy(DB::raw('RANDOM()'))->first();
+    }
+
     public function getDocumentAttribute()
     {
         if ($this->html) {
