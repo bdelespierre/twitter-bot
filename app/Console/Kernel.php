@@ -36,6 +36,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('twitter:tweet')
             ->cron('0 10,13,18,20 * * *');
+
+        $schedule->command('import')->daily();
     }
 
     /**

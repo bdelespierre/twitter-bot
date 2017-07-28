@@ -4,6 +4,8 @@ namespace App\Domain\Html;
 
 use DOMDocument;
 use DOMNode;
+use PhpScience\TextRank\TextRankFacade;
+use PhpScience\TextRank\Tool\StopWords\English;
 use danielme85\ForceUTF8\Encoding;
 
 class Article
@@ -72,16 +74,39 @@ class Article
 
     public function getParagraphs()
     {
-        foreach ($this->doc->query('p', $this->node) as $paragraph) {
+        foreach ($this->doc->query('//p', $this->node) as $paragraph) {
             $paragraphs[] = self::sanitize($paragraph->nodeValue);
         }
 
-        return $paragraphs ?? $this->getRawContent();
+        return $paragraphs ?? null;
+    }
+
+    public function getFirstParagraph()
+    {
+        return $this->getParagraphs()[0] ?? null;
+    }
+
+    protected static function getTextRank()
+    {
+        $textRank  = new TextRankFacade;
+        $textRank->setStopWords(new English);
+
+        return $textRank;
     }
 
     public function getKeywords()
     {
-        // ['keyword' => (float)strength]
+        return self::getTextRank()->getOnlyKeyWords($this->getRawContent());
+    }
+
+    public function getHighlights()
+    {
+        return self::getTextRank()->getHighlights($this->getRawContent());
+    }
+
+    public function getSummary()
+    {
+        return self::getTextRank()->summarizeTextBasic($this->getRawContent());
     }
 
     protected static function sanitize(string $content): string

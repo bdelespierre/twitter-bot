@@ -26,7 +26,7 @@ class MakeBufferItemsUrlUnique extends Migration
     public function down()
     {
         Schema::table('buffer_items', function(Blueprint $table) {
-            $table->dropUnique('url');
+            $table->dropUnique('buffer_items_url_unique');
         });
     }
 }

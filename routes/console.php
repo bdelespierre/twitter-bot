@@ -47,21 +47,47 @@ Artisan::command('twitter:sync', function () {
 |
 */
 
-/**
- * learnprogramming
- * programming
- */
-Artisan::command('import:reddit {subreddit}', function ($subreddit) {
-    foreach (App\Domain\Feed\Reddit\Document::fromSubreddit($subreddit) as $item) {
-        dump($item);
+Artisan::command('import', function () {
+    $subs = ['learnprogramming', 'programming'];
+
+    foreach ($subs as $subreddit) {
+        $this->call('import:reddit', compact('subreddit'));
+    }
+
+    $feeds = [
+        'rss' => [
+            'https://hackernoon.com/feed',
+            'https://news.ycombinator.com/rss',
+            'http://www.prototypr.io/feed/',
+            'https://medium.freecodecamp.org/feed',
+            'https://uxplanet.org/feed',
+            'https://m.signalvnoise.com/feed',
+        ]
+    ];
+
+    foreach ($feeds as $type => $urls) {
+        foreach ($urls as $url) {
+            $this->call('import:feed', ['--type' => $type, 'url' => $url]);
+        }
     }
 });
 
-/**
- * https://hackernoon.com/feed
- * https://news.ycombinator.com/rss
- */
+Artisan::command('import:reddit {subreddit}', function ($subreddit) {
+    $this->info('Import from subreddit: ' . $subreddit);
+
+    foreach (App\Domain\Feed\Reddit\Document::fromSubreddit($subreddit) as $item) {
+        try {
+            $this->comment("{$item->title} ({$item->link})");
+            App\Models\Pool\Item::fromFeedItem($item);
+        } catch (Exception $e) {
+            //
+        }
+    }
+});
+
 Artisan::command('import:feed {--type=rss} {url}', function ($url) {
+    $this->info('Import from feed: ' . $url);
+
     switch (strtolower($this->option('type'))) {
         case 'rss':
             $feed = App\Domain\Feed\Rss\Document::fromUrl($url);
@@ -76,6 +102,11 @@ Artisan::command('import:feed {--type=rss} {url}', function ($url) {
     }
 
     foreach ($feed as $item) {
-        dump($item);
+        try {
+            $this->comment("{$item->title} ({$item->link})");
+            App\Models\Pool\Item::fromFeedItem($item);
+        } catch (Exception $e) {
+            //
+        }
     }
 });

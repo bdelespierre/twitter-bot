@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6712f9f983b2dcf5f34a545905f66f2e",
-    "content-hash": "a5a4c14c4f3e461365cc5ad085e163a7",
+    "hash": "b8f78a4a7defa6643b73a4df65cf45af",
+    "content-hash": "cac97c9ac877c5545dfb76d5eedbe803",
     "packages": [
         {
             "name": "detectlanguage/detectlanguage",
@@ -1478,6 +1478,57 @@
                 "random"
             ],
             "time": "2017-03-13 16:27:32"
+        },
+        {
+            "name": "php-science/textrank",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DoveID/PHP-Science-TextRank.git",
+                "reference": "77b2aa12c4fc792de7c646b1c7a2cd92d2bb0b10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DoveID/PHP-Science-TextRank/zipball/77b2aa12c4fc792de7c646b1c7a2cd92d2bb0b10",
+                "reference": "77b2aa12c4fc792de7c646b1c7a2cd92d2bb0b10",
+                "shasum": ""
+            },
+            "require": {
+                "php": "7.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpScience\\TextRank\\": [
+                        "src/",
+                        "tests/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Belicza",
+                    "email": "87.bdavid@gmail.com"
+                }
+            ],
+            "description": "TextRank (automatic text summarization) for PHP7 and HHVM.",
+            "keywords": [
+                "PHP7",
+                "automatic",
+                "hhvm",
+                "science",
+                "strict",
+                "summarization",
+                "textrank"
+            ],
+            "time": "2016-08-06 19:36:50"
         },
         {
             "name": "psr/http-message",
