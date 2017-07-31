@@ -20,6 +20,10 @@
 
         <p class="card-text">{{ $slot }}</p>
 
+        @if (isset($buttons))
+            {{ $buttons }}
+        @endif
+
         @foreach ($links ?? [] as $link)
             <a href="{{ $link['href'] }}" class="card-link">{{ $link['text'] }}</a>
         @endforeach

@@ -13458,3 +13458,11 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   opacity: .5;
 }
 
+.img {
+  display: inline-block;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-indent: -9999px;
+}
+

@@ -6,10 +6,12 @@ use App\Domain\Html\Document;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\HasDocument;
+use App\Models\Pool\Item as PoolItem;
 
 class Item extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasDocument;
 
     protected $table = "buffer_items";
 
@@ -20,6 +22,14 @@ class Item extends Model
     public function __toString()
     {
         return (string) view('buffer._item', ['item' => $this]);
+    }
+
+    public static function fromPool(PoolItem $item): self
+    {
+        return static::create([
+            'url'  => $item->url,
+            'html' => $item->html,
+        ]);
     }
 
     public static function pickOneAtRandom()
@@ -33,44 +43,8 @@ class Item extends Model
         return $query->where('url', 'like', "%{$search}%");
     }
 
-    public function refresh()
-    {
-        $this->html = (string) ($doc = Document::fromUrl($this->url));
-        $this->updated_at = Carbon::now();
-        $this->save();
-
-        return $this;
-    }
-
     public function tweet()
     {
         return Artisan::call('twitter:tweet', ['item' => $this]);
-    }
-
-    public function getDocumentAttribute()
-    {
-        return $this->html
-            ? Document::fromHTML($this->html)
-            : $this->refresh()->getDocumentAttribute();
-    }
-
-    public function getArticleAttribute()
-    {
-        return $this->document->article;
-    }
-
-    public function getArticlesAttributes()
-    {
-        return $this->document->articles;
-    }
-
-    public function getMetadataAttribute()
-    {
-        return $this->document->metadata;
-    }
-
-    public function getCardAttribute()
-    {
-        return $this->metadata->card;
     }
 }

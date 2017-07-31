@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,7 +70,7 @@
 "use strict";
 
 
-var bind = __webpack_require__(3);
+var bind = __webpack_require__(2);
 
 /*global toString:true*/
 
@@ -394,10 +394,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(4);
+    adapter = __webpack_require__(3);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(4);
+    adapter = __webpack_require__(3);
   }
   return adapter;
 }
@@ -472,33 +472,6 @@ module.exports = defaults;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -516,7 +489,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -527,7 +500,7 @@ var settle = __webpack_require__(20);
 var buildURL = __webpack_require__(22);
 var parseHeaders = __webpack_require__(23);
 var isURLSameOrigin = __webpack_require__(24);
-var createError = __webpack_require__(5);
+var createError = __webpack_require__(4);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(25);
 
 module.exports = function xhrAdapter(config) {
@@ -700,7 +673,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -724,7 +697,7 @@ module.exports = function createError(message, config, code, response) {
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -736,7 +709,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -762,15 +735,15 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(9);
-module.exports = __webpack_require__(217);
+__webpack_require__(8);
+module.exports = __webpack_require__(214);
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -780,7 +753,10 @@ module.exports = __webpack_require__(217);
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(10);
+__webpack_require__(9);
+__webpack_require__(212);
+__webpack_require__(213);
+__webpack_require__(224);
 
 // window.Vue = require('vue');
 
@@ -797,11 +773,11 @@ __webpack_require__(10);
 // });
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(11);
+window._ = __webpack_require__(10);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -867,7 +843,7 @@ try {
 } catch (e) {}
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -17956,7 +17932,34 @@ try {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(12)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(12)(module)))
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
 
 /***/ }),
 /* 12 */
@@ -31801,7 +31804,7 @@ module.exports = __webpack_require__(16);
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(3);
+var bind = __webpack_require__(2);
 var Axios = __webpack_require__(17);
 var defaults = __webpack_require__(1);
 
@@ -31836,9 +31839,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(7);
+axios.Cancel = __webpack_require__(6);
 axios.CancelToken = __webpack_require__(32);
-axios.isCancel = __webpack_require__(6);
+axios.isCancel = __webpack_require__(5);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -32160,7 +32163,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(5);
+var createError = __webpack_require__(4);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -32576,7 +32579,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(29);
-var isCancel = __webpack_require__(6);
+var isCancel = __webpack_require__(5);
 var defaults = __webpack_require__(1);
 
 /**
@@ -32727,7 +32730,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(7);
+var Cancel = __webpack_require__(6);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -50363,15 +50366,158 @@ module.exports = function(hljs) {
 };
 
 /***/ }),
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */
+/* 212 */
+/***/ (function(module, exports) {
+
+!function ($, undefined) {
+
+    $.getSelectorOf = function (element, ignore) {
+        var pieces = [];
+
+        do {
+            if (!element || !element.tagName) {
+                break;
+            }
+
+            if (-1 !== (ignore || ['HTML', 'BODY']).indexOf(element.tagName)) {
+                continue;
+            }
+
+            if (element.className) {
+                var classes = element.className.split(' ');
+                for (var i in classes) {
+                    if (classes.hasOwnProperty(i) && classes[i]) {
+                        pieces.unshift('.' + classes[i]);
+                    }
+                }
+            }
+
+            if (element.id && !/\s/.test(element.id)) {
+                pieces.unshift('#' + element.id);
+            }
+
+            pieces.unshift('>' + element.tagName.toLowerCase());
+        } while (element = element.parentNode);
+
+        return pieces.slice(1).join('');
+    };
+}(window.jQuery);
+
+/***/ }),
+/* 213 */
+/***/ (function(module, exports) {
+
+(function ($) {
+
+    $.fn.infinite = function () {
+        var opts = $.extend({
+            handle: 'a[rel=next]',
+            debug: true
+        }, arguments[0] || {});
+
+        return this.each(function (i, el) {
+            el.selector = $.getSelectorOf(el);
+            el.loading = false;
+
+            $(document).scroll(function (evt) {
+                if (!el.loading && $(opts.handle, el).length && $(opts.handle, el).last().offset().top < $(window).scrollTop() + $(window).height()) {
+                    var href = $(opts.handle, el).last().attr('href');
+                    $.ajax({
+                        url: href,
+                        context: el,
+                        dataType: 'html',
+                        beforeSend: function beforeSend(xhr) {
+                            opts.debug && console.log('Loading ' + href, xhr);
+                            this.loading = true;
+                        },
+                        complete: function complete() {
+                            this.loading = false;
+                        },
+                        success: function success(html) {
+                            $(opts.handle, el).remove();
+                            var block = document.createElement('div');
+                            block.innerHTML = html;
+                            $(this.selector + '>*', block).appendTo(this);
+                        }
+                    });
+                }
+            });
+        });
+    };
+
+    $('[rel=infinite]').infinite();
+})(window.jQuery);
+
+/***/ }),
+/* 214 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */
+/***/ (function(module, exports) {
+
+(function ($) {
+
+    $.fn.ajaxify = function () {
+        var opts = $.extend({
+            handle: '[rel=conainer]',
+            debug: true
+        }, arguments[0] || {});
+
+        return this.each(function (i, el) {
+            var $container = $(el).parentsUntil(opts.handle).last(),
+                selector = $.getSelectorOf($container);
+
+            el.loading = false;
+
+            if ($(el).is('a[href]')) {
+                $(el).click(function (event) {
+                    event.preventDefault();
+                    if (this.loading) return;
+
+                    var href = $(this).attr('href');
+                    $.ajax({
+                        url: href,
+                        context: this,
+                        dataType: 'html',
+                        beforeSend: function beforeSend(xhr) {
+                            opts.debug && console.log("Loading " + href, xhr);
+                            this.loading = true;
+                        },
+                        complete: function complete() {
+                            this.loading = false;
+                        },
+                        success: function success(html) {
+                            var block = document.createElement('div');
+                            block.innerHTML = html;
+
+                            // dirty patch
+                            var toRemove = $('>*', $container);
+                            $container.append($(selector + '>*', block));
+                            toRemove.remove();
+
+                            // dirty patch
+                            $('[rel=ajaxify]', $container).ajaxify();
+                        }
+                    });
+                });
+            }
+        });
+    };
+
+    $('[rel=ajaxify]').ajaxify();
+})(window.jQuery);
 
 /***/ })
 /******/ ]);

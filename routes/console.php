@@ -48,7 +48,10 @@ Artisan::command('twitter:sync', function () {
 */
 
 Artisan::command('import', function () {
-    $subs = ['learnprogramming', 'programming'];
+    $subs = [
+        'learnprogramming',
+        'programming'
+    ];
 
     foreach ($subs as $subreddit) {
         $this->call('import:reddit', compact('subreddit'));
@@ -75,14 +78,18 @@ Artisan::command('import', function () {
 Artisan::command('import:reddit {subreddit}', function ($subreddit) {
     $this->info('Import from subreddit: ' . $subreddit);
 
+    $items = 0;
     foreach (App\Domain\Feed\Reddit\Document::fromSubreddit($subreddit) as $item) {
         try {
             $this->comment("{$item->title} ({$item->link})");
-            App\Models\Pool\Item::fromFeedItem($item);
+            App\Models\Pool\Item::fromFeed($item);
+            $items++;
         } catch (Exception $e) {
             //
         }
     }
+
+    $this->info(sprintf('%d items imported', $items));
 });
 
 Artisan::command('import:feed {--type=rss} {url}', function ($url) {
@@ -101,12 +108,16 @@ Artisan::command('import:feed {--type=rss} {url}', function ($url) {
             throw new InvalidArgumentException("Invalid type: " . $this->option('type'));
     }
 
+    $items = 0;
     foreach ($feed as $item) {
         try {
             $this->comment("{$item->title} ({$item->link})");
-            App\Models\Pool\Item::fromFeedItem($item);
+            App\Models\Pool\Item::fromFeed($item);
+            $items++;
         } catch (Exception $e) {
             //
         }
     }
+
+    $this->info(sprintf('%d items imported', $items));
 });

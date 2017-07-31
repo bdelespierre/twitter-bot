@@ -6,6 +6,9 @@
  */
 
 require('./bootstrap');
+require('./jquery/selector')
+require('./jquery/infinite')
+require('./jquery/ajaxify')
 
 // window.Vue = require('vue');
 

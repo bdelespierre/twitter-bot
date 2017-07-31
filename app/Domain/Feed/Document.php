@@ -39,7 +39,7 @@ abstract class Document extends DOMDocument implements IteratorAggregate, Counta
     public static function fromUrl(string $url)
     {
         $xml = Cache::remember(static::CACHE_KEY.str_slug($url), Carbon::now()->addHours(8), function () use ($url) {
-            $response = (static::getClient())->get($url);
+            $response = static::getClient()->get($url);
             return (string) $response->getBody();
         });
 

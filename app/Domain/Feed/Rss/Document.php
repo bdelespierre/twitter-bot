@@ -24,6 +24,6 @@ class Document extends XmlDocument
 
     public function count()
     {
-        return $this->query('/channel/item')->length;
+        return $this->query('/rss/channel/item')->length;
     }
 }

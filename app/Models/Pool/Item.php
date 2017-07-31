@@ -3,12 +3,13 @@
 namespace App\Models\Pool;
 
 use App\Domain\Feed\Item as FeedItem;
+use App\Models\HasDocument;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasDocument;
 
     protected $table = "pool_items";
 
@@ -16,7 +17,12 @@ class Item extends Model
 
     protected $dates = ['date', 'deleted_at'];
 
-    public static function fromFeedItem(FeedItem $item)
+    public function __toString()
+    {
+        return (string) view('buffer._item', ['item' => $this]);
+    }
+
+    public static function fromFeed(FeedItem $item): self
     {
         return static::create([
             'url'         => $item->link,

@@ -75,4 +75,19 @@ Route::get('/buffer/{item}/delete', [
     'uses' => 'BufferController@delete'
 ]);
 
+Route::get('/pool', [
+    'as'   => 'pool.index',
+    'uses' => 'PoolController@index',
+]);
+
+Route::get('/pool/{item}/accept', [
+    'as' => 'pool.accept',
+    'uses' => 'PoolController@accept',
+]);
+
+Route::get('/pool/{item}/reject', [
+    'as' => 'pool.reject',
+    'uses' => 'PoolController@reject',
+]);
+
 Auth::routes();
