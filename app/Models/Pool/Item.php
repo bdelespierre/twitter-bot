@@ -61,7 +61,6 @@ class Item extends Model
     public function updateScore(array $keywords): self
     {
         $this->score = $this->getScore($keywords);
-        $this->save();
 
         return $this;
     }
