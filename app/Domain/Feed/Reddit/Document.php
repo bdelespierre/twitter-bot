@@ -29,6 +29,7 @@ class Document extends AtomDocument
             $link  = $item->link;
             $desc  = htmlspecialchars_decode($item->description);
             $html  = HtmlDocument::fromHtml($desc);
+            $urls  = [];
 
             foreach ($html->getElementsByTagName('a') as $anchor) {
                 if ($anchor->hasAttribute('href')) {
@@ -36,7 +37,7 @@ class Document extends AtomDocument
                 }
             }
 
-            if (!empty($urls)) {
+            if (count($urls)) {
                 $link = array_first($urls, function($url) {
                     return parse_url($url, PHP_URL_HOST) != 'www.reddit.com';
                 }, $link);

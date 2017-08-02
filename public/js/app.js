@@ -50494,6 +50494,7 @@ module.exports = function(hljs) {
                         beforeSend: function beforeSend(xhr) {
                             opts.debug && console.log("Loading " + href, xhr);
                             this.loading = true;
+                            $container.css('opacity', .25);
                         },
                         complete: function complete() {
                             this.loading = false;
@@ -50501,6 +50502,8 @@ module.exports = function(hljs) {
                         success: function success(html) {
                             var block = document.createElement('div');
                             block.innerHTML = html;
+
+                            $container.css('opacity', 1);
 
                             // dirty patch
                             var toRemove = $('>*', $container);

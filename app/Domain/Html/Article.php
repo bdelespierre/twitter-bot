@@ -111,17 +111,18 @@ class Article
 
     protected static function sanitize(string $content): string
     {
-        $content = self::remove($content, ['script', 'iframe', 'embeed', 'style']);
+        $content = self::removeTags($content, ['script', 'iframe', 'embeed', 'style']);
         $content = strip_tags($content);
         $content = preg_replace("/\s{2,}/", " ", $content);
+        $content = preg_replace('/&(#\d+|acirc);/', '', $content);
         $content = str_replace(["\n", "&nbsp;"], " ", $content);
-        $content = str_replace(['.', ',', ':', ';'], '', $content);
+        $content = self::removePunct($content);
         $content = trim($content);
 
         return $content;
     }
 
-    protected static function remove(string $html, array $tags): string
+    protected static function removeTags(string $html, array $tags): string
     {
         $doc = Document::fromHtml($html);
 
@@ -138,5 +139,11 @@ class Article
         }
 
         return $doc->saveHTML();
+    }
+
+    protected static function removePunct(string $str): string
+    {
+        $punct = "[](){}⟨⟩:,،、‒–—―…!.‹›«»?‘’“”'\";/⁄\\";
+        return str_replace(str_split($punct), '', $str);
     }
 }

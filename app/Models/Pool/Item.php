@@ -13,7 +13,7 @@ class Item extends Model
 
     protected $table = "pool_items";
 
-    protected $fillable = ['url', 'title', 'description', 'date', 'html'];
+    protected $fillable = ['url', 'title', 'description', 'date', 'html', 'score'];
 
     protected $dates = ['date', 'deleted_at'];
 
@@ -31,5 +31,38 @@ class Item extends Model
             'date'        => $item->date,
             'html'        => (string) $item->document,
         ]);
+    }
+
+    public function getScore(array $keywords): ?float
+    {
+        if (!$this->article) {
+            return null;
+        }
+
+        $total = 0;
+        foreach ($this->article->keywords as $keyword => $score) {
+            if (in_array($keyword, $keywords)) {
+                $total += $score;
+            }
+        }
+
+        return $total;
+    }
+
+    public function getKeywordsAttribute(): array
+    {
+        if (!$this->article) {
+            return [];
+        }
+
+        return array_slice(array_keys($this->article->keywords), 0, 10);
+    }
+
+    public function updateScore(array $keywords): self
+    {
+        $this->score = $this->getScore($keywords);
+        $this->save();
+
+        return $this;
     }
 }

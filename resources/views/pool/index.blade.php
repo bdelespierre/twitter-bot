@@ -3,17 +3,12 @@
 @section('content')
     @if (!Request::has('display') || Request::input('display') == 'table')
         <table class="table" rel="container">
-            <thead>
-                <th>#</th>
-                <th>Item</th>
-                <th class="text-right">Action</th>
-            </thead>
             <tbody>
                 @foreach ($items as $item)
                     <tr>
                         <td class="pl-0">
                             @if ($item->metadata->image)
-                                <div class="img" style="width: 7em; height: 4em; background-image: url('{{ $item->metadata->image }}')"></div>
+                                <div class="img rounded" style="width: 7em; height: 4em; background-image: url('{{ $item->metadata->image }}')"></div>
                             @endif
                         </td>
                         <td>
@@ -21,11 +16,15 @@
                             <small class="text-muted font-italic">{{ parse_url($item->url, PHP_URL_HOST) }}</small>
                             <br>
                             <span class="text-muted" title="{{ $item->created_at }}">{{ $item->created_at->diffForHumans() }}</span>
-                            <p>{{ $item->metadata->description }}</p>
+                            <p class="mb-1 mt-1">{{ $item->metadata->description }}</p>
+                            @foreach ($item->keywords as $keyword)
+                                <a href="https://twitter.com/hashtag/{{ $keyword }}" class="{{ in_array($keyword, config('twitter.hashtags')) ? 'text-primary' : 'text-muted' }} mr-1">#{{ $keyword }}</a>
+                            @endforeach
                         </td>
-                        <td class="text-right pr-0 text-nowrap">
+                        <td class="text-right pr-0 text-nowrap text-right">
                             <a href="{{ route('pool.accept', $item) }}" class="btn btn-outline-success" rel="ajaxify"><i class="fa fa-check"></i></a>
-                            <a href="{{ route('pool.reject', $item) }}" class="btn btn-outline-danger" rel="ajaxify"><i class="fa fa-ban"></i></a>
+                            <a href="{{ route('pool.reject', $item) }}" class="btn btn-outline-danger" rel="ajaxify"><i class="fa fa-ban"></i></a><br>
+                            <span class="d-block h3 {{ $item->score > 1 ? 'bg-success text-white' : 'bg-faded text-muted' }} text-white p-3 rounded font-weight-bold text-center mt-1">{{ $item->score ? sprintf('%.2f', $item->score) : 'N/A' }}</span>
                         </td>
                     </tr>
                 @endforeach

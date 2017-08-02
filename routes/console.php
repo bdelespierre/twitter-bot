@@ -121,3 +121,9 @@ Artisan::command('import:feed {--type=rss} {url}', function ($url) {
 
     $this->info(sprintf('%d items imported', $items));
 });
+
+Artisan::command('cache:score', function() {
+    foreach (App\Models\Pool\Item::whereNull('score')->get() as $item) {
+        $item->updateScore(config('twitter.hashtags', []));
+    }
+});
