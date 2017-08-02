@@ -29,11 +29,11 @@ Artisan::command('heroku:tinker', function () {
 Artisan::command('cache:warmup', function () {
     $this->call('twitter:import', ['relationship' => 'friends']);
     $this->call('twitter:import', ['relationship' => 'followers']);
+    $this->call('update:scores');
 })->describe("Warms up the cache");
 
 Artisan::command('twitter:sync', function () {
-    $this->call('twitter:import', ['relationship' => 'friends']);
-    $this->call('twitter:import', ['relationship' => 'followers']);
+    $this->call('cache:warmup');
     $this->call('twitter:follow');
     $this->call('twitter:unfollow');
     $this->call('twitter:mute');
@@ -122,7 +122,7 @@ Artisan::command('import:feed {--type=rss} {url}', function ($url) {
     $this->info(sprintf('%d items imported', $items));
 });
 
-Artisan::command('cache:score', function() {
+Artisan::command('update:scores', function() {
     foreach (App\Models\Pool\Item::whereNull('score')->get() as $item) {
         $item->updateScore(config('twitter.hashtags', []));
     }
