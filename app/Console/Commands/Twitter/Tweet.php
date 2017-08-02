@@ -32,7 +32,7 @@ class Tweet extends Command
      */
     public function handle()
     {
-        $item  = $this->hasOption('item')
+        $item  = $this->option('item')
             ? Item::findOrFail($this->option('item'))
             : Item::pickOneAtRandom();
 
