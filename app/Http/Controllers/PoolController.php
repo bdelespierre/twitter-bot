@@ -10,7 +10,7 @@ class PoolController extends Controller
 {
     public function index()
     {
-        $items = Item::orderBy('score', 'desc')->paginate(25);
+        $items = Item::whereNotNull('score')->orderBy('score', 'desc')->paginate(25);
 
         return view('pool.index', compact('items'));
     }
