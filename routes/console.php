@@ -29,7 +29,6 @@ Artisan::command('heroku:tinker', function () {
 Artisan::command('cache:warmup', function () {
     $this->call('twitter:import', ['relationship' => 'friends']);
     $this->call('twitter:import', ['relationship' => 'followers']);
-    $this->call('update:scores');
 })->describe("Warms up the cache");
 
 Artisan::command('twitter:sync', function () {
@@ -73,6 +72,8 @@ Artisan::command('import', function () {
             $this->call('import:feed', ['--type' => $type, 'url' => $url]);
         }
     }
+
+    $this->call('update:scores');
 });
 
 Artisan::command('import:reddit {subreddit}', function ($subreddit) {
