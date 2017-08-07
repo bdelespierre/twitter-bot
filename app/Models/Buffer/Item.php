@@ -3,11 +3,12 @@
 namespace App\Models\Buffer;
 
 use App\Domain\Html\Document;
+use App\Models\HasDocument;
+use App\Models\Pool\Item as PoolItem;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\HasDocument;
-use App\Models\Pool\Item as PoolItem;
+use Illuminate\Support\Facades\DB;
 
 class Item extends Model
 {
