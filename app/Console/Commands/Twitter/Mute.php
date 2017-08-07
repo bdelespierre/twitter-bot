@@ -32,15 +32,21 @@ class Mute extends Command
      */
     public function handle()
     {
-        $mute = new IntervalSynchronizer(6, function ($user) {
-            $this->info("muting @{$user->screen_name}");
+        $muted = 0;
+        $mute  = new IntervalSynchronizer(6, function ($user) use (& $muted) {
+            if ($this->output->isVerbose()) {
+                $this->info("muting @{$user->screen_name}");
+            }
+
             $user->mute();
+            $muted++;
         });
 
         foreach (TwitterUser::exceptVip()->exceptMuted()->get() as $user) {
             $this->bliss($mute, $user);
         }
 
+        $this->info(sprintf('%d users muted', $muted));
         $this->report();
     }
 }

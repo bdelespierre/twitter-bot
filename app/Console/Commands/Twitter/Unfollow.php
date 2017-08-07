@@ -44,9 +44,9 @@ class Unfollow extends Command
             $getFriendshipsLookup = new IntervalSynchronizer($this->option('throttle'), $getFriendshipsLookup);
         }
 
-        $unfollow = new IntervalSynchronizer(6, function ($user) {
-            $this->info("unfollowing @{$user['screen_name']}");
-            TwitterUser::findOrFail($user['id'])->unfollow();
+        $unfollowed = [];
+        $unfollow   = new IntervalSynchronizer(6, function ($user) use (& $unfollowed) {
+            return $unfollowed[] = TwitterUser::findOrFail($user['id'])->unfollow();
         });
 
         foreach (array_chunk($friends, 100) as $chunk) {
@@ -59,9 +59,19 @@ class Unfollow extends Command
                     // de we speak the same language(s)?
                     !in_array(($user = TwitterUser::findOrFail($user['id']))->lang, ['en', 'fr'])
                 ) {
+                    if ($this->output->isVerbose()) {
+                        $this->info("unfollowing @{$user['screen_name']}");
+                    }
+
                     $this->bliss($unfollow, $user);
                 }
             }
+        }
+
+        if ($unfollowed) {
+            $this->info('%d users unfollowed: %s', count($unfollowed), implode(' ', array_map(function ($user) {
+                return "@{$user->screen_name}";
+            }, $unfollowed)));
         }
 
         $this->report();

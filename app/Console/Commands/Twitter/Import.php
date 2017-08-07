@@ -13,19 +13,6 @@ class Import extends Command
 {
     use Bliss;
 
-    private const VIP = [
-        'clientsfh'       , 'SarahCAndersen'  , 'yukaichou'       ,
-        'ProductHunt'     , 'iamlosion'       , 'newsycombinator' ,
-        'paulg'           , 'verge'           , '_TheFamily'      ,
-        'sensiolabs'      , 'elonmusk'        , 'BrianTracy'      ,
-        'Medium'          , 'ThePracticalDev' , 'afilina'         ,
-        'hackernoon'      , 'IonicFramework'  , 'polymer'         ,
-        'reactjs'         , 'MongoDB'         , 'googledevs'      ,
-        'Google'          , 'shenanigansen'   , 'Rozasalahshour'  ,
-        'jlondiche'       , 'DelespierreB'    , 'matts2cant'      ,
-        'newsycombinator' , 'TechCrunch'      ,
-    ];
-
     /**
      * The name and signature of the console command.
      *
@@ -66,27 +53,34 @@ class Import extends Command
         $options = compact('cursor', 'cache', 'throttle') + [
             'args' => ['count' => 200],
             'tap'  => function ($collection, $cursor) {
-                $this->comment("sleep before cursor {$cursor}");
+                if ($this->output->isVerbose()) {
+                    $this->comment("sleep before cursor {$cursor}");
+                }
             },
         ];
 
+        $updated = 0;
         foreach (new CursoredCollection('get'.ucfirst($relationship), 'users', $options) as $data) {
-            $this->bliss(function () use ($data, $relationship) {
-                $this->info(sprintf('#%s @%s', str_pad($data['id'], 25, '.'), $data['screen_name']));
+            $this->bliss(function () use ($data, $relationship, & $updated) {
+                if ($this->output->isVerbose()) {
+                    $this->info(sprintf('#%s @%s', str_pad($data['id'], 25, '.'), $data['screen_name']));
+                }
+
                 $user = TwitterUser::updateOrCreate(
                     ['id'          => $data['id']],
                     ['screen_name' => $data['screen_name']] + compact('data')
                 );
 
-                if (in_array($user->screen_name, self::VIP)) {
+                if (in_array($user->screen_name, config('twitter.vip', []))) {
                     $user->vip = true;
                 }
 
                 $user->{substr($relationship, 0, -1)} = true; // 'friend' or 'follower'
-                $user->updateAttributes()->save();
+                $updated += (int) $user->updateAttributes()->save();
             });
         }
 
+        $this->info(sprintf('%d users updated', $updated));
         $this->report();
     }
 }

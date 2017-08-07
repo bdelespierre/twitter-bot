@@ -33,12 +33,14 @@ class Follow extends Command
      */
     public function handle()
     {
-        $follow = new IntervalSynchronizer(6, function (TwitterUser $user) {
-            return $user->follow();
+        $followed = [];
+        $follow   = new IntervalSynchronizer(6, function (TwitterUser $user) use (& $followed) {
+            return $followed[] = $user->follow();
         });
 
-        $mute = new IntervalSynchronizer(6, function (TwitterUser $user) {
-            return $user->mute();
+        $muted    = [];
+        $mute     = new IntervalSynchronizer(6, function (TwitterUser $user) use (& $muted) {
+            return $muted[] = $user->mute();
         });
 
         foreach (TwitterUser::fans()->get() as $user) {
@@ -46,12 +48,28 @@ class Follow extends Command
                 return;
             }
 
-            $this->info("following {$user->id}");
+            if ($this->output->isVerbose()) {
+                $this->info("following {$user->id}");
+            }
+
             $this->bliss($follow, $user);
 
             if ($this->hasOption('mute')) {
                 $this->bliss($mute, $user);
             }
+        }
+
+        if ($followed) {
+            $this->info('%d users followed: %s', count($followed), implode(' ', array_map(function ($user) {
+                return "@{$user->screen_name}";
+            }, $followed)));
+        }
+
+
+        if ($muted) {
+            $this->info('%d users muted: %s', count($muted), implode(' ', array_map(function ($user) {
+                return "@{$user->screen_name}";
+            }, $muted)));
         }
 
         $this->report();
