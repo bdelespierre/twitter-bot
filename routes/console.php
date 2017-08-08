@@ -36,26 +36,6 @@ Artisan::command('twitter:sync', function () {
     $this->call('twitter:follow');
     $this->call('twitter:unfollow');
     $this->call('twitter:mute');
-    //$this->call('twitter:purge');
-});
-
-Artisan::command('lol', function () {
-    $error = "foo\nbarbaz";
-
-    $this->comment("wut");
-
-            $lines = explode("\n", $error);
-        $max = max(array_map('strlen', $lines));
-
-        $this->output->writeln("");
-        $this->output->writeln("<error>  " . str_pad("", $max) . "  </error>");
-        foreach ($lines as $line) {
-            $this->output->writeln("<error>  " . str_pad($line, $max) . "  </error>");
-        }
-        $this->output->writeln("<error>  " . str_pad("", $max) . "  </error>");
-        $this->output->writeln("");
-
-    $this->comment("wut");
 });
 
 /*
