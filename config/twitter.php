@@ -49,14 +49,16 @@ return [
     */
 
     'hashtags' => [
-        'tech'    , 'javascript' , 'php'          , 'startup'     ,
-        'ux'      , 'devops'     , 'laravel'      , 'symfony'     ,
-        'chatbot' , 'devel'      , 'bitcoin'      , 'blockchain'  ,
-        'angular' , 'react'      , 'frontend'     , 'backend'     ,
-        'code'    , 'coding'     , 'gamification' , 'programming' ,
-        'ai'      , 'node'       , 'nodejs'       , 'firebase'    ,
-        'google'  , 'chrome'     , 'android'      , 'webapp'      ,
-        'ui'      , 'linux'
+        'tech'      , 'javascript' , 'php'          , 'startup'     ,
+        'ux'        , 'devops'     , 'laravel'      , 'symfony'     ,
+        'chatbot'   , 'devel'      , 'bitcoin'      , 'blockchain'  ,
+        'angular'   , 'react'      , 'frontend'     , 'backend'     ,
+        'code'      , 'coding'     , 'gamification' , 'programming' ,
+        'ai'        , 'node'       , 'nodejs'       , 'firebase'    ,
+        'google'    , 'chrome'     , 'android'      , 'webapp'      ,
+        'ui'        , 'linux'      , 'development'  , 'developper'  ,
+        'framework' , 'apps'       , 'redux'        , 'technology'  ,
+        'startups'  , 'python'     , 'learning'     , 'bitcoins'    ,
     ],
 
 ];
