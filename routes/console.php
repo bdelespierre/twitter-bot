@@ -143,7 +143,7 @@ Artisan::command('import:feed {--type=rss} {url}', function ($url) {
 });
 
 Artisan::command('update:scores', function() {
-    foreach (App\Models\Pool\Item::whereNull('score')->get() as $item) {
+    foreach (App\Models\Pool\Item::all() as $item) {
         $item->updateScore(config('twitter.hashtags', []))->save();
     }
 });
