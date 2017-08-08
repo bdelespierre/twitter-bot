@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Twitter;
 
-use App\Models\Buffer\Item;
+use App\Models\Buffer\Item as BufferItem;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -33,8 +33,8 @@ class Tweet extends Command
     public function handle()
     {
         $item  = $this->option('item')
-            ? Item::findOrFail($this->option('item'))
-            : Item::pickOneAtRandom();
+            ? BufferItem::findOrFail($this->option('item'))
+            : BufferItem::pickOneAtRandom();
 
         $url   = self::shorten($item->url);
         $max   = 140 - strlen($url) - 1;
@@ -50,7 +50,7 @@ class Tweet extends Command
 
         $status = "{$title} {$url}";
 
-        if ($this->hasOption('dry')) {
+        if ($this->option('dry')) {
             return $this->line($status);
         }
 
