@@ -2,7 +2,7 @@
 
 @section('content')
     @if (!Request::has('display') || Request::input('display') == 'table')
-        <table class="table" rel="container">
+        <table class="table">
             <tbody>
                 @foreach ($items as $item)
                     <tr>
@@ -22,8 +22,8 @@
                             @endforeach
                         </td>
                         <td class="text-right pr-0 text-nowrap text-right">
-                            <a href="{{ route('pool.accept', $item) }}" class="btn btn-outline-success" rel="ajaxify"><i class="fa fa-check"></i></a>
-                            <a href="{{ route('pool.reject', $item) }}" class="btn btn-outline-danger" rel="ajaxify"><i class="fa fa-ban"></i></a><br>
+                            <a href="{{ route('pool.accept', $item) }}" class="btn btn-outline-success"><i class="fa fa-check"></i></a>
+                            <a href="{{ route('pool.reject', $item) }}" class="btn btn-outline-danger"><i class="fa fa-ban"></i></a><br>
                             <span class="d-block h3 {{ $item->score > 1 ? 'bg-success text-white' : 'bg-faded text-muted' }} text-white p-3 rounded font-weight-bold text-center mt-1">{{ !is_null($item->score) ? sprintf('%.2f', $item->score) : 'N/A' }}</span>
                         </td>
                     </tr>
