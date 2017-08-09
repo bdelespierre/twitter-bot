@@ -57,7 +57,10 @@ class Unfollow extends Command
                     !in_array('followed_by', $user['connections']) ||
 
                     // de we speak the same language(s)?
-                    !in_array(($user = TwitterUser::findOrFail($user['id']))->lang, ['en', 'fr'])
+                    !in_array(($user = TwitterUser::findOrFail($user['id']))->lang, ['en', 'fr']) ||
+
+                    // is it an islamic account?
+                    false !== strpos(strtolower($user['description'] . $user['screen_name']), 'islam')
                 ) {
                     if ($this->output->isVerbose()) {
                         $this->info("unfollowing @{$user['screen_name']}");
@@ -69,9 +72,13 @@ class Unfollow extends Command
         }
 
         if ($unfollowed) {
-            $this->info('%d users unfollowed: %s', count($unfollowed), implode(' ', array_map(function ($user) {
-                return "@{$user->screen_name}";
-            }, $unfollowed)));
+            $this->info(sprintf(
+                '%d users unfollowed: %s',
+                count($unfollowed),
+                implode(' ', array_map(function ($user) {
+                    return "@{$user->screen_name}";
+                }, $unfollowed))
+            ));
         }
 
         $this->report();
