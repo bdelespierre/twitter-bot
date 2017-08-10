@@ -358,7 +358,7 @@ body {
   font-size: 1rem;
   font-weight: normal;
   line-height: 1.5;
-  color: #292b2c;
+  color: #222;
   background-color: #fff;
 }
 
@@ -762,7 +762,7 @@ kbd {
   padding: 0.2rem 0.4rem;
   font-size: 90%;
   color: #fff;
-  background-color: #292b2c;
+  background-color: #222;
   border-radius: 0.2rem;
 }
 
@@ -777,7 +777,7 @@ pre {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 90%;
-  color: #292b2c;
+  color: #222;
 }
 
 pre code {
@@ -2692,7 +2692,7 @@ pre code {
 
 .thead-inverse th {
   color: #fff;
-  background-color: #292b2c;
+  background-color: #222;
 }
 
 .thead-default th {
@@ -2702,7 +2702,7 @@ pre code {
 
 .table-inverse {
   color: #fff;
-  background-color: #292b2c;
+  background-color: #222;
 }
 
 .table-inverse th,
@@ -3199,13 +3199,13 @@ fieldset[disabled] a.btn {
 }
 
 .btn-secondary {
-  color: #292b2c;
+  color: #222;
   background-color: #fff;
   border-color: #ccc;
 }
 
 .btn-secondary:hover {
-  color: #292b2c;
+  color: #222;
   background-color: #e6e5e5;
   border-color: #adadad;
 }
@@ -3225,7 +3225,7 @@ fieldset[disabled] a.btn {
 .btn-secondary:active,
 .btn-secondary.active,
 .show > .btn-secondary.dropdown-toggle {
-  color: #292b2c;
+  color: #222;
   background-color: #e6e5e5;
   background-image: none;
   border-color: #adadad;
@@ -3700,7 +3700,7 @@ tbody.collapse.show {
   padding: 0.5rem 0;
   margin: 0.125rem 0 0;
   font-size: 1rem;
-  color: #292b2c;
+  color: #222;
   text-align: left;
   list-style: none;
   background-color: #fff;
@@ -3722,7 +3722,7 @@ tbody.collapse.show {
   padding: 3px 1.5rem;
   clear: both;
   font-weight: normal;
-  color: #292b2c;
+  color: #222;
   text-align: inherit;
   white-space: nowrap;
   background: none;
@@ -3731,7 +3731,7 @@ tbody.collapse.show {
 
 .dropdown-item:focus,
 .dropdown-item:hover {
-  color: #1d1e1f;
+  color: #151515;
   text-decoration: none;
   background-color: #f7f7f9;
 }
@@ -5629,7 +5629,7 @@ a.badge:hover {
 }
 
 .list-group-item-action .list-group-item-heading {
-  color: #292b2c;
+  color: #222;
 }
 
 .list-group-item-action:focus,
@@ -5640,7 +5640,7 @@ a.badge:hover {
 }
 
 .list-group-item-action:active {
-  color: #292b2c;
+  color: #222;
   background-color: #eceeef;
 }
 
@@ -6653,12 +6653,12 @@ a.bg-danger:hover {
 }
 
 .bg-inverse {
-  background-color: #292b2c !important;
+  background-color: #222 !important;
 }
 
 a.bg-inverse:focus,
 a.bg-inverse:hover {
-  background-color: #101112 !important;
+  background-color: #090909 !important;
 }
 
 .border-0 {
@@ -10090,12 +10090,12 @@ a.text-danger:hover {
 }
 
 .text-gray-dark {
-  color: #292b2c !important;
+  color: #222 !important;
 }
 
 a.text-gray-dark:focus,
 a.text-gray-dark:hover {
-  color: #101112 !important;
+  color: #090909 !important;
 }
 
 .text-hide {
@@ -13454,6 +13454,104 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   display: block !important;
 }
 
+body.admin-panel {
+  margin-top: 56px;
+  margin-left: 225px;
+}
+
+body.admin-panel > ul.nav {
+  position: fixed;
+  left: 0;
+  top: 56px;
+  width: 225px;
+}
+
+body.admin-panel.theme-dark {
+  background: #222;
+}
+
+body.admin-panel.theme-dark > nav.navbar,
+body.admin-panel.theme-dark > ul.nav {
+  background: #222;
+  text-shadow: 1px 1px 2px #000;
+}
+
+body.admin-panel.theme-dark > nav.navbar a,
+body.admin-panel.theme-dark > ul.nav a {
+  color: #eceeef;
+}
+
+body.admin-panel.theme-dark > nav.navbar a .fa,
+body.admin-panel.theme-dark > ul.nav a .fa {
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  color: #636c72;
+}
+
+body.admin-panel.theme-dark > nav.navbar a:hover .fa,
+body.admin-panel.theme-dark > ul.nav a:hover .fa {
+  color: #5bc0de;
+}
+
+body.admin-panel.theme-dark > nav.navbar a.disabled,
+body.admin-panel.theme-dark > ul.nav a.disabled {
+  color: #636c72;
+}
+
+body.admin-panel.theme-dark > nav.navbar a.disabled:hover .fa,
+body.admin-panel.theme-dark > nav.navbar a.disabled .fa,
+body.admin-panel.theme-dark > ul.nav a.disabled:hover .fa,
+body.admin-panel.theme-dark > ul.nav a.disabled .fa {
+  color: #636c72;
+}
+
+body.admin-panel.theme-dark > ul.nav .nav-item {
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+body.admin-panel.theme-dark > ul.nav .nav-item:hover {
+  background: #000;
+}
+
+body.admin-panel.theme-dark > div.container-fluid {
+  -webkit-box-shadow: 0px -5px 20px 0px #000;
+          box-shadow: 0px -5px 20px 0px #000;
+}
+
+body.admin-panel.theme-light {
+  background: #f7f7f9;
+}
+
+body.admin-panel.theme-light > nav.navbar,
+body.admin-panel.theme-light > ul.nav {
+  background: #f7f7f9;
+}
+
+body.admin-panel.theme-light > nav.navbar a,
+body.admin-panel.theme-light > ul.nav a {
+  color: #464a4c;
+}
+
+body.admin-panel.theme-light > ul.nav .nav-item {
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+body.admin-panel.theme-light > ul.nav .nav-item:hover {
+  background: #eceeef;
+}
+
+body.admin-panel.theme-light > div.container-fluid {
+  border-radius: 0;
+  -webkit-box-shadow: 0px 0px 20px 0px #eceeef;
+          box-shadow: 0px 0px 20px 0px #eceeef;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
 .trashed {
   opacity: .5;
 }
@@ -13464,5 +13562,10 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
   background-repeat: no-repeat;
   background-size: cover;
   text-indent: -9999px;
+}
+
+table.table.no-header tr:nth-child(1) td {
+  border-top: 0;
+  padding-top: 0;
 }
 

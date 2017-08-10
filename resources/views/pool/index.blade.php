@@ -2,7 +2,7 @@
 
 @section('content')
     @if (!Request::has('display') || Request::input('display') == 'table')
-        <table class="table">
+        <table class="table no-header">
             <tbody>
                 @foreach ($items as $item)
                     <tr>

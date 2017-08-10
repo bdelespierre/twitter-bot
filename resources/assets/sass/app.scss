@@ -18,6 +18,89 @@
 // Twitter Profile Cards
 @import "twitter_profile";
 
+body.admin-panel {
+    margin-top: $navbar-height;
+    margin-left: $menu-width;
+
+    > ul.nav {
+        position: fixed;
+        left: 0;
+        top: $navbar-height;
+        width: $menu-width;
+    }
+
+    &.theme-dark {
+        background: $inverse-bg;
+
+        > nav.navbar, > ul.nav {
+            background: $inverse-bg;
+            text-shadow: 1px 1px 2px $black;
+
+            a {
+                color: $gray-lighter;
+
+                .fa {
+                    transition: $transition-base;
+                    color: $gray-light;
+                }
+
+                &:hover .fa {
+                    color: $teal;
+                }
+
+                &.disabled {
+                    color: $btn-link-disabled-color;
+
+                    &:hover .fa, .fa {
+                        color: $gray-light;
+                    }
+                }
+            }
+        }
+
+        > ul.nav .nav-item {
+            transition: $transition-base;
+
+            &:hover {
+                background: $black;
+            }
+        }
+
+        > div.container-fluid {
+            box-shadow: 0px -5px 20px 0px $black;
+        }
+    }
+
+    &.theme-light {
+        background: $gray-lightest;
+
+        > nav.navbar, > ul.nav {
+            background: $gray-lightest;
+
+            a {
+                color: $gray;
+            }
+        }
+
+        > ul.nav .nav-item {
+            transition: $transition-base;
+
+            &:hover {
+                background: $gray-lighter;
+            }
+        }
+
+        > div.container-fluid {
+            border-radius: 0;
+            box-shadow: 0px 0px 20px 0px $gray-lighter;
+        }
+    }
+}
+
+.bg-white {
+    background-color: $white;
+}
+
 .trashed {
     opacity: .5;
 }
@@ -28,4 +111,9 @@
     background-repeat: no-repeat;
     background-size: cover;
     text-indent: -9999px;
+}
+
+table.table.no-header tr:nth-child(1) td {
+    border-top: 0;
+    padding-top: 0;
 }

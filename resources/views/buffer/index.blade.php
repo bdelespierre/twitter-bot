@@ -12,7 +12,7 @@
         </div>
     @endcomponent
 
-    <div class="btn-toolbar my-3">
+    <div class="btn-toolbar mb-3">
         <div class="btn-group mr-2">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
