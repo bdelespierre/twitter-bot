@@ -13392,6 +13392,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 .twitter-profile .user {
   margin: 5px 0 0;
+  position: relative;
 }
 
 .twitter-profile .user .name {
@@ -13402,6 +13403,12 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 
 .twitter-profile .user .name a {
   color: inherit !important;
+}
+
+.twitter-profile .user .attributes {
+  position: absolute;
+  top: 0;
+  right: 5px;
 }
 
 .twitter-profile .stats {

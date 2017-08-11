@@ -4,6 +4,7 @@ namespace App\Models\Twitter;
 
 use App\Domain\Generic\Str;
 use App\Support\Facades\Language;
+use BadMethodCallException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -25,12 +26,30 @@ class User extends Model
 
     public function __toString()
     {
-        return (string) view('components.twitter_profile', ['id' => $this->id] + $this->data);
+        return (string) view('components.twitter_profile', ['id' => $this->id, 'user' => $this] + $this->data);
     }
 
     public function scopeWithScreenName($query, $name = "")
     {
         return $query->where('screen_name', 'like', "%{$name}%");
+    }
+
+    public function scopeOnly($query, $attribute)
+    {
+        if (!method_exists($this, $method = 'scope' . ucfirst(strtolower($attribute)))) {
+            throw new BadMethodCallException("No such method: $method");
+        }
+
+        return $this->$method($query);
+    }
+
+    public function scopeExcept($query, $attribute)
+    {
+        if (!method_exists($this, $method = 'scopeExcept' . ucfirst(strtolower($attribute)))) {
+            throw new BadMethodCallException("No such method: $method");
+        }
+
+        return $this->$method($query);
     }
 
     public function updateAttributes()
@@ -81,7 +100,7 @@ class User extends Model
 
     public function isFriend()
     {
-        return (boolean) $this->mask & self::FRIEND;
+        return (boolean) ($this->mask & self::FRIEND);
     }
 
     public function getFriendAttribute()
@@ -145,7 +164,7 @@ class User extends Model
 
     public function isFollower()
     {
-        return (boolean) $this->mask & self::FOLLOWER;
+        return (boolean) ($this->mask & self::FOLLOWER);
     }
 
     public function getFollowerAttribute()
@@ -193,7 +212,7 @@ class User extends Model
 
     public function isMuted()
     {
-        return (boolean) $this->mask & self::MUTED;
+        return (boolean) ($this->mask & self::MUTED);
     }
 
     public function getMutedAttribute()
@@ -253,7 +272,7 @@ class User extends Model
 
     public function isBlocked()
     {
-        return (boolean) $this->mask & self::BLOCKED;
+        return (boolean) ($this->mask & self::BLOCKED);
     }
 
     public function getBlockedAttribute()
@@ -289,7 +308,7 @@ class User extends Model
 
     public function isVip()
     {
-        return (boolean) $this->mask & self::VIP;
+        return (boolean) ($this->mask & self::VIP);
     }
 
     public function getVipAttribute()

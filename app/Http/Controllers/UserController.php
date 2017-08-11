@@ -9,8 +9,14 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = TwitterUser::withScreenName($request->input('filter'))
+        $users = TwitterUser::withScreenName($request->input('search'))
             ->orderBy('updated_at', 'desc')
+            ->when($request->has('show'), function($query) use ($request) {
+                return $query->only($request->get('show'));
+            })
+            ->when($request->has('hide'), function($query) use ($request) {
+                return $query->except($request->get('hide'));
+            })
             ->paginate($request->input('per_page', 15));
 
         return view('users.index', compact('users'));

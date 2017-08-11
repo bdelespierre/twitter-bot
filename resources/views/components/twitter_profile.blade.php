@@ -1,11 +1,11 @@
 <!-- resources/views/components/twitter_profile.blade.php -->
 
 <div class="twitter-profile">
-    <a class="background"
-        @if (!empty($profile_banner_url))
-            style="background-image: url({{ $profile_banner_url }})"
-        @endif
-    ></a>
+    @if (!empty($profile_banner_url))
+        <a class="background" style="background-image: url({{ $profile_banner_url }})"></a>
+    @else
+        <a class="background"></a>
+    @endif
 
     <div>
         <a title="{{ $name }}" href="https://twitter.com/{{ $screen_name }}" class="avatar">
@@ -19,6 +19,29 @@
             <span>
                 <a href="https://twitter.com/{{ $screen_name }}">@<span>{{ $screen_name }}</span></a>
             </span>
+            @if (isset($user))
+                <div class="attributes">
+                    @if ($user->friend && $user->follower)
+                        <span class="fa fa-check text-success" title="Friend & Follower"></span>
+                    @elseif ($user->friend)
+                        <span class="fa fa-check text-primary" title="Friend"></span>
+                    @elseif ($user->follower)
+                        <span class="fa fa-check text-muted" title="Follower"></span>
+                    @endif
+
+                    @if ($user->vip)
+                        <span class="fa fa-star" style="color: #f1c40f" title="VIP"></span>
+                    @endif
+
+                    @if ($user->muted)
+                        <span class="fa fa-microphone-slash text-danger" title="Muted"></span>
+                    @endif
+
+                    @if ($user->blocked)
+                        <span class="fa fa-ban text-danger" title="Blocked"></span>
+                    @endif
+                </div>
+            @endif
         </div>
 
         <div class="stats">

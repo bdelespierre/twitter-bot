@@ -14,8 +14,17 @@ class BufferController extends Controller
             ->when($request->has('search'), function($query) use ($request) {
                 return $query->withUrl($request->get('search'));
             })
-            ->when($request->has('trashed'), function($query) use ($request) {
-                return $request->has('only') ? $query->onlyTrashed() : $query->withTrashed();
+            ->when($request->has('show'), function($query) use ($request) {
+                switch (strtolower($request->input('show'))) {
+                    case 'trashed':
+                        return $query->withTrashed();
+
+                    case 'only-trashed':
+                        return $query->onlyTrashed();
+
+                    default:
+                        return $query;
+                }
             })
             ->get();
 

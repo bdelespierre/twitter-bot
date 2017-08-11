@@ -1,7 +1,6 @@
+
+// https://bootsnipp.com/snippets/featured/twitter-profile-card
 .twitter-profile {
-    //
-    // https://bootsnipp.com/snippets/featured/twitter-profile-card
-    //
 
     background: #fff none repeat scroll 0 0;
     border: 1px solid #e1e8ed;
@@ -42,6 +41,7 @@
 
     .user {
         margin: 5px 0 0;
+        position: relative;
 
         .name {
             font-size: 18px;
@@ -51,6 +51,12 @@
              a {
                 color: inherit !important;
             }
+        }
+
+        .attributes {
+            position: absolute;
+            top: 0;
+            right: 5px;
         }
     }
 
