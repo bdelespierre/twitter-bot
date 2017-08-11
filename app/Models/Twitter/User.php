@@ -239,9 +239,11 @@ class User extends Model
 
     public function unmute()
     {
-        Twitter::unmuteUser(['user_id' => $this->id]);
-        $this->setMutedAttribute(false)->save();
+        Bliss::runtimeException('/you are not muting the specified user/i', function() {
+            Twitter::unmuteUser(['user_id' => $this->id]);
+        });
 
+        $this->setMutedAttribute(false)->save();
         return $this;
     }
 
