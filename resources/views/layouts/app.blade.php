@@ -42,6 +42,16 @@
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">Disabled</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbar-dropdown-theme" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-fw fa-cog"></i> Theme
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbar-dropdown-theme">
+                        <a class="dropdown-item" href="#" data-theme="light">Light</a>
+                        <a class="dropdown-item" href="#" data-theme="dark">Dark</a>
+                    </div>
+                </li>
+
             </ul>
         </div>
     </nav>
@@ -50,22 +60,22 @@
     <ul class="nav flex-column pt-3">
         <li class="nav-item py-1">
             <a class="nav-link disabled" href="#">
-                <i class="fa fa-tachometer"></i> Dashboard
+                <i class="fa fa-fw fa-tachometer"></i> Dashboard
             </a>
         </li>
         <li class="nav-item py-1">
             <a class="nav-link" href="{{ route('users.index') }}">
-                <i class="fa fa-users"></i> Users
+                <i class="fa fa-fw fa-users"></i> Users
             </a>
         </li>
         <li class="nav-item py-1">
             <a class="nav-link" href="{{ route('pool.index') }}">
-                <i class="fa fa-th-list"></i> Pool Items
+                <i class="fa fa-fw fa-th-list"></i> Pool Items
             </a>
         </li>
         <li class="nav-item py-1">
             <a class="nav-link" href="{{ route('buffer.index') }}">
-                <i class="fa fa-list-ol"></i> Buffer Items
+                <i class="fa fa-fw fa-list-ol"></i> Buffer Items
             </a>
         </li>
     </ul>
@@ -82,11 +92,17 @@
 
         <script type="text/javascript">
             $(function() {
-                $(document).on('click', '#container a', function(e) {
+                $(document).on('click', '#container a:not([target="_blank"])', function(e) {
                     e.preventDefault();
 
                     $('#app>*').css('opacity', .3);
                     $('#container').load($(this).attr('href')+' #app');
+                })
+
+                $('[data-theme]').click(function(e) {
+                    e.preventDefault();
+
+                    $('body').removeClass('theme-light theme-dark').addClass('theme-' + theme);
                 })
             })
         </script>

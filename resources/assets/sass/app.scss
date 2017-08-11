@@ -36,6 +36,14 @@ body.admin-panel {
             background: $inverse-bg;
             text-shadow: 1px 1px 2px $black;
 
+            .dropdown-menu {
+                background: $inverse-bg;
+
+                .dropdown-item:hover {
+                    background: $black;
+                }
+            }
+
             a {
                 color: $gray-lighter;
 
