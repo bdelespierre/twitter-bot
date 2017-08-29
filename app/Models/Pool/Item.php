@@ -39,8 +39,11 @@ class Item extends Model
             return null;
         }
 
+        // fixme
+        $keywords = @$this->article->keywords;
+
         $total = 0;
-        foreach ($this->article->keywords as $keyword => $score) {
+        foreach ($keywords as $keyword => $score) {
             if (in_array($keyword, $keywords)) {
                 $total += $score;
             }
